@@ -4,13 +4,11 @@ import { Route, Switch, NavLink, withRouter, Redirect } from 'react-router-dom'
 import { push } from 'react-router-redux'
 import Snackbar from 'material-ui/Snackbar'
 import { LinearProgress } from 'material-ui/Progress'
-
+import { AuthorizeService as authorizeService } from '../../services'
 // - Import components
 
 import MasterLoadingComponent from './MasterLoadingComponent'
 import MasterRouter from '../../routes/MasterRouter'
-// import { ServiceProvide, IServiceProvider } from 'core/factories'
-// import { IAuthorizeService } from 'core/services/authorize'
 
 // // - Import actions
 import {
@@ -35,8 +33,7 @@ export class MasterComponent extends Component {
   constructor (props) {
     super(props)
 
-    // this._serviceProvider = new ServiceProvide()
-    // this._authourizeService = this._serviceProvider.createAuthorizeService()
+    this._authourizeService = new authorizeService()
     this.state = {
       loading: true,
       authed: false,
@@ -174,12 +171,12 @@ const mapStateToProps = (state) => {
   const { authorize, global, user, post, notify, circle } = state
 
   return {
-    guest: authorize.guest,
-    uid: authorize.uid,
-    authed: authorize.authed,
-    progress: global.progress,
+    guest: authorize.get('guest'),
+    uid: authorize.get('uid'),
+    authed: authorize.get('authed'),
+    progress: global.get('progress'),
     global: global
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MasterComponent)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MasterComponent))

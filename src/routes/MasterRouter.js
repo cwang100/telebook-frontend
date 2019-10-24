@@ -14,8 +14,6 @@ import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
 // import ResetPassword from 'components/resetPassword'
 // import Setting from 'components/setting'
 
-// import { IRouterProps } from './IRouterProps'
-
 /**
  * Master router
  */
