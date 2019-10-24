@@ -8,7 +8,7 @@ import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
 
 // - Import app components
 // import Home from 'components/home'
-// import Signup from 'components/signup'
+import Signup from '../components/signup'
 // import EmailVerification from 'components/emailVerification'
 // import Login from 'components/login'
 // import ResetPassword from 'components/resetPassword'
@@ -24,7 +24,7 @@ export class MasterRouter extends Component {
         enabled ? (
         <Switch>
           { 
-            <Route component={''} />
+            <Route path='/signup' component={Signup} />
             // <Route path='/signup' component={Signup} />
             // <Route path='/emailVerification' component={EmailVerification} />
             // <Route path='/settings' component={Setting} />

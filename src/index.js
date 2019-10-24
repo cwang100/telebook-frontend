@@ -6,7 +6,11 @@ import config from './config'
 
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
-import { ConnectedRouter } from 'react-router-redux'
+// import { ConnectedRouter } from 'react-router-redux'
+
+import {
+  BrowserRouter
+} from "react-router-dom";
 
 import './styles/index.css';
 import MasterComponent from './components/master/MasterComponent';
@@ -22,11 +26,11 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
 		<Provider store={configureStore.store}>
-			<ConnectedRouter store={configureStore.store} history={configureStore.history}>
+			<BrowserRouter store={configureStore.store} history={configureStore.history}>
 				<MuiThemeProvider theme={theme}>
 					<MasterComponent />
 				</MuiThemeProvider>
-			</ConnectedRouter>
+			</BrowserRouter>
 		</Provider>,
 	document.getElementById('root')
 )
