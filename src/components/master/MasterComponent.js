@@ -4,13 +4,11 @@ import { Route, Switch, NavLink, withRouter, Redirect } from 'react-router-dom'
 import { push } from 'react-router-redux'
 import Snackbar from 'material-ui/Snackbar'
 import { LinearProgress } from 'material-ui/Progress'
-
+import { AuthorizeService as authorizeService } from '../../services'
 // - Import components
 
 import MasterLoadingComponent from './MasterLoadingComponent'
-import MasterRouter from 'routes/MasterRouter'
-// import { ServiceProvide, IServiceProvider } from 'core/factories'
-// import { IAuthorizeService } from 'core/services/authorize'
+import MasterRouter from '../../routes/MasterRouter'
 
 // // - Import actions
 import {
@@ -35,8 +33,7 @@ export class MasterComponent extends Component {
   constructor (props) {
     super(props)
 
-    // this._serviceProvider = new ServiceProvide()
-    // this._authourizeService = this._serviceProvider.createAuthorizeService()
+    this._authourizeService = new authorizeService()
     this.state = {
       loading: true,
       authed: false,
@@ -65,41 +62,40 @@ export class MasterComponent extends Component {
 
   componentDidMount () {
 
-    // this._authourizeService.onAuthStateChanged((isVerifide, user) => {
-    //   const {
-    //     global,
-    //     clearData,
-    //     loadDataGuest,
-    //     defaultDataDisable,
-    //     defaultDataEnable,
-    //     login,
-    //     logout,
-    //     showMasterLoading,
-    //     hideMasterLoading
-    //   } = this.props
-    //   if (user) {
-    //     login(user.uid,isVerifide)
-    //     hideMasterLoading!()
-    //     this.setState({
-    //       loading: false,
-    //       isVerifide: true
-    //     })
+    this._authourizeService.onAuthStateChanged((isVerifide, user) => {
+      const {
+        global,
+        clearData,
+        loadDataGuest,
+        defaultDataDisable,
+        defaultDataEnable,
+        login,
+        logout,
+        showMasterLoading,
+        hideMasterLoading
+      } = this.props
+      if (user) {
+        login(user.uid,isVerifide)
+        hideMasterLoading()
+        this.setState({
+          loading: false,
+          isVerifide: true
+        })
 
-    //   } else {
-    //     logout()
-    //     hideMasterLoading!()
-    //     this.setState({
-    //       loading: false,
-    //       isVerifide: false
-    //     })
-    //     if (global.defaultLoadDataStatus) {
-    //       defaultDataDisable()
-    //       clearData()
-    //     }
-    //     loadDataGuest()
-    //   }
-    // })
-
+      } else {
+        logout()
+        hideMasterLoading()
+        this.setState({
+          loading: false,
+          isVerifide: false
+        })
+        if (global.defaultLoadDataStatus) {
+          defaultDataDisable()
+          clearData()
+        }
+        loadDataGuest()
+      }
+    })
   }
 
   /**
@@ -173,11 +169,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state) => {
   const { authorize, global, user, post, notify, circle } = state
+
   return {
-    guest: authorize.guest,
-    uid: authorize.uid,
-    authed: authorize.authed,
-    progress: global.progress,
+    guest: authorize.get('guest'),
+    uid: authorize.get('uid'),
+    authed: authorize.get('authed'),
+    progress: global.get('progress'),
     global: global
   }
 }

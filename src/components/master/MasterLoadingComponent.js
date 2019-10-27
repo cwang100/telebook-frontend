@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { CircularProgress } from 'material-ui/Progress'
 import Dialog from 'material-ui/Dialog'
 
-export default class MasterLoadingComponent {
+export default class MasterLoadingComponent extends Component {
   // Render app DOM component
   render () {
     const {activeLoading} = this.props
