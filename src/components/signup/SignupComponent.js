@@ -183,7 +183,7 @@ export class SignupComponent extends Component {
                   paddingRight: '40px'
                 }}>
 
-                  <h2 className='zoomOutLCorner animated g__paper-title'>{'signup.title'}</h2>
+                  <h2 className='zoomOutLCorner animated g__paper-title'>{'Sign Up'}</h2>
                 </div>
 
                 <TextField
@@ -193,7 +193,7 @@ export class SignupComponent extends Component {
                   helperText={this.state.fullNameInputError}
                   error={this.state.fullNameInputError.trim() !== ''}
                   name='fullNameInput'
-                  label={'signup.fullNameLabel'}
+                  label={'Full Name'}
                   type='text'
                 /><br />
                 <TextField
@@ -202,7 +202,7 @@ export class SignupComponent extends Component {
                   helperText={this.state.emailInputError}
                   error={this.state.emailInputError.trim() !== ''}
                   name='emailInput'
-                  label={'signup.emailLabel'}
+                  label={'E-mail'}
                   type='email'
                 /><br />
                 <TextField
@@ -211,7 +211,7 @@ export class SignupComponent extends Component {
                   helperText={this.state.passwordInputError}
                   error={this.state.passwordInputError.trim() !== ''}
                   name='passwordInput'
-                  label={'signup.passwordLabel'}
+                  label={'Password'}
                   type='password'
                 /><br />
                 <TextField
@@ -220,16 +220,16 @@ export class SignupComponent extends Component {
                   helperText={this.state.confirmInputError}
                   error={this.state.confirmInputError.trim() !== ''}
                   name='confirmInput'
-                  label={'signup.confirmPasswordLabel'}
+                  label={'Confirm Password'}
                   type='password'
                 /><br />
                 <br />
                 <div className='signup__button-box'>
                   <div>
-                    <Button onClick={this.props.loginPage}>{'signup.loginButton'}</Button>
+                    <Button onClick={this.props.loginPage}>{'Log In'}</Button>
                   </div>
                   <div>
-                    <Button variant='raised' color='primary' onClick={this.handleForm}>{'signup.createButton'}</Button>
+                    <Button variant='raised' color='primary' onClick={this.handleForm}>{'Create Account'}</Button>
 
                   </div>
                 </div>
