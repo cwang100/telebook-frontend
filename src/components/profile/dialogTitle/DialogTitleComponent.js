@@ -5,13 +5,11 @@ import { grey } from 'material-ui/colors'
 import SvgClose from 'material-ui-icons/Close'
 import Button from 'material-ui/Button'
 import Divider from 'material-ui/Divider'
-import { IDialogTitleComponentProps } from './IDialogTitleComponentProps'
-import { IDialogTitleComponentState } from './IDialogTitleComponentState'
 
 /**
  * Create component class
  */
-export default class DialogTitleComponent extends Component<IDialogTitleComponentProps,IDialogTitleComponentState> {
+export default class DialogTitleComponent extends Component {
 
   static propTypes = {
     /**
@@ -53,7 +51,7 @@ export default class DialogTitleComponent extends Component<IDialogTitleComponen
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: IDialogTitleComponentProps) {
+  constructor (props) {
     super(props)
 
     // Defaul state
@@ -74,7 +72,7 @@ export default class DialogTitleComponent extends Component<IDialogTitleComponen
 
     return (
       <div className='g__dialog-title'>
-        <div style={this.styles.contain as any}>
+        <div style={this.styles.contain}>
           <div style={{ paddingRight: '10px' }}>
             <SvgClose onClick={onRequestClose} style={{ cursor: 'pointer' }} />
           </div>

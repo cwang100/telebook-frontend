@@ -9,19 +9,17 @@ import RaisedButton from 'material-ui/Button'
 import Button from 'material-ui/Button'
 import IconButton from 'material-ui/IconButton'
 import Divider from 'material-ui/Divider'
-import ActionAndroid from 'material-ui-icons/Android'
+// import ActionAndroid from 'material-ui-icons/Android'
 import { withStyles } from 'material-ui/styles'
-import config from 'src/config'
+import config from '../../config'
 import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
 // - Import actions
-import * as authorizeActions from 'actions/authorizeActions'
-import { ILoginComponentProps } from './ILoginComponentProps'
-import { ILoginComponentState } from './ILoginComponentState'
-import { OAuthType } from 'core/domain/authorize'
+import * as authorizeActions from '../../actions/authorizeActions'
+import { OAuthType } from '../../class/authorize'
 import Grid from 'material-ui/Grid/Grid'
 
-const styles = (theme: any) => ({
+const styles = (theme) => ({
   textField: {
     minWidth: 280,
     marginTop: 20
@@ -49,7 +47,7 @@ const styles = (theme: any) => ({
 })
 
 // - Create Login component class
-export class LoginComponent extends Component<ILoginComponentProps, ILoginComponentState> {
+export class LoginComponent extends Component {
 
   styles = {
     singinOptions: {
@@ -67,7 +65,7 @@ export class LoginComponent extends Component<ILoginComponentProps, ILoginCompon
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor(props: ILoginComponentProps) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -87,7 +85,7 @@ export class LoginComponent extends Component<ILoginComponentProps, ILoginCompon
    * Handle data on input change
    * @param  {event} evt is an event of inputs of element on change
    */
-  handleInputChange = (event: any) => {
+  handleInputChange = (event) => {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
     const name = target.name
@@ -121,21 +119,21 @@ export class LoginComponent extends Component<ILoginComponentProps, ILoginCompon
     let error = false
     if (this.state.emailInput === '') {
       this.setState({
-        emailInputError: translate!('login.emailRequiredError')
+        emailInputError: ('login.emailRequiredError')
       })
       error = true
 
     }
     if (this.state.passwordInput === '') {
       this.setState({
-        passwordInputError: translate!('login.passwordRequiredError')
+        passwordInputError: ('login.passwordRequiredError')
       })
       error = true
 
     }
 
     if (!error) {
-      this.props.login!(
+      this.props.login(
         this.state.emailInput,
         this.state.passwordInput
       )
@@ -151,15 +149,15 @@ export class LoginComponent extends Component<ILoginComponentProps, ILoginCompon
     const { classes, loginWithOAuth, translate } = this.props
 
     const OAuthLogin = (
-      <div style={this.styles.singinOptions as any}>
+      <div style={this.styles.singinOptions}>
         <IconButton
-          onClick={() => loginWithOAuth!(OAuthType.FACEBOOK)}
+          onClick={() => loginWithOAuth(OAuthType.FACEBOOK)}
         ><div className='icon-fb icon'></div></IconButton>
         <IconButton
-          onClick={() => loginWithOAuth!(OAuthType.GOOGLE)}
+          onClick={() => loginWithOAuth(OAuthType.GOOGLE)}
         > <div className='icon-google icon'></div> </IconButton>
         <IconButton
-          onClick={() => loginWithOAuth!(OAuthType.GITHUB)}
+          onClick={() => loginWithOAuth(OAuthType.GITHUB)}
         > <div className='icon-github icon'></div> </IconButton>
   
       </div>
@@ -180,7 +178,7 @@ export class LoginComponent extends Component<ILoginComponentProps, ILoginCompon
                     paddingRight: '40px'
                   }}>
 
-                    <h2 className='zoomOutLCorner animated g__paper-title'>{translate!('login.title')}</h2>
+                    <h2 className='zoomOutLCorner animated g__paper-title'>{('Log In')}</h2>
                   </div>
                   {config.settings.enabledOAuthLogin ? OAuthLogin : ''}
                 
@@ -192,7 +190,7 @@ export class LoginComponent extends Component<ILoginComponentProps, ILoginCompon
                     helperText={this.state.emailInputError}
                     error={this.state.emailInputError.trim() !== ''}
                     name='emailInput'
-                    label={translate!('login.emailLabel')}
+                    label={('E-mail')}
                     type='email'
                     tabIndex={1}
                   /><br />
@@ -202,7 +200,7 @@ export class LoginComponent extends Component<ILoginComponentProps, ILoginCompon
                     helperText={this.state.passwordInputError}
                     error={this.state.passwordInputError.trim() !== ''}
                     name='passwordInput'
-                    label={translate!('login.passwordLabel')}
+                    label={('Password')}
                     type='password'
                     tabIndex={2}
                   /><br />
@@ -210,13 +208,13 @@ export class LoginComponent extends Component<ILoginComponentProps, ILoginCompon
                   <br />
                   <div className='login__button-box'>
                     <div>
-                      <Button onClick={this.props.signupPage} tabIndex={4}>{translate!('login.createAccountButton')}</Button>
+                      <Button onClick={this.props.signupPage} tabIndex={4}>{('Create New Account')}</Button>
                     </div>
                     <div >
-                      <Button variant='raised' color='primary' onClick={this.handleForm} tabIndex={3} >{translate!('login.loginButton')}</Button>
+                      <Button variant='raised' color='primary' onClick={this.handleForm} tabIndex={3} >{('Log In')}</Button>
                     </div>
                   </div>
-                  <span className={classes.bottomPaper}>{translate!('login.forgetPasswordMessage')} <NavLink to='/resetPassword' className={classes.link}>{translate!('login.resetPasswordLabel')}</NavLink></span>
+                  <span className={classes.bottomPaper}>{('Forget Password? ')} <NavLink to='/resetPassword' className={classes.link}>{('resetPassword')}</NavLink></span>
                 </div>
               </form>
             </Paper>
@@ -233,12 +231,12 @@ export class LoginComponent extends Component<ILoginComponentProps, ILoginCompon
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: any, ownProps: ILoginComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    login: (email: string, password: string) => {
+    login: (email, password) => {
       dispatch(authorizeActions.dbLogin(email, password))
     },
-    loginWithOAuth: (type: OAuthType) => dispatch(authorizeActions.dbLoginWithOAuth(type)),
+    loginWithOAuth: (type) => dispatch(authorizeActions.dbLoginWithOAuth(type)),
     signupPage: () => {
       dispatch(push('/signup'))
     }
@@ -251,11 +249,11 @@ const mapDispatchToProps = (dispatch: any, ownProps: ILoginComponentProps) => {
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: ILoginComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    translate: getTranslate(state.locale)
+    // translate: getTranslate(state.locale)
   }
 }
 
 // - Connect component to redux store
-export default withRouter<any>(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginComponent as any) as any)) as typeof LoginComponent
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginComponent)))

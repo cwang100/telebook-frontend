@@ -1,14 +1,12 @@
 // - Import react components
 import React, { Component } from 'react'
-import { ISidebarContentComponentProps } from './ISidebarContentComponentProps'
-import { ISidebarContentComponentState } from './ISidebarContentComponentState'
 
 // - Import components
 
 // - Import actions
 
 // - Create component class
-export default class SidebarContentComponent extends Component<ISidebarContentComponentProps,ISidebarContentComponentState> {
+export default class SidebarContentComponent extends Component {
 
   static qcName = 'SidebarContent'
 
@@ -16,7 +14,7 @@ export default class SidebarContentComponent extends Component<ISidebarContentCo
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: ISidebarContentComponentProps) {
+  constructor (props) {
     super(props)
 
     // Default state
@@ -30,8 +28,8 @@ export default class SidebarContentComponent extends Component<ISidebarContentCo
  * Handle click on cover of sidebar
  * @param  {event} evt is a click event passed to funciton
  */
-  handleClickCover = (event: any) => {
-    this.props.sidebar!(false,'overlay')
+  handleClickCover = (event) => {
+    this.props.sidebar(false,'overlay')
 
   }
 
@@ -44,7 +42,7 @@ export default class SidebarContentComponent extends Component<ISidebarContentCo
     let hideCoverStyle = {position: 'fixed', height: '100%', width: '100%', top: '0px', left: '-100%', opacity: 0, backgroundColor: 'rgba(255, 255, 255, 0.54)', WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)', willChange: 'opacity', transform: 'translateZ(0px)', transition: 'left 0ms cubic-bezier(0.23, 1, 0.32, 1) 400ms, opacity 400ms cubic-bezier(0.23, 1, 0.32, 1) 0ms', zIndex: '1111', pointerEvents: 'none'}
     return (
       <div id='sidebar-content'>
-      <div style={Object.assign({},{overflow: 'hidden'},this.props.overlay ? showCoverStyle : hideCoverStyle) as any} onClick={this.handleClickCover}></div>
+      <div style={Object.assign({},{overflow: 'hidden'},this.props.overlay ? showCoverStyle : hideCoverStyle)} onClick={this.handleClickCover}></div>
       <div className={this.props.className} style={this.props.cstyle}>
         {this.props.children}
       </div>

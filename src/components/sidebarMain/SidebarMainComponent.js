@@ -1,14 +1,12 @@
 // - Import react components
 import React, { Component } from 'react'
-import { ISidebarMainComponentProps } from './ISidebarMainComponentProps'
-import { ISidebarMainComponentState } from './ISidebarMainComponentState'
 
 // - Import components
 
 // - Import actions
 
 // - Create component class
-export default class SidebarMainComponent extends Component<ISidebarMainComponentProps,ISidebarMainComponentState> {
+export default class SidebarMainComponent extends Component {
 
   static qcName = 'SidebarMain'
 
@@ -16,7 +14,7 @@ export default class SidebarMainComponent extends Component<ISidebarMainComponen
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: ISidebarMainComponentProps) {
+  constructor (props) {
     super(props)
 
     // Default state

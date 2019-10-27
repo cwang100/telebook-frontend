@@ -6,7 +6,7 @@ import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import { getTranslate, getActiveLanguage } from 'react-localize-redux'
-import config from 'src/config'
+import config from '../../config'
 import classNames from 'classnames'
 
 import { withStyles } from 'material-ui/styles'
@@ -28,14 +28,14 @@ import Hidden from 'material-ui/Hidden'
 import MenuIcon from 'material-ui-icons/Menu'
 
 // - Import app components
-import Sidebar from 'components/sidebar'
-import StreamComponent from 'components/stream'
-import HomeHeader from 'components/homeHeader'
-import SidebarContent from 'components/sidebarContent'
-import SidebarMain from 'components/sidebarMain'
-import Profile from 'components/profile'
-import PostPage from 'components/postPage'
-import People from 'components/people'
+import Sidebar from '../sidebar'
+import StreamComponent from '..//stream'
+import HomeHeader from '../homeHeader'
+import SidebarContent from '../sidebarContent'
+import SidebarMain from '../sidebarMain'
+import Profile from '../profile'
+import PostPage from '../postPage'
+import People from '../people'
 
 // - Import API
 
@@ -57,7 +57,7 @@ import { IHomeComponentProps } from './IHomeComponentProps'
 import { IHomeComponentState } from './IHomeComponentState'
 
 const drawerWidth = 220
-const styles = (theme: any) => ({
+const styles = (theme) => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
@@ -141,10 +141,10 @@ const styles = (theme: any) => ({
 })
 
 // - Create Home component class
-export class HomeComponent extends Component<IHomeComponentProps, IHomeComponentState> {
+export class HomeComponent extends Component {
 
   // Constructor
-  constructor(props: IHomeComponentProps) {
+  constructor(props) {
     super(props)
 
     // Default state
@@ -166,17 +166,17 @@ export class HomeComponent extends Component<IHomeComponentProps, IHomeComponent
   componentWillMount() {
     const { global, clearData, loadData, authed, defaultDataEnable, isVerifide, goTo } = this.props
     if (!authed) {
-      goTo!('/login')
+      goTo('/login')
       return
     }
     if (!isVerifide) {
-      goTo!('/emailVerification')
+      goTo('/emailVerification')
 
     } else if (!global.defaultLoadDataStatus) {
 
-      clearData!()
-      loadData!()
-      defaultDataEnable!()
+      clearData()
+      loadData()
+      defaultDataEnable()
     }
   }
 
@@ -188,7 +188,7 @@ export class HomeComponent extends Component<IHomeComponentProps, IHomeComponent
    * @memberof Home
    */
   render() {
-    const HR = HomeRouter as any
+    const HR = HomeRouter
     const { loaded, authed, loadDataStream, mergedPosts, hasMorePosts, showSendFeedback, translate, classes, theme } = this.props
     const { drawerOpen } = this.state
     const drawer = (
@@ -199,7 +199,7 @@ export class HomeComponent extends Component<IHomeComponentProps, IHomeComponent
           <ListItemIcon>
             <SvgHome />
           </ListItemIcon>
-          <ListItemText inset primary={translate!('sidebar.home')} />
+          <ListItemText inset primary={translate('sidebar.home')} />
         </MenuItem>
       </NavLink>
       <NavLink to={`/${this.props.uid}`}>
@@ -207,7 +207,7 @@ export class HomeComponent extends Component<IHomeComponentProps, IHomeComponent
           <ListItemIcon>
             <SvgAccountCircle />
           </ListItemIcon>
-          <ListItemText inset primary={translate!('sidebar.profile')} />
+          <ListItemText inset primary={translate('sidebar.profile')} />
         </MenuItem>
       </NavLink>
       <NavLink to='/people'>
@@ -215,7 +215,7 @@ export class HomeComponent extends Component<IHomeComponentProps, IHomeComponent
           <ListItemIcon>
             <SvgPeople />
           </ListItemIcon>
-          <ListItemText inset primary={translate!('sidebar.people')} />
+          <ListItemText inset primary={translate('sidebar.people')} />
         </MenuItem>
       </NavLink>
       <Divider />
@@ -224,14 +224,14 @@ export class HomeComponent extends Component<IHomeComponentProps, IHomeComponent
           <ListItemIcon>
             <SvgSettings />
           </ListItemIcon>
-          <ListItemText inset primary={translate!('sidebar.settings')} />
+          <ListItemText inset primary={translate('sidebar.settings')} />
         </MenuItem>
       </NavLink>
-      <MenuItem onClick={() => showSendFeedback!()} style={{ color: 'rgb(117, 117, 117)' }}>
+      <MenuItem onClick={() => showSendFeedback()} style={{ color: 'rgb(117, 117, 117)' }}>
         <ListItemIcon>
           <SvgFeedback />
         </ListItemIcon>
-        <ListItemText inset primary={translate!('sidebar.sendFeedback')} />
+        <ListItemText inset primary={translate('sidebar.sendFeedback')} />
       </MenuItem>
       </>
     )
@@ -283,7 +283,7 @@ export class HomeComponent extends Component<IHomeComponentProps, IHomeComponent
               [classes[`contentShift-${anchor}`]]: drawerOpen,
             })}
           >
-            <HR enabled={loaded!} data={{ mergedPosts, loadDataStream, hasMorePosts }} />
+            <HR enabled={loaded} data={{ mergedPosts, loadDataStream, hasMorePosts }} />
           </main>
         </div>
       </div>
@@ -293,11 +293,11 @@ export class HomeComponent extends Component<IHomeComponentProps, IHomeComponent
 }
 
 // - Map dispatch to props
-const mapDispatchToProps = (dispatch: any, ownProps: IHomeComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
 
   return {
     loadDataStream:
-      (page: number, limit: number) => dispatch(postActions.dbGetPosts(page, limit)),
+      (page, limit) => dispatch(postActions.dbGetPosts(page, limit)),
     loadData: () => {
       dispatch(postActions.dbGetPosts())
       dispatch(imageGalleryActions.dbGetImageGallery())
@@ -323,7 +323,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: IHomeComponentProps) => {
     defaultDataEnable: () => {
       dispatch(globalActions.defaultDataEnable())
     },
-    goTo: (url: string) => dispatch(push(url)),
+    goTo: (url) => dispatch(push(url)),
     showSendFeedback: () => dispatch(globalActions.showSendFeedback()),
     hideSendFeedback: () => dispatch(globalActions.hideSendFeedback())
 
@@ -337,7 +337,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: IHomeComponentProps) => {
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: IHomeComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   const { authorize, global, user, post, imageGallery, notify, circle } = state
   const { uid } = authorize
   let mergedPosts = {}
@@ -364,4 +364,4 @@ const mapStateToProps = (state: any, ownProps: IHomeComponentProps) => {
 }
 
 // - Connect component to redux store
-export default withRouter<any>(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles as any, { withTheme: true })(HomeComponent as any) as any)) as typeof HomeComponent
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(HomeComponent)))

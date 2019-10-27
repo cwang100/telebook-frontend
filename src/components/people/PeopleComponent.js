@@ -18,8 +18,8 @@ import Typography from 'material-ui/Typography'
 // - Import API
 
 // - Import actions
-import * as circleActions from 'actions/circleActions'
-import * as globalActions from 'actions/globalActions'
+import * as circleActions from '../../actions/circleActions'
+import * as globalActions from '../../actions/globalActions'
 
 const TabContainer = (props) => {
   return (
@@ -119,12 +119,12 @@ export class PeopleComponent extends Component {
         <Tab label={'people.followersTab'} />
       </Tabs>
       </AppBar>
-      //{tabIndex === 0 && <TabContainer>{circlesLoaded ? <FindPeople /> : ''}</TabContainer>}
+      {/* //{tabIndex === 0 && <TabContainer>{circlesLoaded ? <FindPeople /> : ''}</TabContainer>}
       //{tabIndex === 1 && <TabContainer>
         //{circlesLoaded ? <Following/> : ''}
         //{circlesLoaded ? <YourCircles/> : ''}
       //</TabContainer>}
-      //{tabIndex === 2 && <TabContainer>{circlesLoaded ? <Followers /> : ''}</TabContainer>}
+      //{tabIndex === 2 && <TabContainer>{circlesLoaded ? <Followers /> : ''}</TabContainer>} */}
       </div>
     )
   }
@@ -158,4 +158,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PeopleComponent as any) as any)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PeopleComponent))

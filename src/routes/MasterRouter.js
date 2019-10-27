@@ -9,9 +9,9 @@ import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
 // - Import app components
 // import Home from 'components/home'
 import Signup from '../components/signup'
-// import EmailVerification from 'components/emailVerification'
-// import Login from 'components/login'
-// import ResetPassword from 'components/resetPassword'
+// import EmailVerification from '../components/emailVerification'
+import Login from '../components/login'
+import ResetPassword from '../components/resetPassword'
 // import Setting from 'components/setting'
 
 /**
@@ -23,14 +23,12 @@ export class MasterRouter extends Component {
     return (
         enabled ? (
         <Switch>
-          { 
             <Route path='/signup' component={Signup} />
             <PublicRoute path='/login' component={<Login />} />
-            // <Route path='/emailVerification' component={EmailVerification} />
+            <Route path='/resetPassword' component={ResetPassword} />
+            {/* <Route path='/emailVerification' component={EmailVerification} />
             // <Route path='/settings' component={Setting} />
-            // <Route path='/resetPassword' component={ResetPassword} />
-            // <Route render={() => <Home uid={data.uid} />} /> 
-          }
+            // <Route render={() => <Home uid={data.uid} />} />  */}
         </Switch>)
           : ''
 

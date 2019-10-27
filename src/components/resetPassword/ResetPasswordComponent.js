@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavLink, withRouter } from 'react-router-dom'
 import { push } from 'react-router-redux'
-import config from 'src/config'
+import config from '../../config'
 import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
 // - Material UI
@@ -16,11 +16,9 @@ import Typography from 'material-ui/Typography'
 import { Grid } from 'material-ui'
 
 // - Import actions
-import * as authorizeActions from 'actions/authorizeActions'
-import { IResetPasswordComponentProps } from './IResetPasswordComponentProps'
-import { IResetPasswordComponentState } from './IResetPasswordComponentState'
+import * as authorizeActions from '../../actions/authorizeActions'
 
-const styles = (theme: any) => ({
+const styles = (theme) => ({
   textField: {
     minWidth: 280,
     marginTop: 20
@@ -49,13 +47,13 @@ const styles = (theme: any) => ({
  * @class ResetPasswordComponent
  * @extends {Component}
  */
-export class ResetPasswordComponent extends Component<IResetPasswordComponentProps,IResetPasswordComponentState> {
+export class ResetPasswordComponent extends Component {
 
   /**
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: IResetPasswordComponentProps) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -72,7 +70,7 @@ export class ResetPasswordComponent extends Component<IResetPasswordComponentPro
    * Handle data on input change
    * @param  {event} evt is an event of inputs of element on change
    */
-  handleInputChange = (event: any) => {
+  handleInputChange = (event) => {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
     const name = target.name
@@ -90,13 +88,13 @@ export class ResetPasswordComponent extends Component<IResetPasswordComponentPro
     let error = false
     if (this.state.emailInput === '') {
       this.setState({
-        emailInputError: translate!('resetPassword.emailRequiredError')
+        emailInputError: ('resetPassword.emailRequiredError')
       })
 
       return
     }
 
-    this.props.resetPassword!(this.state.emailInput)
+    this.props.resetPassword(this.state.emailInput)
   }
 
   /**
@@ -121,7 +119,7 @@ export class ResetPasswordComponent extends Component<IResetPasswordComponentPro
                 paddingRight: '40px'
               }}>
 
-                <h2 className='zoomOutLCorner animated g__paper-title'>{translate!('resetPassword.title')}</h2>
+                <h2 className='zoomOutLCorner animated g__paper-title'>{('Reset Password')}</h2>
               </div>
 
               <TextField
@@ -131,21 +129,21 @@ export class ResetPasswordComponent extends Component<IResetPasswordComponentPro
                 helperText={this.state.emailInputError}
                 error={this.state.emailInputError.trim() !== ''}
                 name='emailInput'
-                label={translate!('resetPassword.emailLabel')}
+                label={('E-mail')}
                 type='email'
               /><br />
               <br />
               <br />
               <div className='settings__button-box'>
                 <div>
-                  <Button onClick={this.props.loginPage}>{translate!('resetPassword.backButton')}</Button>
+                  <Button onClick={this.props.loginPage}>{('Cancel')}</Button>
                 </div>
                 <div>
-                  <Button variant='raised' color='primary' onClick={this.handleForm}>{translate!('resetPassword.resetPasswordButton')} </Button>
+                  <Button variant='raised' color='primary' onClick={this.handleForm}>{('Get E-mail')} </Button>
                 </div>
               </div>
               <Typography className={classes.caption} variant='caption' component='p'>
-              {translate!('resetPassword.description')}
+              {('We will send you an e-mail to reset your password.')}
           </Typography>
             </div>
           </Paper>
@@ -162,12 +160,12 @@ export class ResetPasswordComponent extends Component<IResetPasswordComponentPro
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: Function, ownProps: IResetPasswordComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     loginPage: () => {
       dispatch(push('/login'))
     },
-    resetPassword: (emailAddress: string) => dispatch(authorizeActions.dbResetPassword(emailAddress))
+    resetPassword: (emailAddress) => dispatch(authorizeActions.dbResetPassword(emailAddress))
   }
 }
 
@@ -177,11 +175,11 @@ const mapDispatchToProps = (dispatch: Function, ownProps: IResetPasswordComponen
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: IResetPasswordComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    translate: getTranslate(state.locale),
+    // translate: getTranslate(state.locale),
   }
 }
 
 // - Connect component to redux store
-export default withRouter<any>(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ResetPasswordComponent as any) as any)) as typeof ResetPasswordComponent
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ResetPasswordComponent)))

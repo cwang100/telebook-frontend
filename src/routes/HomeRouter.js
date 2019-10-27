@@ -20,7 +20,7 @@ export class HomeRouter extends Component {
           <Switch>
             <PrivateRoute path='/people/:tab?' component={<People />} />
 
-            // <PrivateRoute path='/tag/:tag' component={(
+            <PrivateRoute path='/tag/:tag' component={(
             // <div><St displayWriting={false} homeTitle={`#${match.params.tag}`} posts={data.mergedPosts} /></div>
             // )} />
             // <Route path='/:userId/posts/:postId/:tag?' component={PostPage} />
@@ -34,8 +34,8 @@ export class HomeRouter extends Component {
             // hasMorePosts={data.hasMorePosts}
             // displayWriting={true} />
             // </div>
-            // )} />
-          </Switch>
+            )} />
+            </Switch>
           )
           : ''
 

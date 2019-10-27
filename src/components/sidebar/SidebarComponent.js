@@ -16,18 +16,18 @@ import { ISidebarComponentProps } from './ISidebarComponentProps'
 import { ISidebarComponentState } from './ISidebarComponentState'
 
 // - Feilds
-const color: string = 'teal'
-const colorKey: string = 'blue'
-const sizeCondition = (width: number) => (width >= 750)
+const color = 'teal'
+const colorKey = 'blue'
+const sizeCondition = (width) => (width >= 750)
 
 // - Create Sidebar component class
-export class SidebarComponent extends Component<ISidebarComponentProps,ISidebarComponentState> {
+export class SidebarComponent extends Component {
 
   /**
    * Component constructor
    * @param  {ISidebarComponentProps} props is an object properties of component
    */
-  constructor (props: ISidebarComponentProps) {
+  constructor (props) {
     super(props)
 
     // Binding functions to `this`
@@ -57,7 +57,7 @@ export class SidebarComponent extends Component<ISidebarComponentProps,ISidebarC
    * @param  {boolean} status if is true, sidebar will be open
    * @param  {string} source is the element that fired the function
    */
-  open = (status: boolean, source: string) => {
+  open = (status, source) => {
 
     const width = window.innerWidth
 
@@ -179,7 +179,7 @@ export class SidebarComponent extends Component<ISidebarComponentProps,ISidebarC
         }
       } else {
         this.setState({ sidebarClass: 'sidebar  sidebar__over', overlay: this.state.open })
-        this.props.overlay(this.state.open!)
+        this.props.overlay(this.state.open)
       }
 
     }
@@ -189,7 +189,7 @@ export class SidebarComponent extends Component<ISidebarComponentProps,ISidebarC
    * Handle keyup event for window to close sidebar
    * @param  {event} evt is the event is passed by winodw key event
    */
-  handleKeyUp = (event: Event) => {
+  handleKeyUp = (event) => {
     if (this.state.overlayOpen) {
       if (this.state.open && keycode(event) === 'esc') {
         this.open(false,'keyup')
@@ -202,7 +202,7 @@ export class SidebarComponent extends Component<ISidebarComponentProps,ISidebarC
   }
 
   getChildren = () => {
-    return React.Children.map(this.props.children, (childe: any) => {
+    return React.Children.map(this.props.children, (childe) => {
       if (childe.type.qcName === 'SidebarContent') {
         const sideBarContent = React.cloneElement(childe, {
           className: this.state.sidebarClass,
@@ -250,7 +250,7 @@ export class SidebarComponent extends Component<ISidebarComponentProps,ISidebarC
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: any, ownProps: ISidebarComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     logout: () => dispatch(authorizeActions.dbLogout())
   }
@@ -262,10 +262,10 @@ const mapDispatchToProps = (dispatch: any, ownProps: ISidebarComponentProps) => 
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: ISidebarComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   return {
   }
 }
 
 // - Connect component to redux store
-export default connect(mapStateToProps, mapDispatchToProps)(SidebarComponent as any)
+export default connect(mapStateToProps, mapDispatchToProps)(SidebarComponent)

@@ -8,8 +8,8 @@ import RaisedButton from 'material-ui/Button'
 import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
 // - Import app components
-import ProfileHeader from 'components/profileHeader'
-import StreamComponent from 'components/stream'
+import ProfileHeader from '../components/profileHeader'
+import StreamComponent from '../components/stream'
 
 // - Import API
 
@@ -17,13 +17,11 @@ import StreamComponent from 'components/stream'
 import * as postActions from 'actions/postActions'
 import * as userActions from 'actions/userActions'
 import * as globalActions from 'actions/globalActions'
-import { IProfileComponentProps } from './IProfileComponentProps'
-import { IProfileComponentState } from './IProfileComponentState'
 
 /**
  * Create component class
  */
-export class ProfileComponent extends Component<IProfileComponentProps,IProfileComponentState> {
+export class ProfileComponent extends Component {
 
   static propTypes = {
 
@@ -33,7 +31,7 @@ export class ProfileComponent extends Component<IProfileComponentProps,IProfileC
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: IProfileComponentProps) {
+  constructor (props) {
     super(props)
 
     // Defaul state
@@ -77,7 +75,7 @@ export class ProfileComponent extends Component<IProfileComponentProps,IProfileC
       }
     }
     const {loadPosts, hasMorePosts, translate} = this.props
-    const St = StreamComponent as any
+    const St = StreamComponent
     return (
       <div style={styles.profile}>
         <div style={styles.header}>
@@ -87,7 +85,7 @@ export class ProfileComponent extends Component<IProfileComponentProps,IProfileC
         {this.props.posts && Object.keys(this.props.posts).length !== 0
         ? (<div style={styles.content}>
           <div className='profile__title'>
-            {translate!('profile.headPostsLabel', {userName: this.props.name})}
+            {('profile.headPostsLabel', {userName: this.props.name})}
                </div>
           <div style={{ height: '24px' }}></div>
 
@@ -98,7 +96,7 @@ export class ProfileComponent extends Component<IProfileComponentProps,IProfileC
           displayWriting={false} />
         </div>)
         : (<div className='profile__title'>
-                {translate!('profile.nothingSharedLabel')}
+                {('profile.nothingSharedLabel')}
                </div>)
         }
 
@@ -113,7 +111,7 @@ export class ProfileComponent extends Component<IProfileComponentProps,IProfileC
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: any, ownProps: IProfileComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   const { userId } = ownProps.match.params
   return {
     loadPosts: () => dispatch(postActions.dbGetPostsByUserId(userId)),
@@ -128,13 +126,13 @@ const mapDispatchToProps = (dispatch: any, ownProps: IProfileComponentProps) => 
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: IProfileComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   const { userId } = ownProps.match.params
   const {uid} = state.authorize
   const hasMorePosts = state.post.profile.hasMoreData
   const posts = state.post.userPosts ? state.post.userPosts[userId] : {}
   return {
-    translate: getTranslate(state.locale),
+    // translate: getTranslate(state.locale),
     avatar: state.user.info && state.user.info[userId] ? state.user.info[userId].avatar || '' : '',
     name: state.user.info && state.user.info[userId] ? state.user.info[userId].fullName || '' : '',
     banner: state.user.info && state.user.info[userId] ? state.user.info[userId].banner || '' : '',
@@ -148,4 +146,4 @@ const mapStateToProps = (state: any, ownProps: IProfileComponentProps) => {
 }
 
 // - Connect component to redux store
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileComponent as any)
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileComponent)
