@@ -20,7 +20,7 @@ export class PublicRoute extends Component {
 const mapStateToProps = (state, nexProps) => {
   const { authorize } = state
   return {
-    authed: authorize.authed
+    authed: authorize.get(authed)
   }
 }
 

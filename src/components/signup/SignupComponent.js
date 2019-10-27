@@ -10,7 +10,6 @@ import Button from 'material-ui/Button'
 import { withStyles } from 'material-ui/styles'
 import config from '../../config'
 
-// - Import actions
 import * as authorizeActions from '../../actions/authorizeActions'
 import * as globalActions from '../../actions/globalActions'
 
@@ -35,13 +34,7 @@ const styles = (theme) => ({
   }
 })
 
-// - Create Signup component class
 export class SignupComponent extends Component {
-
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
   constructor(props) {
     super(props)
 
@@ -55,15 +48,10 @@ export class SignupComponent extends Component {
       confirmInput: '',
       confirmInputError: ''
     }
-    // Binding function to `this`
-    this.handleForm = this.handleForm.bind(this)
 
+    this.handleForm = this.handleForm.bind(this)
   }
 
-  /**
-   * Handle data on input change
-   * @param  {event} evt is an event of inputs of element on change
-   */
   handleInputChange = (event) => {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
@@ -105,17 +93,12 @@ export class SignupComponent extends Component {
     }
   }
 
-  /**
-   * Handle register form
-   */
   handleForm = () => {
-
     const { fullNameInput, emailInput, passwordInput, confirmInput } = this.state
     const { register, translate } = this.props
 
     let error = false
 
-    // Validate full name
     let fullNameCheck = fullNameInput.trim().toLowerCase()
 
     if (fullNameCheck.indexOf('test') > -1
@@ -128,8 +111,6 @@ export class SignupComponent extends Component {
       error = true
     }
 
-
-    /* Check password */
     if (passwordInput === '') {
       this.setState({
         passwordInputError: 'signup.passwordRequiredError'
@@ -161,10 +142,6 @@ export class SignupComponent extends Component {
 
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render() {
 
     const { classes, translate } = this.props
@@ -244,12 +221,6 @@ export class SignupComponent extends Component {
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     showError: (message) => {
@@ -264,16 +235,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   return {
   }
 }
 
-// - Connect component to redux store
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SignupComponent)))

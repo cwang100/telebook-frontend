@@ -25,11 +25,10 @@ export class MasterRouter extends Component {
         <Switch>
           { 
             <Route path='/signup' component={Signup} />
-            // <Route path='/signup' component={Signup} />
+            <PublicRoute path='/login' component={<Login />} />
             // <Route path='/emailVerification' component={EmailVerification} />
             // <Route path='/settings' component={Setting} />
             // <Route path='/resetPassword' component={ResetPassword} />
-            // <PublicRoute path='/login' component={<Login />} />
             // <Route render={() => <Home uid={data.uid} />} /> 
           }
         </Switch>)
