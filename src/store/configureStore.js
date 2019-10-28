@@ -1,12 +1,12 @@
 // - Import external components
 import * as redux from 'redux'
 import thunk from 'redux-thunk'
-import { routerMiddleware } from 'react-router-redux'
-import createHistory from 'history/createBrowserHistory'
+import { routerMiddleware } from 'connected-react-router'
+import { createBrowserHistory }  from 'history'
 import { rootReducer } from '../reducers/rootReducer'
 
 // Create a history of your choosing (we're using a browser history in this case)
-export const history = createHistory()
+export const history = createBrowserHistory()
 
 // - initial state
 let initialState = {

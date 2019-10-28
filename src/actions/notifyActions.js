@@ -8,13 +8,10 @@ import { NotificationActionType } from '../constants/notificationActionType'
 import * as globalActions from './globalActions'
 import * as userActions from './userActions'
 
-import { NotificationService as notificationService } from '../services'
-/* _____________ CRUD DB _____________ */
+import { NotificationService } from '../services'
 
-/**
- *  Add notificaition to database
- * @param  {object} newNotify user notificaition
- */
+let notificationService = new NotificationService()
+
 export const dbAddNotification = (newNotify) => {
   return (dispatch, getState) => {
 

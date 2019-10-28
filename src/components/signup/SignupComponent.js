@@ -1,7 +1,7 @@
 // - Import react components
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 import { NavLink, withRouter } from 'react-router-dom'
 import Paper from 'material-ui/Paper'
 import TextField from 'material-ui/TextField'

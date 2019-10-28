@@ -10,10 +10,8 @@ import keycode from 'keycode'
 // - Import API
 
 // - Import actions
-import * as authorizeActions from 'actions/authorizeActions'
-import * as globalActions from 'actions/globalActions'
-import { ISidebarComponentProps } from './ISidebarComponentProps'
-import { ISidebarComponentState } from './ISidebarComponentState'
+import * as authorizeActions from '../../actions/authorizeActions'
+import * as globalActions from '../../actions/globalActions'
 
 // - Feilds
 const color = 'teal'

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, NavLink, withRouter, Redirect } from 'react-router-dom'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 import Snackbar from 'material-ui/Snackbar'
 import { LinearProgress } from 'material-ui/Progress'
 import { AuthorizeService as authorizeService } from '../../services'

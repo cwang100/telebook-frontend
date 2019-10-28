@@ -1,11 +1,9 @@
-// - Import react components
-import { HomeRouter } from 'routes'
+import { HomeRouter } from '../../routes'
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
-import { getTranslate, getActiveLanguage } from 'react-localize-redux'
+import { push } from 'connected-react-router'
 import config from '../../config'
 import classNames from 'classnames'
 
@@ -15,46 +13,33 @@ import Menu from 'material-ui/Menu'
 import { MenuList, MenuItem } from 'material-ui/Menu'
 import { ListItemIcon, ListItemText } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
-import SvgArrowLeft from 'material-ui-icons/KeyboardArrowLeft'
-import SvgHome from 'material-ui-icons/Home'
-import SvgFeedback from 'material-ui-icons/Feedback'
-import SvgSettings from 'material-ui-icons/Settings'
-import SvgAccountCircle from 'material-ui-icons/AccountCircle'
-import SvgPeople from 'material-ui-icons/People'
+import SvgArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
+import SvgHome from '@material-ui/icons/Home'
+import SvgFeedback from '@material-ui/icons/Feedback'
+import SvgSettings from '@material-ui/icons/Settings'
+import SvgAccountCircle from '@material-ui/icons/AccountCircle'
+import SvgPeople from '@material-ui/icons/People'
 import List from 'material-ui/List'
 import Typography from 'material-ui/Typography'
 import IconButton from 'material-ui/IconButton'
 import Hidden from 'material-ui/Hidden'
-import MenuIcon from 'material-ui-icons/Menu'
+import MenuIcon from '@material-ui/icons/Menu'
 
-// - Import app components
 import Sidebar from '../sidebar'
-import StreamComponent from '..//stream'
-import HomeHeader from '../homeHeader'
+//import StreamComponent from '../stream'
+//import HomeHeader from '../homeHeader'
 import SidebarContent from '../sidebarContent'
 import SidebarMain from '../sidebarMain'
 import Profile from '../profile'
-import PostPage from '../postPage'
+//import PostPage from '../postPage'
 import People from '../people'
 
-// - Import API
-
-// - Import actions
-// - Import actions
-import {
-  authorizeActions,
-  imageGalleryActions,
-  postActions,
-  commentActions,
-  voteActions,
-  userActions,
-  globalActions,
-  circleActions,
-  notifyActions
-} from 'actions'
-
-import { IHomeComponentProps } from './IHomeComponentProps'
-import { IHomeComponentState } from './IHomeComponentState'
+import * as authorizeActions from '../../actions/authorizeActions'
+import * as postActions from '../../actions/postActions'
+import * as userActions from '../../actions/userActions'
+import * as globalActions from '../../actions/globalActions'
+import * as circleActions from '../../actions/circleActions'
+import * as notifyActions from '../../actions/notifyActions'
 
 const drawerWidth = 220
 const styles = (theme) => ({
@@ -140,36 +125,27 @@ const styles = (theme) => ({
   }
 })
 
-// - Create Home component class
 export class HomeComponent extends Component {
 
-  // Constructor
   constructor(props) {
     super(props)
 
-    // Default state
     this.state = {
       drawerOpen: false
     }
-
-    // Binding function to `this`
-
   }
 
-  /**
-   * Handle drawer toggle
-   */
   handleDrawerToggle = () => {
     this.setState({ drawerOpen: !this.state.drawerOpen })
   }
 
   componentWillMount() {
-    const { global, clearData, loadData, authed, defaultDataEnable, isVerifide, goTo } = this.props
+    const { global, clearData, loadData, authed, defaultDataEnable, isVerified, goTo } = this.props
     if (!authed) {
       goTo('/login')
       return
     }
-    if (!isVerifide) {
+    if (!isVerified) {
       goTo('/emailVerification')
 
     } else if (!global.defaultLoadDataStatus) {
@@ -180,16 +156,9 @@ export class HomeComponent extends Component {
     }
   }
 
-  /**
-   * Render DOM component
-   *
-   * @returns DOM
-   *
-   * @memberof Home
-   */
   render() {
     const HR = HomeRouter
-    const { loaded, authed, loadDataStream, mergedPosts, hasMorePosts, showSendFeedback, translate, classes, theme } = this.props
+    const { loaded, authed, loadDataStream, mergedPosts, hasMorePosts, showSendFeedback, classes, theme } = this.props
     const { drawerOpen } = this.state
     const drawer = (
       <>
@@ -199,7 +168,7 @@ export class HomeComponent extends Component {
           <ListItemIcon>
             <SvgHome />
           </ListItemIcon>
-          <ListItemText inset primary={translate('sidebar.home')} />
+          <ListItemText inset primary={'sidebar.home'} />
         </MenuItem>
       </NavLink>
       <NavLink to={`/${this.props.uid}`}>
@@ -207,7 +176,7 @@ export class HomeComponent extends Component {
           <ListItemIcon>
             <SvgAccountCircle />
           </ListItemIcon>
-          <ListItemText inset primary={translate('sidebar.profile')} />
+          <ListItemText inset primary={'sidebar.profile'} />
         </MenuItem>
       </NavLink>
       <NavLink to='/people'>
@@ -215,7 +184,7 @@ export class HomeComponent extends Component {
           <ListItemIcon>
             <SvgPeople />
           </ListItemIcon>
-          <ListItemText inset primary={translate('sidebar.people')} />
+          <ListItemText inset primary={'sidebar.people'} />
         </MenuItem>
       </NavLink>
       <Divider />
@@ -224,23 +193,23 @@ export class HomeComponent extends Component {
           <ListItemIcon>
             <SvgSettings />
           </ListItemIcon>
-          <ListItemText inset primary={translate('sidebar.settings')} />
+          <ListItemText inset primary={'sidebar.settings'} />
         </MenuItem>
       </NavLink>
       <MenuItem onClick={() => showSendFeedback()} style={{ color: 'rgb(117, 117, 117)' }}>
         <ListItemIcon>
           <SvgFeedback />
         </ListItemIcon>
-        <ListItemText inset primary={translate('sidebar.sendFeedback')} />
+        <ListItemText inset primary={'sidebar.sendFeedback'} />
       </MenuItem>
       </>
     )
 
     const anchor = theme.direction === 'rtl' ? 'right' : 'left'
+    //<HomeHeader onToggleDrawer={this.handleDrawerToggle} drawerStatus={this.state.drawerOpen} />
     return (
       <div className={classes.root}>
-        <div className={classes.appFrame}>
-          <HomeHeader onToggleDrawer={this.handleDrawerToggle} drawerStatus={this.state.drawerOpen} />
+        <div className={classes.appFrame}> 
           <Hidden mdUp>
             <Drawer
               variant='temporary'
@@ -292,7 +261,6 @@ export class HomeComponent extends Component {
   }
 }
 
-// - Map dispatch to props
 const mapDispatchToProps = (dispatch, ownProps) => {
 
   return {
@@ -300,7 +268,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       (page, limit) => dispatch(postActions.dbGetPosts(page, limit)),
     loadData: () => {
       dispatch(postActions.dbGetPosts())
-      dispatch(imageGalleryActions.dbGetImageGallery())
       dispatch(userActions.dbGetUserInfo())
       dispatch(notifyActions.dbGetNotifications())
       dispatch(circleActions.dbGetCircles())
@@ -309,13 +276,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     },
     clearData: () => {
-      dispatch(imageGalleryActions.clearAllData())
       dispatch(postActions.clearAllData())
       dispatch(userActions.clearAllData())
       dispatch(notifyActions.clearAllNotifications())
       dispatch(circleActions.clearAllCircles())
       dispatch(globalActions.clearTemp())
-
     },
     defaultDataDisable: () => {
       dispatch(globalActions.defaultDataDisable())
@@ -331,37 +296,28 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   const { authorize, global, user, post, imageGallery, notify, circle } = state
-  const { uid } = authorize
+  const uid = authorize.get('uid')
   let mergedPosts = {}
-  const circles = circle ? (circle.circleList || {}) : {}
-  const followingUsers = circle ? circle.userTies : {}
-  const posts = post.userPosts ? post.userPosts[authorize.uid] : {}
-  const hasMorePosts = post.stream.hasMoreData
+  const circles = circle ? (circle.get('circleList') || {}) : {}
+  const followingUsers = circle ? circle.get('userTies') || {} : {}
+  const posts = post.get('userPosts') ? post.get('userPosts')[uid] : {}
+  const hasMorePosts = post.get('stream').hasMoreData
   Object.keys(followingUsers).forEach((userId) => {
-    let newPosts = post.userPosts ? post.userPosts[userId] : {}
+    let newPosts = post.get('userPosts') ? post.get('userPosts')[uid] : {}
     _.merge(mergedPosts, newPosts)
   })
   _.merge(mergedPosts, posts)
   return {
-    authed: authorize.authed,
-    isVerifide: authorize.isVerifide,
-    mainStyle: global.sidebarMainStyle,
-    translate: getTranslate(state.locale),
-    currentLanguage: getActiveLanguage(state.locale).code,
+    authed: authorize.get('authed'),
+    isVerified: authorize.get('isVerified'),
+    mainStyle: global.get('sidebarMainStyle'),
     mergedPosts,
     global,
     hasMorePosts,
-    loaded: user.loaded && imageGallery.loaded && notify.loaded && circle.loaded
+    loaded: user.get('loaded') && notify.get('loaded') && circle.get('loaded')
   }
 }
 
-// - Connect component to redux store
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(HomeComponent)))

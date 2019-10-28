@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavLink, withRouter } from 'react-router-dom'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 import Paper from 'material-ui/Paper'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/Button'
@@ -12,7 +12,6 @@ import Divider from 'material-ui/Divider'
 // import ActionAndroid from 'material-ui-icons/Android'
 import { withStyles } from 'material-ui/styles'
 import config from '../../config'
-import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
 // - Import actions
 import * as authorizeActions from '../../actions/authorizeActions'
@@ -115,7 +114,6 @@ export class LoginComponent extends Component {
    * Handle register form
    */
   handleForm = () => {
-    const { translate } = this.props
     let error = false
     if (this.state.emailInput === '') {
       this.setState({
@@ -146,7 +144,7 @@ export class LoginComponent extends Component {
    * @return {react element} return the DOM which rendered by component
    */
   render() {
-    const { classes, loginWithOAuth, translate } = this.props
+    const { classes, loginWithOAuth } = this.props
 
     const OAuthLogin = (
       <div style={this.styles.singinOptions}>
@@ -243,17 +241,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   return {
-    // translate: getTranslate(state.locale)
   }
 }
 
-// - Connect component to redux store
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginComponent)))

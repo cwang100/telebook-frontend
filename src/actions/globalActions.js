@@ -7,11 +7,13 @@ import { Feed, SocialError } from '../class/common'
 import { ServerRequestModel } from '../class/server'
 import { ServerRequestStatusType } from './serverRequestStatusType'
 
-import { CommonService as commonService } from '../services'
+import { CommonService } from '../services'
 
 /**
  * Add a normal feed
  */
+let commonService = new CommonService()
+
 export let dbSendFeed = (newFeed) => {
   return (dispatch, getState) => {
 

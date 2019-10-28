@@ -5,18 +5,17 @@ import PropTypes from 'prop-types'
 import Dialog from 'material-ui/Dialog'
 import Button from 'material-ui/Button'
 import RaisedButton from 'material-ui/Button'
-import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
 // - Import app components
-import ProfileHeader from '../components/profileHeader'
-import StreamComponent from '../components/stream'
+//import ProfileHeader from '../components/profileHeader'
+//import StreamComponent from '../components/stream'
 
 // - Import API
 
 // - Import actions
-import * as postActions from 'actions/postActions'
-import * as userActions from 'actions/userActions'
-import * as globalActions from 'actions/globalActions'
+import * as postActions from '../../actions/postActions'
+import * as userActions from '../../actions/userActions'
+import * as globalActions from '../../actions/globalActions'
 
 /**
  * Create component class
@@ -34,19 +33,12 @@ export class ProfileComponent extends Component {
   constructor (props) {
     super(props)
 
-    // Defaul state
-    this.state = {
-
-    }
-
-    // Binding functions to `this`
-
+    this.state = {}
   }
 
   componentWillMount () {
     this.props.loadPosts()
     this.props.loadUserInfo()
-
   }
 
   /**
@@ -75,12 +67,16 @@ export class ProfileComponent extends Component {
       }
     }
     const {loadPosts, hasMorePosts, translate} = this.props
-    const St = StreamComponent
+    //const St = StreamComponent
+    //<ProfileHeader tagLine={this.props.tagLine} avatar={this.props.avatar} isAuthedUser={this.props.isAuthedUser} banner={this.props.banner} fullName={this.props.name} followerCount={0} userId={this.props.userId}/>
+    //          <St
+          // posts={this.props.posts}
+          // loadStream={loadPosts}
+          // hasMorePosts={hasMorePosts}
+          // displayWriting={false} />
     return (
       <div style={styles.profile}>
         <div style={styles.header}>
-
-          <ProfileHeader tagLine={this.props.tagLine} avatar={this.props.avatar} isAuthedUser={this.props.isAuthedUser} banner={this.props.banner} fullName={this.props.name} followerCount={0} userId={this.props.userId}/>
         </div>
         {this.props.posts && Object.keys(this.props.posts).length !== 0
         ? (<div style={styles.content}>
@@ -88,12 +84,6 @@ export class ProfileComponent extends Component {
             {('profile.headPostsLabel', {userName: this.props.name})}
                </div>
           <div style={{ height: '24px' }}></div>
-
-          <St
-          posts={this.props.posts}
-          loadStream={loadPosts}
-          hasMorePosts={hasMorePosts}
-          displayWriting={false} />
         </div>)
         : (<div className='profile__title'>
                 {('profile.nothingSharedLabel')}

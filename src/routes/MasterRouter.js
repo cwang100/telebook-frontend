@@ -7,9 +7,9 @@ import { connect } from 'react-redux'
 import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
 
 // - Import app components
-// import Home from 'components/home'
+import Home from '../components/home'
 import Signup from '../components/signup'
-// import EmailVerification from '../components/emailVerification'
+import EmailVerification from '../components/emailVerification'
 import Login from '../components/login'
 import ResetPassword from '../components/resetPassword'
 // import Setting from 'components/setting'
@@ -26,9 +26,12 @@ export class MasterRouter extends Component {
             <Route path='/signup' component={Signup} />
             <PublicRoute path='/login' component={<Login />} />
             <Route path='/resetPassword' component={ResetPassword} />
-            {/* <Route path='/emailVerification' component={EmailVerification} />
+            <Route path='/emailVerification' component={EmailVerification} />
+            <Route render={() => <Home uid={data.uid} />} /> 
+            {
             // <Route path='/settings' component={Setting} />
-            // <Route render={() => <Home uid={data.uid} />} />  */}
+            // <Route render={() => <Home uid={data.uid} />} />
+            }
         </Switch>)
           : ''
 

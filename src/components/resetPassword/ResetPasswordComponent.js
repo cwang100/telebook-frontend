@@ -2,9 +2,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavLink, withRouter } from 'react-router-dom'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 import config from '../../config'
-import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
 // - Material UI
 import Paper from 'material-ui/Paper'
@@ -84,7 +83,6 @@ export class ResetPasswordComponent extends Component {
    * Handle register form
    */
   handleForm = () => {
-    const {translate} = this.props
     let error = false
     if (this.state.emailInput === '') {
       this.setState({
@@ -103,7 +101,7 @@ export class ResetPasswordComponent extends Component {
    */
   render () {
 
-    const {classes, translate} = this.props
+    const {classes} = this.props
 
     return (
       <Grid container spacing={24}>
@@ -177,7 +175,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
  */
 const mapStateToProps = (state, ownProps) => {
   return {
-    // translate: getTranslate(state.locale),
   }
 }
 

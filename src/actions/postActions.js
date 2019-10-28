@@ -9,14 +9,9 @@ import { PostActionType } from '../constants/postActionType'
 
 // - Import actions
 import * as globalActions from './globalActions'
-import { PostService as postService } from '../services'
+import { PostService } from '../services'
 
-
-/* _____________ CRUD DB _____________ */
-
-/**
- * Add a normal post
- */
+let postService = new PostService()
 export let dbAddPost = (newPost, callBack) => {
   return (dispatch, getState) => {
 

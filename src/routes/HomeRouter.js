@@ -7,9 +7,9 @@ import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
 
 // - Import app components
 // import StreamComponent from 'components/stream'
-import Profile from 'components/profile'
+import Profile from '../components/profile'
 // import PostPage from 'components/postPage'
-import People from 'components/people'
+import People from '../components/people'
 
 export class HomeRouter extends Component {
   render () {

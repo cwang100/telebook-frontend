@@ -7,11 +7,6 @@ import { Map, fromJS } from 'immutable'
 // - Import action types
 import { PostActionType } from '../constants/postActionType'
 
-// import { PostState } from './PostState'
-// import { IPostAction } from './IPostAction'
-// import { Post } from 'src/core/domain/posts/post'
-// import CommonAPI from 'src/api/CommonAPI'
-
 const updatePost = (state, payload) => {
   const post = payload.post
   const updatePostOwnerId = post.get('ownerUserId')
@@ -41,7 +36,7 @@ const updatePostVotes = (state, payload) => {
  * @param {object} state
  * @param {object} action
  */
-export let postReducer = (state = Map(), action) => {
+export let postReducer = (state = Map({stream:{hasMoreData: false}}), action) => {
   const { payload } = action
   switch (action.type) {
     case PostActionType.CLEAR_ALL_DATA_POST:

@@ -1,10 +1,7 @@
-// - Import domain
 import * as moment from 'moment/moment'
 
-// - Import action types
 import { CircleActionType } from '../constants/circleActionType'
 
-// - Import actions
 import * as globalActions from './globalActions'
 import * as userActions from './userActions'
 import * as notifyActions from './notifyActions'
@@ -15,19 +12,17 @@ import { ServerRequestStatusType } from './serverRequestStatusType'
 import { ServerRequestType } from '../constants/serverRequestType'
 import { ServerRequestModel } from '../class/server'
 
-import { CircleService as circleService } from '../services'
-import { UserTieService as userTieService } from '../services'
+import { CircleService } from '../services'
+import { UserTieService } from '../services'
 
-/* _____________ CRUD DB _____________ */
 
-/**
- * Add a circle
- * @param {string} circleName
- */
+let circleService = new CircleService()
+let userTieService = new UserTieService()
+
 export let dbAddCircle = (circleName) => {
   return (dispatch, getState) => {
 
-    let uid = getState().authorize.uid
+    let uid = getState().authorize.get('uid')
     let circle = {
       creationDate: moment().unix(),
       name: circleName,
@@ -44,20 +39,15 @@ export let dbAddCircle = (circleName) => {
   }
 }
 
-/**
- * Add referer user to the `Following` circle of current user
- */
 export const dbFollowUser = (followingCircleId, userFollowing) => {
   return (dispatch, getState) => {
     const state = getState()
-    let uid = state.authorize.uid
-    let user = { ...state.user.info[uid], userId: uid }
+    let uid = state.authorize.get('uid')
+    let user = { ...state.user.get('info')[uid], userId: uid }
 
-    // Set server request status to {Sent} for following user
     const followReqestModel = createFollowRequest(userFollowing.userId)
     dispatch(serverActions.sendRequest(followReqestModel))
 
-    // Call server API
     return userTieService.tieUseres(
       { userId: user.userId, fullName: user.fullName, avatar: user.avatar, approved: false },
       { userId: userFollowing.userId, fullName: userFollowing.fullName, avatar: userFollowing.avatar, approved: false },
@@ -74,11 +64,9 @@ export const dbFollowUser = (followingCircleId, userFollowing) => {
             [followingCircleId]
         )))
 
-        // Set server request status to {OK} for following user
         followReqestModel.status = ServerRequestStatusType.OK
         dispatch(serverActions.sendRequest(followReqestModel))
 
-        // Send notification
         dispatch(notifyActions.dbAddNotification(
           {
             description: `${user.fullName} follow you.`,
@@ -91,29 +79,23 @@ export const dbFollowUser = (followingCircleId, userFollowing) => {
       }, (error: SocialError) => {
         dispatch(globalActions.showMessage(error.message))
 
-        // Set server request status to {Error} for following user
         followReqestModel.status = ServerRequestStatusType.Error
         dispatch(serverActions.sendRequest(followReqestModel))
       })
   }
 }
 
-/**
- * Update user in circle/circles
- */
 export let dbUpdateUserInCircles = (circleIdList, userFollowing) => {
   return (dispatch, getState) => {
     const state = getState()
-    let uid = state.authorize.uid
-    let user = { ...state.user.info[uid], userId: uid }
+    let uid = state.authorize.get('uid')
+    let user = { ...state.user.get('info')[uid], userId: uid }
 
-    // Set server request status to {Sent}
     const addToCircleRequest = createAddToCircleRequest(userFollowing.userId)
     dispatch(serverActions.sendRequest(addToCircleRequest))
 
     dispatch(globalActions.showMasterLoading())
 
-    // Call server API
     return userTieService.updateUsersTie(
       { userId: user.userId, fullName: user.fullName, avatar: user.avatar, approved: false },
       { userId: userFollowing.userId, fullName: userFollowing.fullName, avatar: userFollowing.avatar, approved: false },
@@ -130,13 +112,11 @@ export let dbUpdateUserInCircles = (circleIdList, userFollowing) => {
             circleIdList
         )))
 
-        // Set server request status to {OK}
         addToCircleRequest.status = ServerRequestStatusType.OK
         dispatch(serverActions.sendRequest(addToCircleRequest))
 
         dispatch(globalActions.hideMasterLoading())
 
-        // Close select circle box
         dispatch(closeSelectCircleBox(userFollowing.userId))
 
       }, (error) => {
@@ -144,38 +124,29 @@ export let dbUpdateUserInCircles = (circleIdList, userFollowing) => {
 
         dispatch(globalActions.hideMasterLoading())
 
-        // Set server request status to {Error}
         addToCircleRequest.status = ServerRequestStatusType.Error
         dispatch(serverActions.sendRequest(addToCircleRequest))
       })
   }
 }
 
-/**
- * Delete following user
- */
 export let dbDeleteFollowingUser = (userFollowingId) => {
   return (dispatch, getState) => {
-
     let uid = getState().authorize.uid
 
-    // Set server request status to {Sent}
     const deleteFollowingUserRequest = createdeleteFollowingUserRequest(userFollowingId)
     dispatch(serverActions.sendRequest(deleteFollowingUserRequest))
 
     dispatch(globalActions.showMasterLoading())
 
-    // Call server API
     return userTieService.removeUsersTie(uid, userFollowingId)
       .then(() => {
         dispatch(deleteFollowingUser(userFollowingId))
 
         dispatch(globalActions.hideMasterLoading())
 
-        // Close select circle box
         dispatch(closeSelectCircleBox(userFollowingId))
 
-        // Set server request status to {OK}
         deleteFollowingUserRequest.status = ServerRequestStatusType.OK
         dispatch(serverActions.sendRequest(deleteFollowingUserRequest))
       }, (error) => {
@@ -183,26 +154,17 @@ export let dbDeleteFollowingUser = (userFollowingId) => {
 
         dispatch(globalActions.hideMasterLoading())
 
-        // Close select circle box
         dispatch(closeSelectCircleBox(userFollowingId))
 
-        // Set server request status to {Error}
         deleteFollowingUserRequest.status = ServerRequestStatusType.Error
         dispatch(serverActions.sendRequest(deleteFollowingUserRequest))
       })
   }
 }
 
-/**
- * Update a circle from database
- */
 export const dbUpdateCircle = (newCircle) => {
   return (dispatch, getState) => {
-
-    // Get current user id
     let uid = getState().authorize.uid
-
-    // Write the new data simultaneously in the list
     let circle = {...getState().circle.circleList[newCircle.id]}
     circle.name = newCircle.name
     return circleService.updateCircle(uid, newCircle.id, circle)
@@ -215,13 +177,8 @@ export const dbUpdateCircle = (newCircle) => {
 
 }
 
-/**
- * Delete a circle from database
- */
 export const dbDeleteCircle = (circleId) => {
   return (dispatch, getState) => {
-
-    // Get current user id
     let uid = getState().authorize.uid
 
     return circleService.deleteCircle(uid, circleId)
@@ -234,9 +191,6 @@ export const dbDeleteCircle = (circleId) => {
 
 }
 
-/**
- *  Get all circles from data base belong to current user
- */
 export const dbGetCircles = () => {
   return (dispatch, getState) => {
     let uid = getState().authorize.uid
