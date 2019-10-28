@@ -78,14 +78,14 @@ export class EmailVerificationComponent extends Component {
                   paddingRight: '40px'
                 }}>
 
-                  <h2 className='zoomOutLCorner animated g__paper-title'>{'emailVerification.title'}</h2>
+                  <h2 className='zoomOutLCorner animated g__paper-title'>{'E-mail Verification'}</h2>
                 </div>
                 <p style={this.styles.message}>
-                  {'emailVerification.description'}
+                  {'You will receive an email for verification'}
                 </p>
                 <div style={this.styles.buttons}>
-                  <Button variant='raised' style={this.styles.homeButton} color='primary' onClick={() => this.props.homePage()}> {'emailVerification.homeButton'} </Button>
-                  <Button variant='raised' color='primary' onClick={() => this.props.sendEmailVerification()}> {'emailVerification.sendButton'} </Button>
+                  <Button variant='raised' style={this.styles.homeButton} color='primary' onClick={() => this.props.homePage()}> {'Cancel'} </Button>
+                  <Button variant='raised' color='primary' onClick={() => this.props.sendEmailVerification()}> {'Send'} </Button>
                 </div>
                 <div>
                 </div>
