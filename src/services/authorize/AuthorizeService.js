@@ -57,18 +57,13 @@ export class AuthorizeService {
     })
   }
 
-   /**
-    * Register a user
-    *
-    * @returns {Promise<void>}
-    * @memberof IAuthorizeService
-    */
+
   registerUser(user) {
     return new Promise((resolve, reject) => {
       firebaseAuth()
                 .createUserWithEmailAndPassword(user.email, user.password)
                 .then((signupResult) => {
-                  const {uid, email} = signupResult
+                  const {uid, email} = signupResult.user
                   this.storeUserInformation(uid,email,user.fullName,'').then(resolve)
                 })
                 .catch((error) => reject(new SocialError(error.code, error.message)))
@@ -103,15 +98,15 @@ export class AuthorizeService {
    */
   onAuthStateChanged(callBack) {
     firebaseAuth().onAuthStateChanged( (user) => {
-      let isVerifide = false
+      let isVerified = false
       if (user) {
         if (user.emailVerified || user.providerData[0].providerId.trim() !== 'password') {
-          isVerifide = true
+          isVerified = true
         } else {
-          isVerifide = false
+          isVerified = false
         }
       }
-      callBack(isVerifide,user)
+      callBack(isVerified,user)
     })
   }
 
@@ -184,7 +179,7 @@ export class AuthorizeService {
         const {uid, displayName, email, photoURL} = user
         const {accessToken, providerId} = credential
         this.storeUserProviderData(uid,email,displayName,photoURL,providerId,accessToken)
-        // this.storeUserInformation(uid,email,displayName,photoURL).then(resolve)
+        this.storeUserInformation(uid,email,displayName,photoURL).then(resolve)
         resolve(new LoginUser(user.uid,true,providerId,displayName,email,photoURL))
 
       }).catch(function (error) {
@@ -201,12 +196,7 @@ export class AuthorizeService {
     })
   }
 
-  /**
-   * Store user information
-   *
-   * @private
-   * @memberof AuthorizeService
-   */
+
   storeUserInformation(userId, email, fullName, avatar) {
     return new Promise((resolve,reject) => {
       db.doc(`userInfo/${userId}`).set(

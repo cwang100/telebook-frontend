@@ -89,7 +89,7 @@ export let dbUpdateUserInCircles = (circleIdList, userFollowing) => {
   return (dispatch, getState) => {
     const state = getState()
     let uid = state.authorize.get('uid')
-    let user = { ...state.user.get('info')[uid], userId: uid }
+    let user = { ...state.user.get('info')[uid], userId }
 
     const addToCircleRequest = createAddToCircleRequest(userFollowing.userId)
     dispatch(serverActions.sendRequest(addToCircleRequest))
@@ -164,7 +164,7 @@ export let dbDeleteFollowingUser = (userFollowingId) => {
 
 export const dbUpdateCircle = (newCircle) => {
   return (dispatch, getState) => {
-    let uid = getState().authorize.uid
+    let uid = getState().authorize.get('uid')
     let circle = {...getState().circle.circleList[newCircle.id]}
     circle.name = newCircle.name
     return circleService.updateCircle(uid, newCircle.id, circle)
@@ -179,7 +179,7 @@ export const dbUpdateCircle = (newCircle) => {
 
 export const dbDeleteCircle = (circleId) => {
   return (dispatch, getState) => {
-    let uid = getState().authorize.uid
+    let uid = getState().authorize.get('uid')
 
     return circleService.deleteCircle(uid, circleId)
       .then(() => {
@@ -193,7 +193,7 @@ export const dbDeleteCircle = (circleId) => {
 
 export const dbGetCircles = () => {
   return (dispatch, getState) => {
-    let uid = getState().authorize.uid
+    let uid = getState().authorize.get('uid')
     if (uid) {
 
       return circleService.getCircles(uid)

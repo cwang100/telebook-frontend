@@ -30,7 +30,6 @@ export class MasterRouter extends Component {
             <Route render={() => <Home uid={data.uid} />} /> 
             {
             // <Route path='/settings' component={Setting} />
-            // <Route render={() => <Home uid={data.uid} />} />
             }
         </Switch>)
           : ''

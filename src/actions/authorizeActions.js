@@ -10,10 +10,10 @@ import { AuthorizeService } from '../services'
 
 let authorizeService = new AuthorizeService()
 
-export const login = (uid, isVerifide) => {
+export const login = (uid, isVerified) => {
   return {
     type: AuthorizeActionType.LOGIN,
-    payload: { authed: true, isVerifide, uid }
+    payload: { authed: true, isVerified, uid }
   }
 }
 

@@ -15,7 +15,7 @@ let postService = new PostService()
 export let dbAddPost = (newPost, callBack) => {
   return (dispatch, getState) => {
 
-    let uid: string = getState().authorize.uid
+    let uid: string = getState().authorize.get('uid')
     let post = {
       postTypeId: 0,
       creationDate: moment().unix(),
@@ -53,7 +53,7 @@ export const dbAddImagePost = (newPost, callBack) => {
 
     dispatch(globalActions.showTopLoading())
 
-    let uid: string = getState().authorize.uid
+    let uid: string = getState().authorize.get('uid')
     let post: Post = {
       postTypeId: 1,
       creationDate: moment().unix(),
@@ -104,7 +104,7 @@ export const dbUpdatePost = (updatedPost, callBack) => {
       dispatch(globalActions.hideTopLoading())
 
     })
-      .catch((error: SocialError) => {
+      .catch((error) => {
         dispatch(globalActions.showMessage(error.message))
         dispatch(globalActions.hideTopLoading())
 
@@ -123,7 +123,7 @@ export const dbDeletePost = (id) => {
     dispatch(globalActions.showTopLoading())
 
     // Get current user id
-    let uid: string = getState().authorize.uid
+    let uid = getState().authorize.get('uid')
 
     return postService.deletePost(id).then(() => {
       dispatch(deletePost(uid, id))
@@ -144,11 +144,11 @@ export const dbDeletePost = (id) => {
 export const dbGetPosts = (page = 0, limit = 10) => {
   return (dispatch, getState) => {
     const state = getState()
-    const {stream} = state.post
+    const stream = state.post.get('stream') || {}
     const lastPageRequest = stream.lastPageRequest
     const lastPostId = stream.lastPostId
 
-    let uid: string = state.authorize.uid
+    let uid = state.authorize.get('uid')
     if (uid && lastPageRequest !== page) {
       return postService.getPosts(uid, lastPostId, page, limit).then((result) => {
         if (!result.posts || !(result.posts.length > 0)) {
@@ -193,7 +193,7 @@ export const dbGetPostsByUserId = (userId, page = 0, limit = 10) => {
     const lastPageRequest = profile[userId] ? profile[userId].lastPageRequest : -1
     const lastPostId = profile[userId] ? profile[userId].lastPostId : ''
 
-    let uid: string = state.authorize.uid
+    let uid = state.authorize.get('uid')
 
     if (uid && lastPageRequest !== page) {
 
@@ -237,10 +237,10 @@ export const dbGetPostById = (uid, postId) => {
   return (dispatch, getState) => {
     if (uid) {
 
-      return postService.getPostById(postId).then((post: Post) => {
+      return postService.getPostById(postId).then((post) => {
         dispatch(addPost(uid, post))
       })
-        .catch((error: SocialError) => {
+        .catch((error) => {
           dispatch(globalActions.showMessage(error.message))
         })
 

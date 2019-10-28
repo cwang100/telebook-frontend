@@ -38,7 +38,7 @@ export class MasterComponent extends Component {
       loading: true,
       authed: false,
       dataLoaded: false,
-      isVerifide: false
+      isVerified: false
     }
 
     // Binding functions to `this`
@@ -62,7 +62,7 @@ export class MasterComponent extends Component {
 
   componentDidMount () {
 
-    this._authourizeService.onAuthStateChanged((isVerifide, user) => {
+    this._authourizeService.onAuthStateChanged((isVerified, user) => {
       const {
         global,
         clearData,
@@ -75,11 +75,11 @@ export class MasterComponent extends Component {
         hideMasterLoading
       } = this.props
       if (user) {
-        login(user.uid,isVerifide)
+        login(user.uid,isVerified)
         hideMasterLoading()
         this.setState({
           loading: false,
-          isVerifide: true
+          isVerified: true
         })
 
       } else {
@@ -87,7 +87,7 @@ export class MasterComponent extends Component {
         hideMasterLoading()
         this.setState({
           loading: false,
-          isVerifide: false
+          isVerified: false
         })
         if (global.defaultLoadDataStatus) {
           defaultDataDisable()
@@ -108,7 +108,7 @@ export class MasterComponent extends Component {
   render () {
 
     const { progress, global, loaded, guest, uid, hideMessage } = this.props
-    const { loading, isVerifide } = this.state
+    const { loading, isVerified } = this.state
 
     return (
       <div id='master'>
@@ -142,8 +142,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(circleActions.clearAllCircles())
       dispatch(globalActions.clearTemp())
     },
-    login: (userId, isVerifide) => {
-      dispatch(authorizeActions.login(userId, isVerifide))
+    login: (userId, isVerified) => {
+      dispatch(authorizeActions.login(userId, isVerified))
     },
     logout: () => {
       dispatch(authorizeActions.logout())
