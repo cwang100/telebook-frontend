@@ -117,14 +117,14 @@ export class LoginComponent extends Component {
     let error = false
     if (this.state.emailInput === '') {
       this.setState({
-        emailInputError: ('login.emailRequiredError')
+        emailInputError: ('E-mail required')
       })
       error = true
 
     }
     if (this.state.passwordInput === '') {
       this.setState({
-        passwordInputError: ('login.passwordRequiredError')
+        passwordInputError: ('Password required')
       })
       error = true
 

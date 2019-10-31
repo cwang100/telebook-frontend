@@ -131,7 +131,7 @@ export class HomeComponent extends Component {
     super(props)
 
     this.state = {
-      drawerOpen: false
+      drawerOpen: true
     }
   }
 
@@ -209,6 +209,7 @@ export class HomeComponent extends Component {
     //<HomeHeader onToggleDrawer={this.handleDrawerToggle} drawerStatus={this.state.drawerOpen} />
     return (
       <div className={classes.root}>
+        <h3>Welcome!</h3>
         <div className={classes.appFrame}> 
           <Hidden mdUp>
             <Drawer
@@ -303,7 +304,8 @@ const mapStateToProps = (state, ownProps) => {
   const circles = circle ? (circle.get('circleList') || {}) : {}
   const followingUsers = circle ? circle.get('userTies') || {} : {}
   const posts = post.get('userPosts') ? post.get('userPosts')[uid] : {}
-  const hasMorePosts = post.get('stream').hasMoreData
+  const stream = post.get('stream') || {}
+  const hasMorePosts = stream.hasMoreData
   Object.keys(followingUsers).forEach((userId) => {
     let newPosts = post.get('userPosts') ? post.get('userPosts')[uid] : {}
     _.merge(mergedPosts, newPosts)

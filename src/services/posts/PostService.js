@@ -135,7 +135,7 @@ export class PostService {
       let postsRef = db.doc(`posts/${postId}`)
       postsRef.get().then((snapshot) => {
         let newPost = snapshot.data() || {}
-        let post: Post = {
+        let post = {
           id: postId,
           ...newPost
         }

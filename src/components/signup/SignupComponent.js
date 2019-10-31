@@ -106,28 +106,28 @@ export class SignupComponent extends Component {
       || fullNameCheck.indexOf('asd') > -1
       || fullNameCheck.length < 4) {
       this.setState({
-        fullNameInputError: 'signup.validNameError'
+        fullNameInputError: 'Invalid full name'
       })
       error = true
     }
 
     if (passwordInput === '') {
       this.setState({
-        passwordInputError: 'signup.passwordRequiredError'
+        passwordInputError: 'Password required'
       })
       error = true
 
     }
     if (confirmInput === '') {
       this.setState({
-        confirmInputError: 'signup.confirmRequiredError'
+        confirmInputError: 'Please confirm password'
       })
       error = true
 
     } else if (confirmInput !== passwordInput) {
       this.setState({
-        passwordInputError: 'signup.passwordEqualConfirmError',
-        confirmInputError: 'signup.confirmEqualPasswordError'
+        passwordInputError: 'Password does not match confirm password',
+        confirmInputError: 'Confirm password does not match password'
       })
       error = true
 

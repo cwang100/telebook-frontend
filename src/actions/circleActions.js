@@ -89,7 +89,7 @@ export let dbUpdateUserInCircles = (circleIdList, userFollowing) => {
   return (dispatch, getState) => {
     const state = getState()
     let uid = state.authorize.get('uid')
-    let user = { ...state.user.get('info')[uid], userId }
+    let user = { ...state.user.get('info')[uid].userId }
 
     const addToCircleRequest = createAddToCircleRequest(userFollowing.userId)
     dispatch(serverActions.sendRequest(addToCircleRequest))
