@@ -2,13 +2,6 @@ import { firebaseRef, firebaseAuth, db } from '../../fireStoreClient'
 
 import { SocialError } from '../../class/common'
 
-/**
- * Firbase notification service
- *
- * @export
- * @class NotificationService
- * @implements {INotificationService}
- */
 export class NotificationService {
   addNotification(notification) {
     return new Promise((resolve,reject) => {

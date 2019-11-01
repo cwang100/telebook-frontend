@@ -30,7 +30,6 @@ const TabContainer = (props) => {
 }
 
 export class PeopleComponent extends Component {
-
   static propTypes = {
 
   }
@@ -84,7 +83,6 @@ export class PeopleComponent extends Component {
       default:
         break
     }
-
   }
 
 
@@ -109,10 +107,11 @@ export class PeopleComponent extends Component {
     return (
       <div style={styles.people}>
       <AppBar position='static' color='default'>
-      <Tabs indicatorColor={grey[50]}
-      onChange={this.handleChangeTab}
-      value={tabIndex} centered
-      textColor='primary'
+      <Tabs 
+        indicatorColor={grey[50]}
+        onChange={this.handleChangeTab}
+        value={tabIndex} centered
+        textColor='primary'
        >
         <Tab label={'people.findPeopleTab'} />
         <Tab label={'people.followingTab'} />

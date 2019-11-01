@@ -1,17 +1,8 @@
-// - Import react components
 import { firebaseRef, firebaseAuth, db } from '../../fireStoreClient'
 
 import { SocialError } from '../../class/common'
 import { Circle, UserTie } from '../../class/circles'
 import { User } from '../../class/users'
-
-/**
- * Firbase circle service
- *
- * @export
- * @class CircleService
- * @implements {ICircleService}
- */
 
 export class CircleService {
   addCircle(userId, circle) {

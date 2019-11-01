@@ -5,11 +5,6 @@ import { connect } from 'react-redux'
 import EventListener, { withOptions } from 'react-event-listener'
 import keycode from 'keycode'
 
-// - Import app components
-
-// - Import API
-
-// - Import actions
 import * as authorizeActions from '../../actions/authorizeActions'
 import * as globalActions from '../../actions/globalActions'
 
@@ -18,13 +13,7 @@ const color = 'teal'
 const colorKey = 'blue'
 const sizeCondition = (width) => (width >= 750)
 
-// - Create Sidebar component class
 export class SidebarComponent extends Component {
-
-  /**
-   * Component constructor
-   * @param  {ISidebarComponentProps} props is an object properties of component
-   */
   constructor (props) {
     super(props)
 
@@ -87,14 +76,9 @@ export class SidebarComponent extends Component {
         })
       }
 
-      /**
-       * Callback function fired to determine sidebar and overlay sidebar status
-       * @param {boolean} if true, the sidebar is open
-       */
       this.props.status(true)
 
-    } else { // If it's false sidebar should be closed
-      // Sidebar style when it's closed
+    } else {
       const closeStyle = {
         transform: 'translate(-100%, 0px)',
         transition: 'transform 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'
@@ -221,10 +205,6 @@ export class SidebarComponent extends Component {
     this.handleResize()
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render () {
 
     return (
@@ -242,24 +222,12 @@ export class SidebarComponent extends Component {
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     logout: () => dispatch(authorizeActions.dbLogout())
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   return {
   }

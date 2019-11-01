@@ -1,4 +1,3 @@
-// - Import react components
 import firebase, { firebaseRef, firebaseAuth, db } from '../../fireStoreClient'
 import moment from 'moment/moment'
 
@@ -87,9 +86,6 @@ export class UserTieService {
     })
   }
 
-  /**
-   * Get the users who tied current user
-   */
   getUserTieSender(userId) {
     return new Promise((resolve, reject) => {
       this._graphService

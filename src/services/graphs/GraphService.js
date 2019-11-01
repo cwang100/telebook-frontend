@@ -3,18 +3,7 @@ import firebase, { firebaseRef, firebaseAuth, db } from '../../firestoreClient'
 import { SocialError } from '../../class/common'
 import { Graph } from '../../class/graphs'
 
-/**
- * Firbase graph service
- *
- * @export
- * @class GraphService
- * @implements {IGraphService}
- */
 export class GraphService {
-
-  /**
-   * Add graph
-   */
   public addGraph = (graph, collection) => {
       return new Promise<string>((resolve,reject) => {
 
@@ -29,9 +18,6 @@ export class GraphService {
       })
     }
 
-  /**
-   * Update graph
-   */
   public updateGraph = (graph, collection) => {
     return new Promise((resolve,reject) => {
       const graphData = this.getGraphs(collection, graph.leftNode, graph.edgeType, graph.rightNode)
@@ -47,9 +33,6 @@ export class GraphService {
     })
   }
 
-    /**
-     * Get graphs data
-     */
   public getGraphs = (collection, leftNode, edgeType, rightNode) => {
     return new Promise((resolve,reject) => {
 
@@ -60,13 +43,9 @@ export class GraphService {
         })
         resolve(parsedData)
       })
-
     })
   }
 
-  /**
-   * Delete graph by node identifier
-   */
   public deleteGraphByNodeId = (nodeId) => {
     return new Promise(resolve,reject) => {
       db.collection('graphs:users').doc(nodeId).delete()
@@ -78,15 +57,10 @@ export class GraphService {
     })
   }
 
-  /**
-   * Delete graph
-   */
   public deleteGraph = (collection, leftNode, edgeType, rightNode) => {
       return new Promise((resolve,reject) => {
         this.getGraphsQuery(collection, leftNode, edgeType, rightNode)
         .then((snapshot) => {
-
-            // Delete documents in a batch
           let batch = db.batch()
           snapshot.docs.forEach(function (doc) {
             batch.delete(doc.ref)
@@ -101,9 +75,6 @@ export class GraphService {
       })
     }
 
-  /**
-   * Get graphs query
-   */
   private getGraphsQuery = (collection, leftNode, edgeType, rightNode) => {
       return new Promise((resolve,reject) => {
         let graphsRef = db.collection(`graphs:${collection}`) as any
@@ -132,5 +103,4 @@ export class GraphService {
 
       })
     }
-
 }

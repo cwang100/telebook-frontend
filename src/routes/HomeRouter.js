@@ -1,11 +1,9 @@
-// - Import react components
 import PrivateRoute from './PrivateRoute'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
 
-// - Import app components
 // import StreamComponent from 'components/stream'
 import Profile from '../components/profile'
 // import PostPage from 'components/postPage'

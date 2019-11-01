@@ -14,7 +14,6 @@ import { withStyles } from 'material-ui/styles'
 import Typography from 'material-ui/Typography'
 import { Grid } from 'material-ui'
 
-// - Import actions
 import * as authorizeActions from '../../actions/authorizeActions'
 
 const styles = (theme) => ({
@@ -39,36 +38,17 @@ const styles = (theme) => ({
   }
 })
 
-/**
- * Create component class
- *
- * @export
- * @class ResetPasswordComponent
- * @extends {Component}
- */
 export class ResetPasswordComponent extends Component {
-
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
   constructor (props) {
     super(props)
 
     this.state = {
       emailInput: '',
       emailInputError: ''
-
     }
-    // Binding function to `this`
     this.handleForm = this.handleForm.bind(this)
-
   }
 
-  /**
-   * Handle data on input change
-   * @param  {event} evt is an event of inputs of element on change
-   */
   handleInputChange = (event) => {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
@@ -79,9 +59,6 @@ export class ResetPasswordComponent extends Component {
 
   }
 
-  /**
-   * Handle register form
-   */
   handleForm = () => {
     let error = false
     if (this.state.emailInput === '') {
@@ -95,12 +72,7 @@ export class ResetPasswordComponent extends Component {
     this.props.resetPassword(this.state.emailInput)
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render () {
-
     const {classes} = this.props
 
     return (
@@ -152,12 +124,6 @@ export class ResetPasswordComponent extends Component {
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     loginPage: () => {
@@ -167,16 +133,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   return {
   }
 }
 
-// - Connect component to redux store
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ResetPasswordComponent)))

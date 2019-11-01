@@ -76,7 +76,7 @@ export const dbFollowUser = (followingCircleId, userFollowing) => {
             isSeen: false
           }))
 
-      }, (error: SocialError) => {
+      }, (error) => {
         dispatch(globalActions.showMessage(error.message))
 
         followReqestModel.status = ServerRequestStatusType.Error
@@ -228,18 +228,13 @@ export const dbGetUserTies = () => {
   }
 }
 
-/**
- *  Get all followers
- */
 export const dbGetFollowers = () => {
   return (dispatch, getState) => {
-    let uid = getState().authorize.uid
+    let uid = getState().authorize.get('uid')
     if (uid) {
       userTieService.getUserTieSender(uid).then((result) => {
-
         dispatch(userActions.addPeopleInfo(result))
         dispatch(addUserTieds(result))
-
       })
         .catch((error) => {
           dispatch(globalActions.showMessage(error.message))
@@ -248,10 +243,6 @@ export const dbGetFollowers = () => {
   }
 }
 
-/**
- * Get all user circles from data base by user id
- * @param uid user identifier
- */
 export const dbGetCirclesByUserId = (uid) => {
   return (dispatch, getState) => {
 
@@ -267,9 +258,6 @@ export const dbGetCirclesByUserId = (uid) => {
   }
 }
 
-/**
- * Create follow user serevr request model
- */
 const createFollowRequest = (userFollowingId) => {
   const requestId = ServerRequestType.CircleFollowUser + ':' + userFollowingId
   return new ServerRequestModel(
@@ -280,9 +268,6 @@ const createFollowRequest = (userFollowingId) => {
     )
 }
 
-/**
- * Create add referer user to circle serevr request model
- */
 const createAddToCircleRequest = (userFollowingId) => {
   const requestId = ServerRequestType.CircleAddToCircle + ':' + userFollowingId
   return new ServerRequestModel(
@@ -293,9 +278,6 @@ const createAddToCircleRequest = (userFollowingId) => {
     )
 }
 
-/**
- * Create delete referer user serevr request model
- */
 const createdeleteFollowingUserRequest = (userFollowingId) => {
   const requestId = ServerRequestType.CircleDeleteFollowingUser + ':' + userFollowingId
   return new ServerRequestModel(
@@ -306,11 +288,6 @@ const createdeleteFollowingUserRequest = (userFollowingId) => {
     )
 }
 
-/* _____________ CRUD State _____________ */
-
-/**
- * Add a circle
- */
 export const addCircle = (circle) => {
   return {
     type: CircleActionType.ADD_CIRCLE,
@@ -318,9 +295,6 @@ export const addCircle = (circle) => {
   }
 }
 
-/**
- * Update a circle
- */
 export const updateCircle = (circle) => {
   return {
     type: CircleActionType.UPDATE_CIRCLE,
@@ -328,9 +302,6 @@ export const updateCircle = (circle) => {
   }
 }
 
-/**
- * Delete a circle
- */
 export const deleteCircle = (circleId) => {
   return {
     type: CircleActionType.DELETE_CIRCLE,
@@ -338,9 +309,6 @@ export const deleteCircle = (circleId) => {
   }
 }
 
-/**
- * Add a list of circle
- */
 export const addCircles = (circleList) => {
   return {
     type: CircleActionType.ADD_LIST_CIRCLE,
@@ -348,18 +316,12 @@ export const addCircles = (circleList) => {
   }
 }
 
-/**
- * Clea all data in circle store
- */
 export const clearAllCircles = () => {
   return {
     type: CircleActionType.CLEAR_ALL_CIRCLES
   }
 }
 
-/**
- * Open circle settings
- */
 export const openCircleSettings = (circleId) => {
   return {
     type: CircleActionType.OPEN_CIRCLE_SETTINGS,
@@ -368,9 +330,6 @@ export const openCircleSettings = (circleId) => {
 
 }
 
-/**
- * Close open circle settings
- */
 export const closeCircleSettings = (circleId) => {
   return {
     type: CircleActionType.CLOSE_CIRCLE_SETTINGS,
@@ -379,9 +338,6 @@ export const closeCircleSettings = (circleId) => {
 
 }
 
-/**
- * Add following user
- */
 export const addFollowingUser = (userTie) => {
   return {
     type: CircleActionType.ADD_FOLLOWING_USER,
@@ -389,9 +345,6 @@ export const addFollowingUser = (userTie) => {
   }
 }
 
-/**
- * Update the user tie
- */
 export const updateUserTie = (userTie) => {
   return {
     type: CircleActionType.UPDATE_USER_TIE,
@@ -399,9 +352,6 @@ export const updateUserTie = (userTie) => {
   }
 }
 
-/**
- * Add user ties
- */
 export const addUserTies = (userTies) => {
   return {
     type: CircleActionType.ADD_USER_TIE_LIST,
@@ -409,9 +359,6 @@ export const addUserTies = (userTies) => {
   }
 }
 
-/**
- * Add users who send tie request for current user
- */
 export const addUserTieds = (userTieds) => {
   return {
     type: CircleActionType.ADD_USER_TIED_LIST,
@@ -419,9 +366,6 @@ export const addUserTieds = (userTieds) => {
   }
 }
 
-/**
- * Delete the user from a circle
- */
 export const deleteUserFromCircle = (userId, circleId) => {
   return {
     type: CircleActionType.DELETE_USER_FROM_CIRCLE,
@@ -429,9 +373,6 @@ export const deleteUserFromCircle = (userId, circleId) => {
   }
 }
 
-/**
- * Delete following user
- */
 export const deleteFollowingUser = (userId) => {
   return {
     type: CircleActionType.DELETE_FOLLOWING_USER,
@@ -439,9 +380,6 @@ export const deleteFollowingUser = (userId) => {
   }
 }
 
-/**
- * Show the box to select circle
- */
 export const showSelectCircleBox = (userId) => {
   return {
     type: CircleActionType.SHOW_SELECT_CIRCLE_BOX,
@@ -450,20 +388,14 @@ export const showSelectCircleBox = (userId) => {
 
 }
 
-/**
- * Hide the box to select circle
- */
 export const hideSelectCircleBox = (userId) => {
   return {
     type: CircleActionType.HIDE_SELECT_CIRCLE_BOX,
     payload: { userId }
   }
-
 }
 
-/**
- * Show loading on following user
- */
+
 export const showFollowingUserLoading = (userId) => {
   return {
     type: CircleActionType.SHOW_FOLLOWING_USER_LOADING,
@@ -504,9 +436,6 @@ export const openSelectCircleBox = (userId) => {
 
 }
 
-/**
- * Close select circle box
- */
 export const closeSelectCircleBox = (userId) => {
   return {
     type: CircleActionType.CLOSE_SELECT_CIRCLES_USER_BOX_COMPONENT,
@@ -523,5 +452,4 @@ export const hideFollowingUserLoading = (userId) => {
     type: CircleActionType.HIDE_FOLLOWING_USER_LOADING,
     payload: { userId }
   }
-
 }

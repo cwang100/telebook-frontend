@@ -126,7 +126,6 @@ const styles = (theme) => ({
 })
 
 export class HomeComponent extends Component {
-
   constructor(props) {
     super(props)
 
@@ -168,7 +167,7 @@ export class HomeComponent extends Component {
           <ListItemIcon>
             <SvgHome />
           </ListItemIcon>
-          <ListItemText inset primary={'sidebar.home'} />
+          <ListItemText inset primary={'Home'} />
         </MenuItem>
       </NavLink>
       <NavLink to={`/${this.props.uid}`}>
@@ -176,7 +175,7 @@ export class HomeComponent extends Component {
           <ListItemIcon>
             <SvgAccountCircle />
           </ListItemIcon>
-          <ListItemText inset primary={'sidebar.profile'} />
+          <ListItemText inset primary={'Profile'} />
         </MenuItem>
       </NavLink>
       <NavLink to='/people'>
@@ -184,7 +183,7 @@ export class HomeComponent extends Component {
           <ListItemIcon>
             <SvgPeople />
           </ListItemIcon>
-          <ListItemText inset primary={'sidebar.people'} />
+          <ListItemText inset primary={'People'} />
         </MenuItem>
       </NavLink>
       <Divider />
@@ -193,15 +192,9 @@ export class HomeComponent extends Component {
           <ListItemIcon>
             <SvgSettings />
           </ListItemIcon>
-          <ListItemText inset primary={'sidebar.settings'} />
+          <ListItemText inset primary={'Settings'} />
         </MenuItem>
       </NavLink>
-      <MenuItem onClick={() => showSendFeedback()} style={{ color: 'rgb(117, 117, 117)' }}>
-        <ListItemIcon>
-          <SvgFeedback />
-        </ListItemIcon>
-        <ListItemText inset primary={'sidebar.sendFeedback'} />
-      </MenuItem>
       </>
     )
 
@@ -220,7 +213,7 @@ export class HomeComponent extends Component {
               }}
               onClose={this.handleDrawerToggle}
               ModalProps={{
-                keepMounted: true, // Better open performance on mobile.
+                keepMounted: true,
               }}
             >
               <div>
@@ -257,7 +250,6 @@ export class HomeComponent extends Component {
           </main>
         </div>
       </div>
-
     )
   }
 }

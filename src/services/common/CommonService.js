@@ -1,21 +1,8 @@
-// - Import react components
 import { firebaseRef, firebaseAuth, db } from '../../fireStoreClient'
 
 import { SocialError, Feed } from '../../class/common'
 
-/**
- * Firbase common service
- *
- * @export
- * @class CommonService
- * @implements {ICommonService}
- */
-
 export class CommonService {
-
-  /**
-   * Post feedback
-   */
   addFeed(feed) {
     return new Promise((resolve, reject) => {
       let feedRef = db.collection(`feeds`).doc()
