@@ -1,4 +1,3 @@
-// - Import react components
 import firebase, { firebaseRef, firebaseAuth, db } from '../../fireStoreClient'
 import moment from 'moment/moment'
 

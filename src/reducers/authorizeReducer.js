@@ -21,14 +21,14 @@ export let authorizeReducer = (state = Map(), action) => {
         .set('uid', payload.uid)
         .set('authed', true)
         .set('guest', false)
-        .set('isVerifide', payload.isVerifide)
+        .set('isVerified', payload.isVerified)
 
     case AuthorizeActionType.LOGOUT:
       return state
         .set('uid', 0)
         .set('authed', false)
         .set('guest', true)
-        .set('isVerifide', false)
+        .set('isVerified', false)
     case AuthorizeActionType.SIGNUP:
       return state
       .set('uid', payload.userId)

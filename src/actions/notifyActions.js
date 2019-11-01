@@ -8,13 +8,10 @@ import { NotificationActionType } from '../constants/notificationActionType'
 import * as globalActions from './globalActions'
 import * as userActions from './userActions'
 
-import { NotificationService as notificationService } from '../services'
-/* _____________ CRUD DB _____________ */
+import { NotificationService } from '../services'
 
-/**
- *  Add notificaition to database
- * @param  {object} newNotify user notificaition
- */
+let notificationService = new NotificationService()
+
 export const dbAddNotification = (newNotify) => {
   return (dispatch, getState) => {
 
@@ -40,12 +37,12 @@ export const dbAddNotification = (newNotify) => {
  */
 export const dbGetNotifications = () => {
   return (dispatch , getState) => {
-    let uid = getState().authorize.uid
+    let uid = getState().authorize.get('uid')
     if (uid) {
       return notificationService.getNotifications(uid,
         (notifications) => {
           Object.keys(notifications).forEach((key => {
-            if (!getState().user.info[notifications[key].notifierUserId]) {
+            if (!getState().user.get('info')[notifications[key].notifierUserId]) {
               dispatch(userActions.dbGetUserInfoByUserId(notifications[key].notifierUserId,''))
             }
           }))
@@ -63,7 +60,7 @@ export const dbDeleteNotification = (id) => {
   return (dispatch, getState) => {
 
     // Get current user id
-    let uid: string = getState().authorize.uid
+    let uid: string = getState().authorize.get('uid')
 
     return notificationService.deleteNotification(id,uid).then(() => {
       dispatch(deleteNotify(id))
@@ -81,13 +78,13 @@ export const dbSeenNotification = (id) => {
   return (dispatch, getState) => {
 
     // Get current user id
-    let uid: string = getState().authorize.uid
-    let notify: Notification = getState().notify.userNotifies[id]
+    let uid = getState().authorize.get('uid')
+    let notify = getState().notify.get('userNotifies')[id]
 
     let updatedNotification: Notification = {
-      description: notify.description,
+      description: notify.get('description'),
       url: notify.url,
-      notifierUserId: notify.notifierUserId,
+      notifierUserId: notify.get('notifierUserId'),
       notifyRecieverUserId: uid,
       isSeen: true
     }

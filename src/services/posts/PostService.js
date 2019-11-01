@@ -1,4 +1,3 @@
-// - Import react components
 import { firebaseRef, firebaseAuth, db } from '../../fireStoreClient'
 
 import { SocialError } from '../../class/common'
@@ -52,11 +51,9 @@ export class PostService {
       return new Promise((resolve, reject) => {
         let postList = []
 
-        // Get user ties
         db.collection('graphs:users').where('leftNode', '==', currentUserId)
           .get().then((tieUsers) => {
             if (!(tieUsers.size > 0)) {
-                // Get current user posts
               this.getPostsByUserId(currentUserId,lastPostId, page, limit).then((result) => {
                 resolve(result)
               })
@@ -67,8 +64,6 @@ export class PostService {
             tieUsers.forEach((item) => {
               const userId = item.data().rightNode
               if (!userIdList.includes(userId)) {
-
-              // Get user tie posts
                 this.getPostsByUserId(userId).then((posts) => {
                   userCounter++
                   postList = [
@@ -76,7 +71,6 @@ export class PostService {
                     ...posts.posts
                   ]
                   if (userCounter === tieUsers.size) {
-                  // Get current user posts
                     this.getPostsByUserId(currentUserId).then((result) => {
                       postList = [
                         ...postList,
@@ -135,7 +129,7 @@ export class PostService {
       let postsRef = db.doc(`posts/${postId}`)
       postsRef.get().then((snapshot) => {
         let newPost = snapshot.data() || {}
-        let post: Post = {
+        let post = {
           id: postId,
           ...newPost
         }
@@ -151,8 +145,6 @@ export class PostService {
     let sortedObjects = postList.sort((a, b) => {
       const aKey = Object.keys(a)[0]
       const bKey = Object.keys(b)[0]
-      // a = current item in array
-      // b = next item in array
       return b[bKey].creationDate - a[aKey].creationDate
     })
     if (lastPostId && lastPostId !== '') {

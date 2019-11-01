@@ -1,16 +1,11 @@
-// - Import react components
-import { UserService as userService } from '../services'
 
-// - Import actions
+import { UserService } from '../services'
+
 import * as globalActions from './globalActions'
-// - Import action types
+
 import { UserActionType } from '../constants/userActionType'
 
-/* _____________ CRUD DB _____________ */
-
-/**
- * Get user info from database
- */
+let userService = new UserService()
 export const dbGetUserInfo = () => {
   return (dispatch, getState) => {
     let uid: string = getState().authorize.uid

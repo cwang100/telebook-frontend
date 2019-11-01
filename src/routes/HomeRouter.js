@@ -1,35 +1,28 @@
-// - Import react components
 import PrivateRoute from './PrivateRoute'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
 
-// - Import app components
 // import StreamComponent from 'components/stream'
-// import Profile from 'components/profile'
+import Profile from '../components/profile'
 // import PostPage from 'components/postPage'
-// import People from 'components/people'
+import People from '../components/people'
 
-// import { IRouterProps } from './IRouterProps'
-
-/**
- * Home Router
- */
 export class HomeRouter extends Component {
   render () {
     const { enabled, match, data } = this.props
-    const St = StreamComponent
+    // const St = StreamComponent
     return (
           enabled ? (
           <Switch>
-            // <PrivateRoute path='/people/:tab?' component={<People />} />
+            <PrivateRoute path='/people/:tab?' component={<People />} />
 
-            // <PrivateRoute path='/tag/:tag' component={(
+            <PrivateRoute path='/tag/:tag' component={(
             // <div><St displayWriting={false} homeTitle={`#${match.params.tag}`} posts={data.mergedPosts} /></div>
             // )} />
             // <Route path='/:userId/posts/:postId/:tag?' component={PostPage} />
-            // <Route path='/:userId' component={Profile} />
+            <Route path='/:userId' component={Profile} />
             // <PrivateRoute path='/' component={(
             // <div>
             // <St
@@ -39,8 +32,8 @@ export class HomeRouter extends Component {
             // hasMorePosts={data.hasMorePosts}
             // displayWriting={true} />
             // </div>
-            // )} />
-          </Switch>
+            )} />
+            </Switch>
           )
           : ''
 
@@ -48,16 +41,12 @@ export class HomeRouter extends Component {
   }
 }
 
-// - Map dispatch to props
 const mapDispatchToProps = (dispatch, ownProps) => {
 
   return {}
 
 }
 
-/**
- * Map state to props
- */
 const mapStateToProps = (state, ownProps) => {
   return {}
 }

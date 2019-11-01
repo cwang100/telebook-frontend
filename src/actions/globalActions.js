@@ -7,15 +7,17 @@ import { Feed, SocialError } from '../class/common'
 import { ServerRequestModel } from '../class/server'
 import { ServerRequestStatusType } from './serverRequestStatusType'
 
-import { CommonService as commonService } from '../services'
+import { CommonService } from '../services'
 
 /**
  * Add a normal feed
  */
+let commonService = new CommonService()
+
 export let dbSendFeed = (newFeed) => {
   return (dispatch, getState) => {
 
-    let uid = getState().authorize.uid
+    let uid = getState().authorize.get('uid')
 
     // Set server request status to {Sent}
     const feedbackRequest = createFeedbackRequest(uid)
@@ -40,7 +42,7 @@ export let dbSendFeed = (newFeed) => {
 export const showNotificationRequest = () => {
   return (dispatch, getState) => {
     const state = getState()
-    return dispatch(showMessage('common.sentRequestMessage'))
+    return dispatch(showMessage('Sent Request'))
   }
 }
 
@@ -48,7 +50,7 @@ export const showNotificationRequest = () => {
 export const showNotificationSuccess = () => {
   return (dispatch, getState) => {
     const state = getState()
-    return dispatch(showMessage('common.successfulRequestMessage'))
+    return dispatch(showMessage('Successful!'))
   }
 }
 

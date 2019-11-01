@@ -1,21 +1,12 @@
 // - Import react components
 import _ from 'lodash'
 
-// - Import action types
 import { ServerActionType } from '../constants/serverActionType'
 import { Map } from 'immutable'
-// Import domain
 
-// import { ServerState } from './ServerState'
-// import { IServerAction } from './IServerAction'
-// import { ServerRequestModel } from 'src/models/server/serverRequestModel'
 import { ServerRequestStatusType } from '../actions/serverRequestStatusType'
 
-/**
- * Server actions
- * @param {object} state
- * @param {object} action
- */
+
 export let serverReducer = (state = Map(), action) => {
   let { payload } = action
   const request = (payload ? payload.request : {})
