@@ -27,7 +27,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 
 import Sidebar from '../sidebar'
 //import StreamComponent from '../stream'
-//import HomeHeader from '../homeHeader'
+import HomeHeader from '../homeHeader'
 import SidebarContent from '../sidebarContent'
 import SidebarMain from '../sidebarMain'
 import Profile from '../profile'
@@ -199,11 +199,12 @@ export class HomeComponent extends Component {
     )
 
     const anchor = theme.direction === 'rtl' ? 'right' : 'left'
-    //<HomeHeader onToggleDrawer={this.handleDrawerToggle} drawerStatus={this.state.drawerOpen} />
+
     return (
       <div className={classes.root}>
         <h3>Welcome!</h3>
         <div className={classes.appFrame}> 
+        <HomeHeader onToggleDrawer={this.handleDrawerToggle} drawerStatus={this.state.drawerOpen} />
           <Hidden mdUp>
             <Drawer
               variant='temporary'
