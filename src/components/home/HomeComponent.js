@@ -26,12 +26,10 @@ import Hidden from 'material-ui/Hidden'
 import MenuIcon from '@material-ui/icons/Menu'
 
 import Sidebar from '../sidebar'
-//import StreamComponent from '../stream'
 import HomeHeader from '../homeHeader'
 import SidebarContent from '../sidebarContent'
 import SidebarMain from '../sidebarMain'
 import Profile from '../profile'
-//import PostPage from '../postPage'
 import People from '../people'
 
 import * as authorizeActions from '../../actions/authorizeActions'

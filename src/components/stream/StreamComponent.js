@@ -9,26 +9,19 @@ import SvgCamera from 'material-ui-icons/PhotoCamera'
 import Paper from 'material-ui/Paper'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import InfiniteScroll from 'react-infinite-scroller'
-import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
 // - Import app components
-import PostComponent from 'components/post'
-import PostWriteComponent from 'components/postWrite'
-import UserAvatarComponent from 'components/userAvatar'
+import PostComponent from '../post'
+import PostWriteComponent from '../postWrite'
+import UserAvatarComponent from '../userAvatar'
 import LoadMoreProgressComponent from 'layouts/loadMoreProgress'
 
-// - Import API
-import * as PostAPI from 'api/PostAPI'
 
 // - Import actions
-import * as globalActions from 'actions/globalActions'
-
-import { IStreamComponentProps } from './IStreamComponentProps'
-import { IStreamComponentState } from './IStreamComponentState'
-import { Post } from 'core/domain/posts'
+import * as globalActions from '../../actions/globalActions'
 
 // - Create StreamComponent component class
-export class StreamComponent extends Component<IStreamComponentProps, IStreamComponentState> {
+export class StreamComponent extends Component {
 
   static propTypes = {
     /**
@@ -61,7 +54,7 @@ export class StreamComponent extends Component<IStreamComponentProps, IStreamCom
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor(props: IStreamComponentProps) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -72,11 +65,11 @@ export class StreamComponent extends Component<IStreamComponentProps, IStreamCom
       /**
        * If it's true comment will be disabled on post
        */
-      disableComments: this.props.disableComments!,
+      disableComments: this.props.disableComments,
       /**
        * If it's true share will be disabled on post
        */
-      disableSharing: this.props.disableSharing!,
+      disableSharing: this.props.disableSharing,
       /**
        * If it's true, post write will be open
        */
@@ -84,7 +77,7 @@ export class StreamComponent extends Component<IStreamComponentProps, IStreamCom
       /**
        * The title of home header
        */
-      homeTitle: props.homeTitle!,
+      homeTitle: props.homeTitle,
 
       /**
        * If there is more post to show {true} or not {false}
@@ -146,7 +139,7 @@ export class StreamComponent extends Component<IStreamComponentProps, IStreamCom
       Object.keys(posts).forEach((postId) => {
         if (tag) {
           let regex = new RegExp('#' + tag, 'g')
-          let postMatch = posts[postId].body!.match(regex)
+          let postMatch = posts[postId].body.match(regex)
           if (postMatch !== null) {
             parsedPosts.push({ ...posts[postId] })
           }
@@ -162,7 +155,7 @@ export class StreamComponent extends Component<IStreamComponentProps, IStreamCom
       } else {
         postBack.divided = false
       }
-      sortedPosts.forEach((post: Post, index: any) => {
+      sortedPosts.forEach((post, index) => {
 
         let newPost: any = (
           <div key={`${post.id!}-stream-div`}>
@@ -174,9 +167,9 @@ export class StreamComponent extends Component<IStreamComponentProps, IStreamCom
         )
 
         if ((index % 2) === 1 && postBack.divided) {
-          postBack.oddPostList.push(newPost as never)
+          postBack.oddPostList.push(newPost)
         } else {
-          postBack.evenPostList.push(newPost as never)
+          postBack.evenPostList.push(newPost)
         }
       })
       return postBack
@@ -184,10 +177,7 @@ export class StreamComponent extends Component<IStreamComponentProps, IStreamCom
 
   }
 
-  /**
-   * Scroll loader
-   */
-  scrollLoad = (page: number) => {
+  scrollLoad = (page) => {
     const { loadStream } = this.props
     loadStream!(page, 10)
   }
@@ -203,8 +193,8 @@ export class StreamComponent extends Component<IStreamComponentProps, IStreamCom
    */
   render() {
 
-    const { tag, displayWriting, hasMorePosts, translate } = this.props
-    const postList = this.postLoad() as { evenPostList: Post[], oddPostList: Post[], divided: boolean } | any
+    const { tag, displayWriting, hasMorePosts } = this.props
+    const postList = this.postLoad()
 
     return (
       <InfiniteScroll
@@ -221,7 +211,7 @@ export class StreamComponent extends Component<IStreamComponentProps, IStreamCom
                 <Paper elevation={2}>
 
                   <ListItem button
-                    style={this.styles.postWtireItem as any}
+                    style={this.styles.postWtireItem}
                     onClick={this.handleOpenPostWrite}
                   >
                     <UserAvatarComponent fullName={this.props.fullName!} fileName={this.props.avatar!} size={36} />
@@ -261,7 +251,7 @@ export class StreamComponent extends Component<IStreamComponentProps, IStreamCom
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: any, ownProps: IStreamComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     setHomeTitle: () => dispatch(globalActions.setHeaderTitle(ownProps.homeTitle || '')),
     showTopLoading: () => dispatch(globalActions.showTopLoading()),
@@ -276,14 +266,13 @@ const mapDispatchToProps = (dispatch: any, ownProps: IStreamComponentProps) => {
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: IStreamComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   const { post } = state
   return {
-    translate: getTranslate(state.locale),
-    avatar: state.user.info && state.user.info[state.authorize.uid] ? state.user.info[state.authorize.uid].avatar : '',
-    fullName: state.user.info && state.user.info[state.authorize.uid] ? state.user.info[state.authorize.uid].fullName : ''
+    avatar: state.user.get('info') && state.user.get('info')[state.authorize.get('uid')] ? state.user.get('info')[state.authorize.get('uid')].avatar : '',
+    fullName: state.user.get('info') && state.user.get('info')[state.authorize.get('uid')] ? state.user.get('info')[state.authorize.get('uid')].fullName : ''
   }
 }
 
 // - Connect component to redux store
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StreamComponent as any) as any)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StreamComponent))

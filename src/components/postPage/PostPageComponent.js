@@ -12,13 +12,10 @@ import Stream from 'components/stream'
 import * as postActions from 'actions/postActions'
 import * as userActions from 'actions/userActions'
 
-import { IPostPageComponentProps } from './IPostPageComponentProps'
-import { IPostPageComponentState } from './IPostPageComponentState'
-
 /**
  * Create component class
  */
-export class PostPageComponent extends Component<IPostPageComponentProps,IPostPageComponentState> {
+export class PostPageComponent extends Component {
 
   static propTypes = {
 
@@ -28,7 +25,7 @@ export class PostPageComponent extends Component<IPostPageComponentProps,IPostPa
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: IPostPageComponentProps) {
+  constructor (props) {
     super(props)
 
     // Defaul state
@@ -49,7 +46,7 @@ export class PostPageComponent extends Component<IPostPageComponentProps,IPostPa
    * @return {react element} return the DOM which rendered by component
    */
   render () {
-    const St = Stream as any
+    const St = Stream
     return (
           <St posts={this.props.posts} displayWriting={false} />
     )

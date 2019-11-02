@@ -9,15 +9,12 @@ import Avatar from 'material-ui/Avatar'
 // - Import API
 
 // - Import actions
-import * as imageGalleryActions from 'actions/imageGalleryActions'
-
-import { IUserAvatarComponentProps } from './IUserAvatarComponentProps'
-import { IUserAvatarComponentState } from './IUserAvatarComponentState'
+import * as imageGalleryActions from '../../actions/imageGalleryActions'
 
 /**
  * Create component class
  */
-export class UserAvatarComponent extends Component<IUserAvatarComponentProps,IUserAvatarComponentState> {
+export class UserAvatarComponent extends Component {
 
   static propTypes = {
 
@@ -48,7 +45,7 @@ export class UserAvatarComponent extends Component<IUserAvatarComponentProps,IUs
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: IUserAvatarComponentProps) {
+  constructor (props) {
     super(props)
 
     // Defaul state
@@ -82,7 +79,7 @@ export class UserAvatarComponent extends Component<IUserAvatarComponentProps,IUs
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: Function, ownProps: IUserAvatarComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
   }
 }
@@ -93,13 +90,13 @@ const mapDispatchToProps = (dispatch: Function, ownProps: IUserAvatarComponentPr
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: IUserAvatarComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    avatarURL: state.imageGallery.imageURLList,
-    imageRequests: state.imageGallery.imageRequests
+    avatarURL: state.imageGallery.get('imageURLList'),
+    imageRequests: state.imageGallery.get('imageRequests')
 
   }
 }
 
 // - Connect component to redux store
-export default connect(mapStateToProps, mapDispatchToProps)(UserAvatarComponent as any)
+export default connect(mapStateToProps, mapDispatchToProps)(UserAvatarComponent)
