@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 
-import SvgDehaze from 'material-ui-icons/Dehaze'
+import SvgDehaze from '@material-ui/icons/Dehaze'
 import { grey, blue } from 'material-ui/colors'
 import Toolbar from 'material-ui/Toolbar'
 import IconButton from 'material-ui/IconButton'
@@ -13,15 +13,13 @@ import AppBar from 'material-ui/AppBar'
 import Menu, { MenuList, MenuItem } from 'material-ui/Menu'
 import Paper from 'material-ui/Paper'
 import Hidden from 'material-ui/Hidden'
-import NotificationsIcon from 'material-ui-icons/Notifications'
+import NotificationsIcon from '@material-ui/icons/Notifications'
 import Tooltip from 'material-ui/Tooltip'
 import Typography from 'material-ui/Typography'
 import { Manager, Target, Popper } from 'react-popper'
 import { withStyles } from 'material-ui/styles'
 import config from '../../config'
 
-// - Import components
-import UserAvatarComponent from '../userAvatar'
 // import Notify from '../notify'
 
 // - Import actions
@@ -173,13 +171,13 @@ export class HomeHeaderComponent extends Component {
               {/* <Notify open={this.state.openNotifyMenu} anchorEl={this.state.anchorEl} onRequestClose={this.handleCloseNotify} /> */}
             </Manager>
 
-            <UserAvatarComponent
+{/*            <UserAvatarComponent
               onClick={this.handleAvatarTouchTap}
               fullName={this.props.fullName}
               fileName={this.props.avatar}
               size={32}
               style={this.styles.avatarStyle}
-            />
+            />*/}
 
             <Menu
               open={this.state.openAvatarMenu}

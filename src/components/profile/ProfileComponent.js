@@ -7,8 +7,8 @@ import Button from 'material-ui/Button'
 import RaisedButton from 'material-ui/Button'
 
 // - Import app components
-//import ProfileHeader from '../components/profileHeader'
-//import StreamComponent from '../components/stream'
+import ProfileHeader from '../profileHeader'
+import StreamComponent from '../stream'
 
 // - Import API
 
@@ -67,16 +67,16 @@ export class ProfileComponent extends Component {
       }
     }
     const {loadPosts, hasMorePosts, translate} = this.props
-    //const St = StreamComponent
-    //<ProfileHeader tagLine={this.props.tagLine} avatar={this.props.avatar} isAuthedUser={this.props.isAuthedUser} banner={this.props.banner} fullName={this.props.name} followerCount={0} userId={this.props.userId}/>
-    //          <St
-          // posts={this.props.posts}
-          // loadStream={loadPosts}
-          // hasMorePosts={hasMorePosts}
-          // displayWriting={false} />
+    const St = StreamComponent
     return (
       <div style={styles.profile}>
         <div style={styles.header}>
+            <ProfileHeader tagLine={this.props.tagLine} avatar={this.props.avatar} isAuthedUser={this.props.isAuthedUser} banner={this.props.banner} fullName={this.props.name} followerCount={0} userId={this.props.userId}/>
+        <St
+          posts={this.props.posts}
+          loadStream={loadPosts}
+          hasMorePosts={hasMorePosts}
+          displayWriting={false} />
         </div>
         {this.props.posts && Object.keys(this.props.posts).length !== 0
         ? (<div style={styles.content}>
@@ -118,15 +118,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
  */
 const mapStateToProps = (state, ownProps) => {
   const { userId } = ownProps.match.params
-  const {uid} = state.authorize
-  const hasMorePosts = state.post.profile.hasMoreData
-  const posts = state.post.userPosts ? state.post.userPosts[userId] : {}
+  const uid = state.authorize.get('uid')
+  const profile = state.post.get('profile') || {}
+  const hasMorePosts = profile.hasMoreData
+  const posts = state.post.get('userPosts') ? state.post.get('userPosts')[userId] : {}
   return {
     // translate: getTranslate(state.locale),
-    avatar: state.user.info && state.user.info[userId] ? state.user.info[userId].avatar || '' : '',
-    name: state.user.info && state.user.info[userId] ? state.user.info[userId].fullName || '' : '',
-    banner: state.user.info && state.user.info[userId] ? state.user.info[userId].banner || '' : '',
-    tagLine: state.user.info && state.user.info[userId] ? state.user.info[userId].tagLine || '' : '',
+    avatar: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].avatar || '' : '',
+    name: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].fullName || '' : '',
+    banner: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].banner || '' : '',
+    tagLine: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].tagLine || '' : '',
     isAuthedUser: userId === uid,
     userId,
     posts,

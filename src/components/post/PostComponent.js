@@ -2,20 +2,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 import PropTypes from 'prop-types'
 import moment from 'moment/moment'
-import Linkify from 'react-linkify'
-import copy from 'copy-to-clipboard'
-import { getTranslate, getActiveLanguage } from 'react-localize-redux'
-
 // - Material UI
 import { Card, CardActions, CardHeader, CardMedia, CardContent } from 'material-ui'
 import Typography from 'material-ui/Typography'
-import SvgShare from 'material-ui-icons/Share'
-import SvgComment from 'material-ui-icons/Comment'
-import SvgFavorite from 'material-ui-icons/Favorite'
-import SvgFavoriteBorder from 'material-ui-icons/FavoriteBorder'
+import SvgShare from '@material-ui/icons/Share'
+import SvgComment from '@material-ui/icons/Comment'
+import SvgFavorite from '@material-ui/icons/Favorite'
+import SvgFavoriteBorder from '@material-ui/icons/FavoriteBorder'
 import Checkbox from 'material-ui/Checkbox'
 import Button from 'material-ui/Button'
 import Divider from 'material-ui/Divider'
@@ -26,7 +22,7 @@ import { MenuList, MenuItem } from 'material-ui/Menu'
 import TextField from 'material-ui/TextField'
 import Dialog from 'material-ui/Dialog'
 import IconButton from 'material-ui/IconButton'
-import MoreVertIcon from 'material-ui-icons/MoreVert'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { ListItemIcon, ListItemText } from 'material-ui/List'
 import { withStyles } from 'material-ui/styles'
 import { Manager, Target, Popper } from 'react-popper'
@@ -34,23 +30,10 @@ import Grow from 'material-ui/transitions/Grow'
 import ClickAwayListener from 'material-ui/utils/ClickAwayListener'
 import classNames from 'classnames'
 
-import reactStringReplace from 'react-string-replace'
+import PostWrite from '../postWrite'
 
-// - Import app components
-import CommentGroup from 'components/commentGroup'
-import ShareDialog from 'components/shareDialog'
-import PostWrite from 'components/postWrite'
-import Img from 'components/img'
-import IconButtonElement from 'layouts/IconButtonElement'
-import UserAvatar from 'components/userAvatar'
-
-// - Import actions
-import * as voteActions from 'actions/voteActions'
-import * as postActions from 'actions/postActions'
-import * as commentActions from 'actions/commentActions'
-import * as globalActions from 'actions/globalActions'
-import { IPostComponentProps } from './IPostComponentProps'
-import { IPostComponentState } from './IPostComponentState'
+import * as postActions from '../../actions/postActions'
+import * as globalActions from '../../actions/globalActions'
 
 const styles = (theme) => ({
   iconButton: {
@@ -259,62 +242,9 @@ export class PostComponent extends Component {
    * @memberof Post
    */
   handleCopyLink = () => {
-    const {translate} = this.props
     this.setState({
       openCopyLink: true,
       shareTitle: ('post.copyLinkButton')
-    })
-  }
-
-  /**
-   * Open share post
-   *
-   *
-   * @memberof Post
-   */
-  handleOpenShare = () => {
-    const {post} = this.props
-    copy(`${location.origin}/${post.ownerUserId}/posts/${post.id}`)
-    this.setState({
-      shareOpen: true
-    })
-  }
-
-  /**
-   * Close share post
-   *
-   *
-   * @memberof Post
-   */
-  handleCloseShare = () => {
-    this.setState({
-      shareOpen: false,
-      shareTitle: 'Share On',
-      openCopyLink: false
-    })
-  }
-
-  /**
-   * Handle vote on a post
-   *
-   *
-   * @memberof Post
-   */
-  handleVote = () => {
-    if (this.props.currentUserVote) {
-      this.props.unvote()
-    } else {
-      this.props.vote()
-    }
-  }
-
-  /**
-   * Set open comment group function on state which passed by CommentGroup component
-   * @param  {function} open the function to open comment list
-   */
-  getOpenCommentGroup = (open) => {
-    this.setState({
-      openCommentGroup: open
     })
   }
 
@@ -334,7 +264,7 @@ export class PostComponent extends Component {
    * @return {react element} return the DOM which rendered by component
    */
   render () {
-    const { post, setHomeTitle, goTo, fullName, isPostOwner, commentList, avatar, classes , translate} = this.props
+    const { post, setHomeTitle, goTo, fullName, isPostOwner, commentList, avatar, classes } = this.props
     const { postMenuAnchorEl, isPostMenuOpen } = this.state
     const rightIconMenu = (
       <Manager>
@@ -382,78 +312,9 @@ export class PostComponent extends Component {
         <CardHeader
           title={<NavLink to={`/${ownerUserId}`}>{ownerDisplayName}</NavLink>}
           subheader={moment.unix(creationDate).fromNow() + ' | ' + ('post.public')}
-          avatar={<NavLink to={`/${ownerUserId}`}><UserAvatar fullName={fullName} fileName={avatar} size={36} /></NavLink>}
           action={isPostOwner ? rightIconMenu : ''}
         >
         </CardHeader>
-        {image ? (
-          <CardMedia image={image}>
-            <Img fileName={image} />
-          </CardMedia>) : ''}
-
-        <CardContent className={classes.postBody}>
-          <Linkify properties={{ target: '_blank', style: { color: 'blue' } }}>
-            {reactStringReplace(body, /#(\w+)/g, (match, i) => (
-              <NavLink
-                style={{ color: 'green' }}
-                key={match + i}
-                to={`/tag/${match}`}
-                onClick={evt => {
-                  evt.preventDefault()
-                  goTo(`/tag/${match}`)
-                  setHomeTitle(`#${match}`)
-                }}
-              >
-                #{match}
-
-              </NavLink>
-
-            ))}
-          </Linkify>
-        </CardContent>
-        <CardActions>
-          <div className={classes.vote}>
-            <IconButton
-              className={classes.iconButton}
-              onClick={this.handleVote}
-              aria-label='Love'>
-              <Checkbox
-                className={classes.iconButton}
-                checkedIcon={<SvgFavorite style={{ fill: '#4CAF50' }} />}
-                icon={<SvgFavoriteBorder style={{ fill: '#757575' }} />}
-                checked={this.props.currentUserVote}
-              />
-              <div className={classes.voteCounter}> {this.props.voteCount > 0 ? this.props.voteCount : ''} </div>
-            </IconButton>
-          </div>
-          {!post.disableComments ?
-            (<div style={{ display: 'inherit' }}><IconButton
-              className={classes.iconButton}
-              onClick={this.handleOpenComments}
-              aria-label='Comment'>
-              <SvgComment />
-              <div className={classes.commentCounter}>{post.commentCounter > 0 ? post.commentCounter : ''} </div>
-            </IconButton>
-            </div>) : ''}
-          {!post.disableSharing ? (<IconButton
-            className={classes.iconButton}
-            onClick={this.handleOpenShare}
-            aria-label='Comment'>
-            <SvgShare />
-          </IconButton>) : ''}
-
-        </CardActions>
-
-        <CommentGroup open={this.state.openComments} comments={commentList} ownerPostUserId={post.ownerUserId} onToggleRequest={this.handleOpenComments} isPostOwner={this.props.isPostOwner} disableComments={post.disableComments} postId={post.id} />
-
-        <ShareDialog 
-        onClose={this.handleCloseShare} 
-        shareOpen={this.state.shareOpen} 
-        onCopyLink={this.handleCopyLink} 
-        openCopyLink={this.state.openCopyLink}
-        post={post} 
-
-        />
        
         <PostWrite
           open={this.state.openPostWrite}
@@ -477,21 +338,9 @@ export class PostComponent extends Component {
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { post } = ownProps
   return {
-    vote: () => dispatch(voteActions.dbAddVote(post.id, post.ownerUserId)),
-    unvote: () => dispatch(voteActions.dbDeleteVote(post.id, post.ownerUserId)),
     delete: (id) => dispatch(postActions.dbDeletePost(id)),
-    toggleDisableComments: (status) => {
-      post.disableComments = status
-      dispatch(postActions.dbUpdatePost(post, (x) => x))
-    },
-    toggleSharingComments: (status) => {
-      post.disableSharing = status
-      dispatch(postActions.dbUpdatePost(post, (x) => x))
-    },
     goTo: (url) => dispatch(push(url)),
-    setHomeTitle: (title) => dispatch(globalActions.setHeaderTitle(title || '')),
-    getPostComments: (ownerUserId, postId) => dispatch(commentActions.dbGetComments(ownerUserId, postId))
-
+    setHomeTitle: (title) => dispatch(globalActions.setHeaderTitle(title || ''))
   }
 }
 
@@ -509,7 +358,6 @@ const mapStateToProps = (state, ownProps) => {
   const postOwner = (post.userPosts[uid] ? Object.keys(post.userPosts[uid]).filter((key) => { return ownProps.post.id === key }).length : 0)
   const commentList = comment.postComments[ownProps.post.id]
   return {
-    translate: getTranslate(state.locale),
     commentList,
     avatar: state.user.info && state.user.info[ownProps.post.ownerUserId] ? state.user.info[ownProps.post.ownerUserId].avatar || '' : '',
     fullName: state.user.info && state.user.info[ownProps.post.ownerUserId] ? state.user.info[ownProps.post.ownerUserId].fullName || '' : '',

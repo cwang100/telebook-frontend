@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 import moment from 'moment/moment'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
@@ -33,24 +32,11 @@ import Input, { InputLabel } from 'material-ui/Input'
 import { FormControl, FormHelperText } from 'material-ui/Form'
 import { withStyles } from 'material-ui/styles'
 
-// - Import app components
-import ImgCover from 'components/imgCover'
-import UserAvatarComponent from 'components/userAvatar'
-import ImageGallery from 'components/imageGallery'
-import AppDialogTitle from 'layouts/dialogTitle'
-import AppInput from 'layouts/appInput'
-
-// - Import API
-import FileAPI from 'api/FileAPI'
+import AppInput from '../appInput'
 
 // - Import actions
-import * as userActions from 'actions/userActions'
-import * as globalActions from 'actions/globalActions'
-import * as imageGalleryActions from 'actions/imageGalleryActions'
-
-import { IEditProfileComponentProps } from './IEditProfileComponentProps'
-import { IEditProfileComponentState } from './IEditProfileComponentState'
-import { Profile } from 'core/domain/users'
+import * as userActions from '../../actions/userActions'
+import * as globalActions from '../../actions/globalActions'
 
 const styles = (theme) => ({
   dialogTitle: {
@@ -104,24 +90,6 @@ const styles = (theme) => ({
  * Create component class
  */
 export class EditProfileComponent extends Component {
-
-  static propTypes = {
-
-    /**
-     * User avatar address
-     */
-    avatar: PropTypes.string,
-    /**
-     * User avatar address
-     */
-    banner: PropTypes.string,
-    /**
-     * User full name
-     */
-    fullName: PropTypes.string.isRequired
-
-  }
-
   styles = {
     avatar: {
       border: '2px solid rgb(255, 255, 255)'
@@ -187,22 +155,6 @@ export class EditProfileComponent extends Component {
        */
       fullNameInputError: '',
       /**
-       * User banner address
-       */
-      banner: props.banner || 'https://firebasestorage.googleapis.com/v0/b/open-social-33d92.appspot.com/o/images%2F751145a1-9488-46fd-a97e-04018665a6d3.JPG?alt=media&token=1a1d5e21-5101-450e-9054-ea4a20e06c57',
-      /**
-       * User avatar address
-       */
-      avatar: props.avatar || '',
-      /**
-       * It's true if the image galley for banner is open
-       */
-      openBanner: false,
-      /**
-       * It's true if the image gallery for avatar is open
-       */
-      openAvatar: false,
-      /**
        * Default birth day
        */
       defaultBirthday: (props.info && props.info.birthday) ? moment.unix(props.info.birthday).toDate() : '',
@@ -227,45 +179,6 @@ export class EditProfileComponent extends Component {
 
     // Binding functions to `this`
     this.handleUpdate = this.handleUpdate.bind(this)
-    this.handleRequestSetAvatar = this.handleRequestSetAvatar.bind(this)
-    this.handleRequestSetBanner = this.handleRequestSetBanner.bind(this)
-
-  }
-
-  /**
-   * Close image gallery of banner
-   */
-  handleCloseBannerGallery = () => {
-    this.setState({
-      openBanner: false
-    })
-  }
-
-  /**
-   * Open image gallery of banner
-   */
-  handleOpenBannerGallery = () => {
-    this.setState({
-      openBanner: true
-    })
-  }
-
-  /**
-   * Close image gallery of avatar
-   */
-  handleCloseAvatarGallery = () => {
-    this.setState({
-      openAvatar: false
-    })
-  }
-
-  /**
-   * Open image gallery of avatar
-   */
-  handleOpenAvatarGallery = () => {
-    this.setState({
-      openAvatar: true
-    })
   }
 
   /**
@@ -277,23 +190,9 @@ export class EditProfileComponent extends Component {
     })
   }
 
-  /**
-   * Set avatar image url
-   */
-  handleRequestSetAvatar = (fileName) => {
-    this.setState({
-      avatar: fileName
-    })
-  }
 
-  /**
-   * Update profile on the server
-   *
-   *
-   * @memberof EditProfile
-   */
   handleUpdate = () => {
-    const { fullNameInput, tagLineInput, avatar, banner, selectedBirthday, companyName, webUrl, twitterId } = this.state
+    const { fullNameInput, tagLineInput, selectedBirthday,companyName, webUrl, twitterId } = this.state
     const { info } = this.props
 
     if (this.state.fullNameInput.trim() === '') {
@@ -308,8 +207,6 @@ export class EditProfileComponent extends Component {
       this.props.update({
         fullName: fullNameInput,
         tagLine: tagLineInput,
-        avatar: avatar,
-        banner: banner,
         companyName: companyName,
         webUrl: webUrl,
         twitterId: twitterId,
@@ -400,26 +297,12 @@ export class EditProfileComponent extends Component {
         >
           <DialogContent className={classes.dialogContentRoot}>
             {/* Banner */}
-            <div style={{ position: 'relative' }}>
-              <ImgCover width='100%' height='250px' borderRadius='2px' fileName={this.state.banner} />
-              <div className='g__circle-black' onClick={this.handleOpenBannerGallery} style={{ position: 'absolute', right: '10px', top: '10px' }}>
-                <SvgCamera style={{ fill: 'rgba(255, 255, 255, 0.88)', transform: 'translate(6px, 6px)' }} />
-              </div>
-            </div>
             <div className='profile__edit'>
               <EventListener
                 target='window'
                 onResize={this.handleResize}
               />
               <div className='left'>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  {/* Avatar */}
-                  <div className='g__circle-black' onClick={this.handleOpenAvatarGallery} style={{ zIndex: 1, position: 'absolute', left: '50%', display: 'inline-block', top: '52px', margin: '-18px' }}>
-                    <SvgCamera style={{ fill: 'rgba(255, 255, 255, 0.88)', transform: 'translate(6px, 6px)' }} />
-
-                  </div>
-                  <UserAvatarComponent fullName={(this.props.info ? this.props.info.fullName : '')} fileName={this.state.avatar} size={90} style={this.styles.avatar} />
-                </div>
                 <div className='info'>
                   <div className='fullName'>
                     {this.props.fullName}
@@ -511,32 +394,6 @@ export class EditProfileComponent extends Component {
             <Button variant='raised' color='primary' onClick={this.handleUpdate} style={this.styles.updateButton}> {('profile.updateButton')} </Button>
           </DialogActions>
         </Dialog>
-
-        {/* Image gallery for banner*/}
-        <Dialog
-          PaperProps={{ className: classes.fullPageXs }}
-          open={this.state.openBanner}
-          onClose={this.handleCloseBannerGallery}
-
-        >
-          <DialogTitle className={classes.dialogTitle}>
-            <AppDialogTitle title={('profile.chooseBanerDialogTitle')} onRequestClose={this.handleCloseBannerGallery} />
-          </DialogTitle>
-          <ImageGallery set={this.handleRequestSetBanner} close={this.handleCloseBannerGallery} />
-        </Dialog>
-
-        {/* Image gallery for avatar */}
-        <Dialog
-          PaperProps={{ className: classes.fullPageXs }}
-          open={this.state.openAvatar}
-          onClose={this.handleCloseAvatarGallery}
-        >
-          <DialogTitle className={classes.dialogTitle}>
-            <AppDialogTitle title={('profile.chooseAvatarDialogTitle')} onRequestClose={this.handleCloseAvatarGallery} />
-          </DialogTitle>
-          <ImageGallery set={this.handleRequestSetAvatar} close={this.handleCloseAvatarGallery} />
-        </Dialog>
-
       </div>
     )
   }
@@ -564,12 +421,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
  */
 const mapStateToProps = (state, ownProps) => {
   return {
-    currentLanguage: getActiveLanguage(state.locale).code,
-    translate: getTranslate(state.locale),
-    open: state.user.openEditProfile,
-    info: state.user.info[state.authorize.uid],
-    avatarURL: state.imageGallery.imageURLList
-
+    open: state.user.get('openEditProfile'),
+    info: state.user.get('info')[state.authorize.get('uid')]
   }
 }
 

@@ -3,8 +3,7 @@ import React, { Component } from 'react'
 import moment from 'moment/moment'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { push } from 'react-router-redux'
-import { getTranslate, getActiveLanguage } from 'react-localize-redux'
+import { push } from 'connected-react-router'
 import classNames from 'classnames'
 
 // - Material UI
@@ -29,22 +28,11 @@ import SvgAdd from 'material-ui-icons/Add'
 import IconButton from 'material-ui/IconButton'
 import { grey } from 'material-ui/colors'
 
-// - Import app components
-import UserAvatar from '../userAvatar'
-
-// - Import API
-import StringAPI from 'api/StringAPI'
-
 // - Import actions
-import * as circleActions from 'actions/circleActions'
+import * as circleActions from '../../actions/circleActions'
 
-import { IUserBoxComponentProps } from './IUserBoxComponentProps'
-import { IUserBoxComponentState } from './IUserBoxComponentState'
-import { User } from 'core/domain/users'
-import { UserTie, Circle } from 'core/domain/circles'
-import { ServerRequestType } from 'constants/serverRequestType'
-import { ServerRequestStatusType } from 'actions/serverRequestStatusType'
-import { ServerRequestModel } from 'models/server'
+import { ServerRequestType } from '../../constants/serverRequestType'
+import { ServerRequestStatusType } from '../../actions/serverRequestStatusType'
 
 const styles = (theme) => ({
   root: {
@@ -127,9 +115,6 @@ export class UserBoxComponent extends Component {
        * The value of circle input
        */
       circleName: ``,
-      /**
-       * It will be true if the text field for adding group is empty
-       */
       disabledCreateCircle: true,
       /**
        * The button of add user in a circle is disabled {true} or not {false}
@@ -141,7 +126,6 @@ export class UserBoxComponent extends Component {
       disabledDoneCircles: true
     }
     this.selectedCircles = userBelongCircles.slice()
-    // Binding functions to `this`
     this.handleChangeName = this.handleChangeName.bind(this)
     this.onCreateCircle = this.onCreateCircle.bind(this)
     this.handleDoneAddCircle = this.handleDoneAddCircle.bind(this)
@@ -169,7 +153,6 @@ export class UserBoxComponent extends Component {
    * Handle follow user
    */
   onFollowUser = (event) => {
-    // This prevents ghost click
     event.preventDefault()
     const { isFollowed, followUser, followingCircleId, userId, user, followRequest } = this.props
 
@@ -302,10 +285,6 @@ export class UserBoxComponent extends Component {
     return isChanged
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render () {
     const { disabledDoneCircles } = this.state
     const { isFollowed, followRequest, userId, isSelecteCirclesOpen, addToCircleRequest, deleteFollowingUserRequest, classes, translate } = this.props
@@ -322,13 +301,6 @@ export class UserBoxComponent extends Component {
           paddingTop: 20
 
         }}>
-          <div onClick={() => this.props.goTo(`/${this.props.userId}`)} style={{ cursor: 'pointer' }}>
-            <UserAvatar
-              fullName={this.props.fullName}
-              fileName={this.props.avatar}
-              size={90}
-            />
-          </div>
           <div onClick={() => this.props.goTo(`/${this.props.userId}`)} className='people__name' style={{ cursor: 'pointer' }}>
             <div>
               {this.props.user.fullName}
@@ -450,7 +422,6 @@ const mapStateToProps = (state, ownProps) => {
   const isSelecteCirclesOpen = circle.openSelecteCircles ? circle.openSelecteCircles[ownProps.userId] : []
 
   return {
-    translate: getTranslate(state.locale),
     isSelecteCirclesOpen,
     isFollowed,
     selectedCircles,

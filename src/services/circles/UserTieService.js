@@ -5,11 +5,14 @@ import { SocialError } from '../../class/common'
 import { Profile, UserProvider, User } from '../../class/users'
 import { Graph } from '../../class/graphs'
 import { UserTie } from '../../class/circles'
+import { GraphService } from '../graphs'
+
+let graphService = new GraphService()
 
 export class UserTieService {
   tieUseres(userTieSenderInfo, userTieReceiveInfo, circleIds) {
     return new Promise((resolve, reject) => {
-      this._graphService
+      graphService
       .addGraph(
         new Graph(
           userTieSenderInfo.userId,
@@ -29,7 +32,7 @@ export class UserTieService {
 
   updateUsersTie(userTieSenderInfo, userTieReceiveInfo, circleIds) {
     return new Promise((resolve, reject) => {
-      this._graphService
+      graphService
       .updateGraph(
         new Graph(
           userTieSenderInfo.userId,
@@ -60,7 +63,7 @@ export class UserTieService {
 
   getUserTies(userId) {
     return new Promise((resolve, reject) => {
-      this._graphService
+      graphService
       .getGraphs(
         'users',
         userId,
@@ -88,7 +91,7 @@ export class UserTieService {
 
   getUserTieSender(userId) {
     return new Promise((resolve, reject) => {
-      this._graphService
+      graphService
       .getGraphs(
         'users',
         null,
@@ -118,7 +121,7 @@ export class UserTieService {
 
   getUserTiesWithSeconUser(userId, secondUserId) {
     return new Promise((resolve, reject) => {
-      this._graphService
+      graphService
       .getGraphs(
         'users',
         userId,

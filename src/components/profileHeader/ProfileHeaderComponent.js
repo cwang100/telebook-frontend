@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import config from 'src/config'
+import config from '../../config'
 
 // - Material UI
 import { grey } from 'material-ui/colors'
@@ -12,74 +12,32 @@ import { MenuList, MenuItem } from 'material-ui/Menu'
 import Button from 'material-ui/Button'
 import RaisedButton from 'material-ui/Button'
 import EventListener, { withOptions } from 'react-event-listener'
-import { Parallax, Background } from 'react-parallax'
-import { getTranslate, getActiveLanguage } from 'react-localize-redux'
-
-// - Import app components
-import ImgCover from 'components/imgCover'
-import EditProfile from 'components/editProfile'
-import UserAvatar from 'components/userAvatar'
+import EditProfile from '../editProfile'
 
 // - Import API
 
 // - Import actions
-import * as globalActions from 'actions/globalActions'
-import * as userActions from 'actions/userActions'
-import { IProfileHeaderComponentProps } from './IProfileHeaderComponentProps'
-import { IProfileHeaderComponentState } from './IProfileHeaderComponentState'
+import * as globalActions from '../../actions/globalActions'
+import * as userActions from '../../actions/userActions'
 
 /**
  * Create component class
  */
-export class ProfileHeaderComponent extends Component<IProfileHeaderComponentProps, IProfileHeaderComponentState> {
+export class ProfileHeaderComponent extends Component {
 
-  static propTypes = {
-
-        /**
-         * User avatar address
-         */
-    avatar: PropTypes.string,
-        /**
-         * User banner address
-         */
-    banner: PropTypes.string,
-      /**
-       * User tagline
-       */
-    tagLine: PropTypes.string,
-        /**
-         * User full name
-         */
-    fullName: PropTypes.string.isRequired,
-        /**
-         * The number of followers
-         */
-    followerCount: PropTypes.number,
-        /**
-         * User identifier
-         */
-    userId: PropTypes.string,
-        /**
-         * If the user profile identifier of param is equal to the user authed identifier
-         */
-    isAuthedUser: PropTypes.bool
-
-  }
 
     /**
      * Component constructor
      * @param  {object} props is an object properties of component
      */
-  constructor (props: IProfileHeaderComponentProps) {
+  constructor (props) {
     super(props)
 
         /**
          * Defaul state
          */
     this.state = {
-            /**
-             * If it's true , the window is in small size
-             */
+
       isSmall: false
 
     }
@@ -112,12 +70,8 @@ export class ProfileHeaderComponent extends Component<IProfileHeaderComponentPro
     this.handleResize()
   }
 
-    /**
-     * Reneder component DOM
-     * @return {react element} return the DOM which rendered by component
-     */
   render () {
-    const {translate, isAuthedUser, editProfileOpen} = this.props
+    const {isAuthedUser, editProfileOpen} = this.props
     const styles = {
       avatar: {
         border: '2px solid rgb(255, 255, 255)'
@@ -172,21 +126,12 @@ export class ProfileHeaderComponent extends Component<IProfileHeaderComponentPro
     return (
 
             <div>
-                <Parallax strength={500} className='profile__parallax' bgStyle={{ position: 'relative' }}>
-                    <Background>
-                        <ImgCover width='100%' height='510px' borderRadius='2px'
-                        fileName={this.props.banner || config.settings.defaultProfileCover} />
-                    </Background>
-
-                </Parallax>
                 <div className={this.state.isSmall ? 'profile__head-info-s' : 'profile__head-info'}>
                     <EventListener
                         target='window'
                         onResize={this.handleResize}
                     />
                     <div className='left'>
-                        {/* User avatar*/}
-                        <div style={{ display: 'flex', justifyContent: 'center' }}><UserAvatar fullName={this.props.fullName} fileName={this.props.avatar} size={60} style={styles.avatar} /></div>
                         <div className='info'>
                             <div className='fullName'>
                                 {this.props.fullName}
@@ -194,15 +139,12 @@ export class ProfileHeaderComponent extends Component<IProfileHeaderComponentPro
                             <div className='tagLine'>
                                {this.props.tagLine}
                             </div>
-                            {/*<div className='followers'>
-                                {this.props.followerCount} Followers
-                </div>*/}
                         </div>
                     </div>
                     <div className='right'>
                         {isAuthedUser ? (<div style={this.state.isSmall ? styles.editButtonSmall : styles.editButton}>
                         <Button variant='raised' onClick={this.props.openEditor}>
-                        {translate!('profile.editProfileButton')}
+                        {'Edit Profile'}
                         </Button>
                         </div>) : ''}
                     </div>
@@ -223,7 +165,7 @@ export class ProfileHeaderComponent extends Component<IProfileHeaderComponentPro
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: any, ownProps: IProfileHeaderComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     openEditor: () => dispatch(userActions.openEditProfile())
   }
@@ -235,13 +177,11 @@ const mapDispatchToProps = (dispatch: any, ownProps: IProfileHeaderComponentProp
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: IProfileHeaderComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
 
   return {
-    translate: getTranslate(state.locale),
-    editProfileOpen: state.user.openEditProfile
+    editProfileOpen: state.user.get('openEditProfile')
   }
 }
 
-// - Connect component to redux store
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileHeaderComponent as any)
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileHeaderComponent)

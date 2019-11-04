@@ -5,40 +5,18 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Button from 'material-ui/Button'
 import { grey, teal } from 'material-ui/colors'
-import SvgCamera from 'material-ui-icons/PhotoCamera'
+import SvgCamera from '@material-ui/icons/PhotoCamera'
 import Paper from 'material-ui/Paper'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import InfiniteScroll from 'react-infinite-scroller'
 
-// - Import app components
 import PostComponent from '../post'
 import PostWriteComponent from '../postWrite'
-import UserAvatarComponent from '../userAvatar'
-import LoadMoreProgressComponent from 'layouts/loadMoreProgress'
+import LoadMoreProgressComponent from '../loadMoreProgress'
 
-
-// - Import actions
 import * as globalActions from '../../actions/globalActions'
 
-// - Create StreamComponent component class
 export class StreamComponent extends Component {
-
-  static propTypes = {
-    /**
-     * If it's true , writing post block will be visible
-     */
-    displayWriting: PropTypes.bool.isRequired,
-    /**
-     * A list of post
-     */
-    posts: PropTypes.object,
-
-    /**
-     * The title of home header
-     */
-    homeTitle: PropTypes.string
-
-  }
 
   styles = {
     postWritePrimaryText: {
@@ -62,17 +40,7 @@ export class StreamComponent extends Component {
        * It's true if we want to have two column of posts
        */
       divided: false,
-      /**
-       * If it's true comment will be disabled on post
-       */
-      disableComments: this.props.disableComments,
-      /**
-       * If it's true share will be disabled on post
-       */
-      disableSharing: this.props.disableSharing,
-      /**
-       * If it's true, post write will be open
-       */
+
       openPostWrite: false,
       /**
        * The title of home header
@@ -89,7 +57,6 @@ export class StreamComponent extends Component {
     this.postLoad = this.postLoad.bind(this)
     this.handleOpenPostWrite = this.handleOpenPostWrite.bind(this)
     this.handleClosePostWrite = this.handleClosePostWrite.bind(this)
-
   }
 
   /**
@@ -115,10 +82,6 @@ export class StreamComponent extends Component {
     })
   }
 
-  /**
-   * Create a list of posts
-   * @return {DOM} posts
-   */
   postLoad = () => {
 
     let { posts, match } = this.props
@@ -128,14 +91,14 @@ export class StreamComponent extends Component {
       return (
 
         <h1>
-          'Nothing has shared.'
-                </h1>
+          {"Nothing has shared."}
+        </h1>
 
       )
     } else {
 
       let postBack = { divided: false, oddPostList: [], evenPostList: [] }
-      let parsedPosts: any = []
+      let parsedPosts = []
       Object.keys(posts).forEach((postId) => {
         if (tag) {
           let regex = new RegExp('#' + tag, 'g')
@@ -148,7 +111,7 @@ export class StreamComponent extends Component {
 
         }
       })
-      const sortedPosts = PostAPI.sortObjectsDate(parsedPosts)
+      const sortedPosts = parsedPosts
       if (sortedPosts.length > 6) {
         postBack.divided = true
 
@@ -157,11 +120,11 @@ export class StreamComponent extends Component {
       }
       sortedPosts.forEach((post, index) => {
 
-        let newPost: any = (
-          <div key={`${post.id!}-stream-div`}>
+        let newPost = (
+          <div key={`${post.id}-stream-div`}>
 
             {index > 1 || (!postBack.divided && index > 0) ? <div style={{ height: '16px' }}></div> : ''}
-            <PostComponent key={`${post.id!}-stream-div-post`} post={post} />
+            <PostComponent key={`${post.id}-stream-div-post`} post={post} />
 
           </div>
         )
@@ -179,18 +142,14 @@ export class StreamComponent extends Component {
 
   scrollLoad = (page) => {
     const { loadStream } = this.props
-    loadStream!(page, 10)
+    loadStream(page, 10)
   }
 
   componentWillMount() {
     const { setHomeTitle } = this.props
-    setHomeTitle!()
+    setHomeTitle()
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render() {
 
     const { tag, displayWriting, hasMorePosts } = this.props
@@ -214,11 +173,7 @@ export class StreamComponent extends Component {
                     style={this.styles.postWtireItem}
                     onClick={this.handleOpenPostWrite}
                   >
-                    <UserAvatarComponent fullName={this.props.fullName!} fileName={this.props.avatar!} size={36} />
-                    <ListItemText inset primary={<span style={this.styles.postWritePrimaryText as any}> {translate!('home.postWriteButtonText')}</span>} />
-                    <ListItemIcon>
-                      <SvgCamera />
-                    </ListItemIcon>
+                    <ListItemText inset primary={<span style={this.styles.postWritePrimaryText}> {'new post'}</span>} />
                   </ListItem>
 
                 </Paper>
@@ -245,12 +200,6 @@ export class StreamComponent extends Component {
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     setHomeTitle: () => dispatch(globalActions.setHeaderTitle(ownProps.homeTitle || '')),

@@ -4,13 +4,10 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 // - Import app components
-import Stream from 'components/stream'
+import Stream from '../stream'
 
-// - Import API
-
-// - Import actions
-import * as postActions from 'actions/postActions'
-import * as userActions from 'actions/userActions'
+import * as postActions from '../../actions/postActions'
+import * as userActions from '../../actions/userActions'
 
 /**
  * Create component class
@@ -37,8 +34,8 @@ export class PostPageComponent extends Component {
 
   }
   componentWillMount () {
-    this.props.loadPost!()
-    this.props.loadUserInfo!()
+    this.props.loadPost()
+    this.props.loadUserInfo()
   }
 
   /**
@@ -59,7 +56,7 @@ export class PostPageComponent extends Component {
    * @param  {object} ownProps is the props belong to component
    * @return {object}          props of component
    */
-const mapDispatchToProps = (dispatch: any,ownProps: IPostPageComponentProps) => {
+const mapDispatchToProps = (dispatch,ownProps) => {
   const {userId,postId} = ownProps.match.params
   return{
     loadPost: () => dispatch(postActions.dbGetPostById(userId,postId)),
@@ -73,14 +70,14 @@ const mapDispatchToProps = (dispatch: any,ownProps: IPostPageComponentProps) => 
    * @param  {object} ownProps is the props belong to component
    * @return {object}          props of component
    */
-const mapStateToProps = (state: any,ownProps: IPostPageComponentProps) => {
+const mapStateToProps = (state,ownProps) => {
   const {userId,postId} = ownProps.match.params
   return{
-    avatar: state.user.info && state.user.info[userId] ? state.user.info[userId].avatar : '',
-    name: state.user.info && state.user.info[userId] ? state.user.info[userId].fullName : '',
-    posts: state.post.userPosts && state.post.userPosts[userId] ? {[postId] : { ...state.post.userPosts[userId][postId]}} : {}
+    avatar: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].avatar : '',
+    name: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].fullName : '',
+    posts: state.post.get('userPosts') && state.post.get('userPosts')[userId] ? {[postId] : { ...state.post.get('userPosts')[userId][postId]}} : {}
   }
 }
 
   // - Connect component to redux store
-export default connect(mapStateToProps,mapDispatchToProps)(PostPageComponent as any)
+export default connect(mapStateToProps,mapDispatchToProps)(PostPageComponent)

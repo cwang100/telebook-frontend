@@ -145,8 +145,7 @@ export class HomeComponent extends Component {
     if (!isVerified) {
       goTo('/emailVerification')
 
-    } else if (!global.defaultLoadDataStatus) {
-
+    } else if (!global.get('defaultLoadDataStatus')) {
       clearData()
       loadData()
       defaultDataEnable()
@@ -265,7 +264,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(circleActions.dbGetCircles())
       dispatch(circleActions.dbGetUserTies())
       dispatch(circleActions.dbGetFollowers())
-
     },
     clearData: () => {
       dispatch(postActions.clearAllData())
@@ -280,16 +278,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     defaultDataEnable: () => {
       dispatch(globalActions.defaultDataEnable())
     },
-    goTo: (url) => dispatch(push(url)),
-    showSendFeedback: () => dispatch(globalActions.showSendFeedback()),
-    hideSendFeedback: () => dispatch(globalActions.hideSendFeedback())
-
+    goTo: (url) => dispatch(push(url))
   }
 
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { authorize, global, user, post, imageGallery, notify, circle } = state
+  const { authorize, global, user, post, notify, circle } = state
   const uid = authorize.get('uid')
   let mergedPosts = {}
   const circles = circle ? (circle.get('circleList') || {}) : {}
