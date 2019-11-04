@@ -40,7 +40,10 @@ import * as postActions from '../../actions/postActions'
 import Grid from 'material-ui/Grid/Grid'
 
 const styles = (theme) => ({
+
   fullPageXs: {
+    width: "600px",
+    height: "300px",
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       height: '100%',
@@ -74,96 +77,29 @@ const styles = (theme) => ({
     zIndex: 0
   },
   author: {
+    fontSize: 30,
     paddingRight: 70
   }
 })
 
-// - Create PostWrite component class
 export class PostWriteComponent extends Component{
-
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
   constructor(props) {
 
     super(props)
 
     const { postModel } = props
 
-    // Default state
     this.state = {
-      /**
-       * Post text
-       */
       postText: this.props.edit && postModel ? (postModel.body ? postModel.body : '') : '',
-    
-      /**
-       * Whether menu is open
-       */
-      menuOpen: false,
-      /**
-       * If it's true post button will be disabled
-       */
       disabledPost: true,
     }
 
-    // Binding functions to `this`
     this.handleOnChange = this.handleOnChange.bind(this)
     this.handlePost = this.handlePost.bind(this)
   }
 
-  /**
-   * Toggle comments of the post to disable/enable
-   *
-   *
-   * @memberof PostWrite
-   */
-  handleToggleComments = () => {
-    this.setState({
-      disableComments: !this.state.disableComments,
-      disabledPost: false
-    })
-  }
-
-  /**
-   * Toggle sharing of the post to disable/enable
-   *
-   *
-   * @memberof PostWrite
-   */
-  handleToggleSharing = () => {
-    this.setState({
-      disableSharing: !this.state.disableSharing,
-      disabledPost: false
-    })
-  }
-
-  /**
-   * Romove the image of post
-   *
-   *
-   * @memberof PostWrite
-   */
-  handleRemoveImage = () => {
-    this.setState({
-      image: '',
-      imageFullPath: '',
-      disabledPost: this.state.postText.trim() === ''
-    })
-  }
-
-  /**
-   * Handle send post to the server
-   * @param  {event} evt passed by clicking on the post button
-   */
   handlePost = () => {
-    const {
-      image,
-      imageFullPath,
-      disableComments,
-      disableSharing,
-      postText } = this.state
+    const {postText } = this.state
 
     const {
       id,
@@ -174,7 +110,7 @@ export class PostWriteComponent extends Component{
       update,
       postModel
       } = this.props
-    if (image === '' && postText.trim() === '') {
+    if (postText.trim() === '') {
       this.setState({
         disabledPost: false
       })
@@ -183,52 +119,22 @@ export class PostWriteComponent extends Component{
 
     // In edit status we should fire update if not we should fire post function
     if (!edit) {
-      if (image !== '') {
-        post({
-          body: postText,
-          ownerDisplayName: ownerDisplayName,
-          disableComments: disableComments,
-          disableSharing: disableSharing,
-          postTypeId: 1,
-          score: 0,
-          viewCount: 0
-        }, onRequestClose)
-      } else {
-        post({
-          body: postText,
-          ownerDisplayName: ownerDisplayName,
-          disableComments: disableComments,
-          disableSharing: disableSharing,
-          postTypeId: 0,
-          score: 0,
-          viewCount: 0
-        }, onRequestClose)
-      }
+
+      post({
+        body: postText,
+        ownerDisplayName: ownerDisplayName,
+        postTypeId: 0,
+        score: 0,
+        viewCount: 0
+      }, onRequestClose)
     } else { // In edit status we pass post to update functions
       postModel.body = postText
-      postModel.disableComments = disableComments
-      postModel.disableSharing = disableSharing
 
       update(postModel, onRequestClose)
     }
   }
 
-  /**
-   * Set post image url
-   */
-  onRequestSetImage = (url, fullPath) => {
-    this.setState({
-      image: url,
-      imageFullPath: fullPath,
-      disabledPost: false
-    })
-  }
 
-  /**
-   * When the post text changed
-   * @param  {event} evt is an event passed by change post text callback funciton
-   * @param  {string} data is the post content which user writes
-   */
   handleOnChange = (event) => {
     const data = event.target.value
     this.setState({ postText: data })
@@ -246,24 +152,6 @@ export class PostWriteComponent extends Component{
 
   }
 
-  /**
-   * Handle open more menu
-   */
-  handleOpenMenu = () => {
-    this.setState({
-      menuOpen: true
-    })
-  }
-
-  /**
-   * Handle close more menu
-   */
-  handleCloseMenu = () => {
-    this.setState({
-      menuOpen: false
-    })
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!nextProps.open) {
       const { postModel } = this.props
@@ -275,10 +163,6 @@ export class PostWriteComponent extends Component{
     }
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render() {
 
     const { classes } = this.props
@@ -287,7 +171,7 @@ export class PostWriteComponent extends Component{
     let author = (
       <div className={classes.author}>
         <span style={{
-          fontSize: '14px',
+          fontSize: '30px',
           paddingRight: '10px',
           fontWeight: 400,
           color: 'rgba(0,0,0,0.87)',
@@ -296,15 +180,15 @@ export class PostWriteComponent extends Component{
           lineHeight: '25px'
         }}>{this.props.ownerDisplayName}</span><span style={{
           fontWeight: 400,
-          fontSize: '10px'
+          fontSize: '30px'
         }}>{'Post'}</span>
       </div>
     )
 
     const styles = {
       dialog: {
-        width: '',
-        maxWidth: '530px',
+        width: '100%',
+        maxWidth: '900px',
         borderRadius: '4px'
       }
     }
@@ -322,7 +206,6 @@ export class PostWriteComponent extends Component{
           <DialogContent
             className={classes.content}
             style={{ paddingTop: 0 }}
-
           >
 
             <Card elevation={0}>
@@ -340,8 +223,7 @@ export class PostWriteComponent extends Component{
                       onChange={this.handleOnChange}
                       placeholder={'Write something'}
                       multiline
-                      rows={2}
-                      rowsMax={4}
+                      rows={7}
                       style={{ fontWeight: 400, fontSize: '14px', margin: '0 16px', flexShrink: 0, width: 'initial', flexGrow: 1 }}
                     />
                   </div>

@@ -128,7 +128,7 @@ export class HomeComponent extends Component {
     super(props)
 
     this.state = {
-      drawerOpen: true
+      drawerOpen: false
     }
   }
 
@@ -199,7 +199,6 @@ export class HomeComponent extends Component {
 
     return (
       <div className={classes.root}>
-        <h3>Welcome!</h3>
         <div className={classes.appFrame}> 
         <HomeHeader onToggleDrawer={this.handleDrawerToggle} drawerStatus={this.state.drawerOpen} />
           <Hidden mdUp>
