@@ -5,20 +5,20 @@ import PropTypes from 'prop-types'
 import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
 // - Import app components
-import UserBoxList from 'components/userBoxList'
+import UserBoxList from '../userBoxList'
 
-import { Circle } from 'core/domain/circles'
+// import { Circle } from 'core/domain/circles'
 
-// - Import API
-import { IFollowingComponentProps } from './IFollowingComponentProps'
-import { IFollowingComponentState } from './IFollowingComponentState'
+// // - Import API
+// import { IFollowingComponentProps } from './IFollowingComponentProps'
+// import { IFollowingComponentState } from './IFollowingComponentState'
 
 // - Import actions
 
 /**
  * Create component class
  */
-export class FollowingComponent extends Component<IFollowingComponentProps,IFollowingComponentState> {
+export class FollowingComponent extends Component {
 
   static propTypes = {
 
@@ -28,7 +28,7 @@ export class FollowingComponent extends Component<IFollowingComponentProps,IFoll
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: IFollowingComponentProps) {
+  constructor (props) {
     super(props)
 
     // Defaul state
@@ -50,13 +50,13 @@ export class FollowingComponent extends Component<IFollowingComponentProps,IFoll
           <div>
             {(this.props.followingUsers && Object.keys(this.props.followingUsers).length !== 0 ) ? (<div>
               <div className='profile__title'>
-                {translate!('people.followingLabel')}
+                {('people.followingLabel')}
                         </div>
                         <UserBoxList users={this.props.followingUsers} />
               <div style={{ height: '24px' }}></div>
 
               </div>) : (<div className='g__title-center'>
-                 {translate!('people.noFollowingLabel')}
+                 {('people.noFollowingLabel')}
                </div>)}
           </div>
     )
@@ -69,7 +69,7 @@ export class FollowingComponent extends Component<IFollowingComponentProps,IFoll
    * @param  {object} ownProps is the props belong to component
    * @return {object}          props of component
    */
-const mapDispatchToProps = (dispatch: any,ownProp: IFollowingComponentProps) => {
+const mapDispatchToProps = (dispatch,ownProp) => {
   return{
 
   }
@@ -81,10 +81,10 @@ const mapDispatchToProps = (dispatch: any,ownProp: IFollowingComponentProps) => 
    * @param  {object} ownProps is the props belong to component
    * @return {object}          props of component
    */
-const mapStateToProps = (state: any,ownProps: IFollowingComponentProps) => {
+const mapStateToProps = (state,ownProps) => {
   const {circle, authorize, server} = state
   const { uid } = state.authorize
-  const circles: { [circleId: string]: Circle } = circle ? (circle.circleList || {}) : {}
+  const circles = circle ? (circle.circleList || {}) : {}
   const followingUsers = circle ? circle.userTies : {}
   return {
     translate: getTranslate(state.locale),
@@ -96,4 +96,4 @@ const mapStateToProps = (state: any,ownProps: IFollowingComponentProps) => {
 }
 
   // - Connect component to redux store
-export default connect(mapStateToProps,mapDispatchToProps)(FollowingComponent as any)
+export default connect(mapStateToProps,mapDispatchToProps)(FollowingComponent)

@@ -30,7 +30,7 @@ import IconButton from 'material-ui/IconButton'
 import { grey } from 'material-ui/colors'
 
 // - Import app components
-import UserAvatar from 'components/userAvatar'
+import UserAvatar from '../userAvatar'
 
 // - Import API
 import StringAPI from 'api/StringAPI'
@@ -46,7 +46,7 @@ import { ServerRequestType } from 'constants/serverRequestType'
 import { ServerRequestStatusType } from 'actions/serverRequestStatusType'
 import { ServerRequestModel } from 'models/server'
 
-const styles = (theme: any) => ({
+const styles = (theme) => ({
   root: {
     width: '100%',
     maxWidth: 360,
@@ -83,7 +83,7 @@ const styles = (theme: any) => ({
 /**
  * Create component class
  */
-export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBoxComponentState> {
+export class UserBoxComponent extends Component {
   /**
    * Fields
    */
@@ -112,13 +112,13 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
       borderRadius: '4px'
     }
   }
-  selectedCircles: string[]
+  selectedCircles
 
   /**
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: IUserBoxComponentProps) {
+  constructor (props) {
     super(props)
     const { userBelongCircles, circles, userId } = this.props
     // Defaul state
@@ -140,7 +140,7 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
        */
       disabledDoneCircles: true
     }
-    this.selectedCircles = userBelongCircles!.slice()
+    this.selectedCircles = userBelongCircles.slice()
     // Binding functions to `this`
     this.handleChangeName = this.handleChangeName.bind(this)
     this.onCreateCircle = this.onCreateCircle.bind(this)
@@ -157,10 +157,10 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
     const { avatar, fullName } = user
     const { disabledDoneCircles } = this.state
     if (!disabledDoneCircles) {
-      if (selectedCircles!.length > 0) {
-        addUserToCircle!(selectedCircles!, { avatar, userId, fullName })
+      if (selectedCircles.length > 0) {
+        addUserToCircle(selectedCircles, { avatar, userId, fullName })
       } else {
-        deleteFollowingUser!(userId)
+        deleteFollowingUser(userId)
       }
     }
   }
@@ -168,7 +168,7 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
   /**
    * Handle follow user
    */
-  onFollowUser = (event: any) => {
+  onFollowUser = (event) => {
     // This prevents ghost click
     event.preventDefault()
     const { isFollowed, followUser, followingCircleId, userId, user, followRequest } = this.props
@@ -178,7 +178,7 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
     }
     const { avatar, fullName } = user
     if (!isFollowed) {
-      followUser!(followingCircleId!, { avatar, userId, fullName })
+      followUser(followingCircleId, { avatar, userId, fullName })
     } else {
       this.onRequestOpenAddCircle()
     }
@@ -189,8 +189,8 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
    */
   onRequestCloseAddCircle = () => {
     const { setSelectedCircles, userId, userBelongCircles, closeSelectCircles } = this.props
-    setSelectedCircles!(userId, userBelongCircles!)
-    closeSelectCircles!(userId)
+    setSelectedCircles(userId, userBelongCircles)
+    closeSelectCircles(userId)
     this.setState({
       circleName: ``,
       disabledCreateCircle: true,
@@ -204,7 +204,7 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
    */
   onRequestOpenAddCircle = () => {
     const { openSelectCircles, userId } = this.props
-    openSelectCircles!(userId)
+    openSelectCircles(userId)
   }
 
   /**
@@ -213,7 +213,7 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
   onCreateCircle = () => {
     const { circleName } = this.state
     if (circleName && circleName.trim() !== '') {
-      this.props.createCircle!(this.state.circleName)
+      this.props.createCircle(this.state.circleName)
       this.setState({
         circleName: '',
         disabledCreateCircle: true
@@ -224,7 +224,7 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
   /**
    * Handle change group name input to the state
    */
-  handleChangeName = (event: any) => {
+  handleChangeName = (event) => {
     this.setState({
       circleName: event.target.value,
       disabledCreateCircle: (event.target.value === undefined || event.target.value.trim() === '')
@@ -232,22 +232,22 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
     })
   }
 
-  handleSelectCircle = (event: object, isInputChecked: boolean, circleId: string) => {
+  handleSelectCircle = (event, isInputChecked, circleId) => {
     const { userBelongCircles, circles, setSelectedCircles, selectedCircles, userId } = this.props
-    let newSelectedCircles = selectedCircles!.slice()
+    let newSelectedCircles = selectedCircles.slice()
     if (isInputChecked) {
 
       newSelectedCircles = [
-        ...selectedCircles!,
+        ...selectedCircles,
         circleId
       ]
 
     } else {
-      const circleIndex = selectedCircles!.indexOf(circleId)
+      const circleIndex = selectedCircles.indexOf(circleId)
       newSelectedCircles.splice(circleIndex, 1)
     }
 
-    setSelectedCircles!(userId, newSelectedCircles)
+    setSelectedCircles(userId, newSelectedCircles)
     this.setState({
       disabledDoneCircles: !this.selectedCircleChange(newSelectedCircles)
     })
@@ -262,15 +262,15 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
     if (circles) {
 
       const parsedDate = Object.keys(circles).map((circleId, index) => {
-        let isBelong = selectedCircles ? selectedCircles!.indexOf(circleId) > -1 : false
+        let isBelong = selectedCircles ? selectedCircles.indexOf(circleId) > -1 : false
 
         // Create checkbox for selected/unselected circle
         return (
           <ListItem key={`${circleId}-${userId}`} dense className={classes.listItem}>
-            <ListItemText className={classes.circleName} primary={circles![circleId].name} />
+            <ListItemText className={classes.circleName} primary={circles[circleId].name} />
             <ListItemSecondaryAction>
               <Checkbox
-                onChange={(event: object, isInputChecked: boolean) => this.handleSelectCircle(event, isInputChecked, circleId)}
+                onChange={(event, isInputChecked) => this.handleSelectCircle(event, isInputChecked, circleId)}
                 checked={isBelong}
               />
             </ListItemSecondaryAction>
@@ -284,14 +284,14 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
   /**
    * Check if the the selected circles changed
    */
-  selectedCircleChange = (selectedCircles: string[]) => {
+  selectedCircleChange = (selectedCircles) => {
     let isChanged = false
     const { userBelongCircles, circles } = this.props
 
-    if (selectedCircles.length === userBelongCircles!.length) {
-      for (let circleIndex: number = 0; circleIndex < selectedCircles.length; circleIndex++) {
+    if (selectedCircles.length === userBelongCircles.length) {
+      for (let circleIndex = 0; circleIndex < selectedCircles.length; circleIndex++) {
         const selectedCircleId = selectedCircles[circleIndex]
-        if (!(userBelongCircles!.indexOf(selectedCircleId) > -1)) {
+        if (!(userBelongCircles.indexOf(selectedCircleId) > -1)) {
           isChanged = true
           break
         }
@@ -322,19 +322,19 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
           paddingTop: 20
 
         }}>
-          <div onClick={() => this.props.goTo!(`/${this.props.userId}`)} style={{ cursor: 'pointer' }}>
+          <div onClick={() => this.props.goTo(`/${this.props.userId}`)} style={{ cursor: 'pointer' }}>
             <UserAvatar
-              fullName={this.props.fullName!}
-              fileName={this.props.avatar!}
+              fullName={this.props.fullName}
+              fileName={this.props.avatar}
               size={90}
             />
           </div>
-          <div onClick={() => this.props.goTo!(`/${this.props.userId}`)} className='people__name' style={{ cursor: 'pointer' }}>
+          <div onClick={() => this.props.goTo(`/${this.props.userId}`)} className='people__name' style={{ cursor: 'pointer' }}>
             <div>
               {this.props.user.fullName}
             </div>
           </div>
-          <div style={this.styles.followButton as any}>
+          <div style={this.styles.followButton}>
             <Button
               color='primary'
               onClick={this.onFollowUser}
@@ -343,8 +343,8 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
                 (deleteFollowingUserRequest ? deleteFollowingUserRequest.status === ServerRequestStatusType.Sent : false)
               }
             >
-              {!isFollowed ? translate!('userBox.followButton')
-                : (this.props.belongCirclesCount! > 1 ? translate!('userBox.numberOfCircleButton', {circlesCount: this.props.belongCirclesCount}) : ((this.props.firstBelongCircle) ? this.props.firstBelongCircle.name : translate!('userBox.followButton')))}
+              {!isFollowed ? ('userBox.followButton')
+                : (this.props.belongCirclesCount > 1 ? ('userBox.numberOfCircleButton', {circlesCount: this.props.belongCirclesCount}) : ((this.props.firstBelongCircle) ? this.props.firstBelongCircle.name : ('Follow')))}
             </Button>
           </div>
         </div>
@@ -364,14 +364,14 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
                 <ListItemText primary={
                   <TextField
                   autoFocus
-                    placeholder={translate!('userBox.groupNamePlaceholder')}
+                    placeholder={('groupNamePlaceholder')}
                     onChange={this.handleChangeName}
                     value={this.state.circleName}
                   />
                 } />
                 <ListItemSecondaryAction>
                   <IconButton onClick={this.onCreateCircle} disabled={this.state.disabledCreateCircle}>
-                    <Tooltip title={translate!('userBox.createCircleTooltip')}>
+                    <Tooltip title={('createCircleTooltip')}>
                       <SvgAdd />
                     </Tooltip>
                   </IconButton>
@@ -387,16 +387,16 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
               onClick={this.onRequestCloseAddCircle}
               style={{ color: grey[800] }}
             >
-              {translate!('userBox.cancelButton')}
+              {('cancelButton')}
         </Button>
             <Button
               color='primary'
               disableFocusRipple={true}
               disableRipple={true}
-              disabled={disabledDoneCircles || (addToCircleRequest ? addToCircleRequest!.status === ServerRequestStatusType.Sent : false)}
+              disabled={disabledDoneCircles || (addToCircleRequest ? addToCircleRequest.status === ServerRequestStatusType.Sent : false)}
               onClick={this.handleDoneAddCircle}
             >
-              {translate!('userBox.doneButton')}
+              {('doneButton')}
         </Button>
           </DialogActions>
         </Dialog>
@@ -411,17 +411,17 @@ export class UserBoxComponent extends Component<IUserBoxComponentProps, IUserBox
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: Function, ownProps: IUserBoxComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    createCircle: (name: string) => dispatch(circleActions.dbAddCircle(name)),
-    addUserToCircle: (circleIds: string[], user: UserTie) => dispatch(circleActions.dbUpdateUserInCircles(circleIds, user)),
-    followUser: (circleId: string, userFollowing: UserTie) => dispatch(circleActions.dbFollowUser(circleId, userFollowing)),
-    deleteFollowingUser: (followingId: string) => dispatch(circleActions.dbDeleteFollowingUser(followingId)),
-    setSelectedCircles: (userId: string, circleList: string[]) => dispatch(circleActions.setSelectedCircles(userId, circleList)),
-    removeSelectedCircles: (userId: string, circleList: string[]) => dispatch(circleActions.removeSelectedCircles(userId)),
-    openSelectCircles: (userId: string) => dispatch(circleActions.openSelectCircleBox(userId)),
-    closeSelectCircles: (userId: string) => dispatch(circleActions.closeSelectCircleBox(userId)),
-    goTo: (url: string) => dispatch(push(url))
+    createCircle: (name) => dispatch(circleActions.dbAddCircle(name)),
+    addUserToCircle: (circleIds, user) => dispatch(circleActions.dbUpdateUserInCircles(circleIds, user)),
+    followUser: (circleId, userFollowing) => dispatch(circleActions.dbFollowUser(circleId, userFollowing)),
+    deleteFollowingUser: (followingId) => dispatch(circleActions.dbDeleteFollowingUser(followingId)),
+    setSelectedCircles: (userId, circleList) => dispatch(circleActions.setSelectedCircles(userId, circleList)),
+    removeSelectedCircles: (userId, circleList) => dispatch(circleActions.removeSelectedCircles(userId)),
+    openSelectCircles: (userId) => dispatch(circleActions.openSelectCircleBox(userId)),
+    closeSelectCircles: (userId) => dispatch(circleActions.closeSelectCircleBox(userId)),
+    goTo: (url) => dispatch(push(url))
 
   }
 }
@@ -432,20 +432,20 @@ const mapDispatchToProps = (dispatch: Function, ownProps: IUserBoxComponentProps
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: IUserBoxComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
 
   const { circle, authorize, server } = state
   const { uid } = authorize
   const { request } = server
 
-  const circles: { [circleId: string]: Circle } = circle ? (circle.circleList || {}) : {}
+  const circles = circle ? (circle.circleList || {}) : {}
   const userBelongCircles = circle ? (circle.userTies[ownProps.userId] ? circle.userTies[ownProps.userId].circleIdList : []) : []
   const isFollowed = userBelongCircles.length > 0
   const followingCircleId = circles ? Object.keys(circles)
     .filter((circleId) => circles[circleId].isSystem && circles[circleId].name === `Following`)[0] : ''
-  const followRequest: ServerRequestModel = request ? request[StringAPI.createServerRequestId(ServerRequestType.CircleFollowUser, ownProps.userId)] : null
-  const addToCircleRequest: ServerRequestModel = request ? request[StringAPI.createServerRequestId(ServerRequestType.CircleAddToCircle, ownProps.userId)] : null
-  const deleteFollowingUserRequest: ServerRequestModel = request ? request[StringAPI.createServerRequestId(ServerRequestType.CircleDeleteFollowingUser, ownProps.userId)] : null
+  const followRequest = request ? request[StringAPI.createServerRequestId(ServerRequestType.CircleFollowUser, ownProps.userId)] : null
+  const addToCircleRequest = request ? request[StringAPI.createServerRequestId(ServerRequestType.CircleAddToCircle, ownProps.userId)] : null
+  const deleteFollowingUserRequest = request ? request[StringAPI.createServerRequestId(ServerRequestType.CircleDeleteFollowingUser, ownProps.userId)] : null
   const selectedCircles = circle.selectedCircles ? circle.selectedCircles[ownProps.userId] : []
   const isSelecteCirclesOpen = circle.openSelecteCircles ? circle.openSelecteCircles[ownProps.userId] : []
 
@@ -466,4 +466,4 @@ const mapStateToProps = (state: any, ownProps: IUserBoxComponentProps) => {
 }
 
 // - Connect component to redux store
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UserBoxComponent as any) as any)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UserBoxComponent))

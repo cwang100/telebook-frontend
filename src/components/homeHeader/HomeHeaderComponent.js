@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 
 import SvgDehaze from 'material-ui-icons/Dehaze'
 import { grey, blue } from 'material-ui/colors'
@@ -17,15 +18,15 @@ import Tooltip from 'material-ui/Tooltip'
 import Typography from 'material-ui/Typography'
 import { Manager, Target, Popper } from 'react-popper'
 import { withStyles } from 'material-ui/styles'
-import config from 'src/config'
+import config from '../../config'
 
 // - Import components
 import UserAvatarComponent from '../userAvatar'
-import Notify from '../notify'
+// import Notify from '../notify'
 
 // - Import actions
 import * as globalActions from '../../actions/globalActions'
-import { authorizeActions } from '../../actions/authorizeActions'
+import { authorizeActions } from '../../actions'
 
 const styles = {
   root: {
@@ -156,20 +157,20 @@ export class HomeHeaderComponent extends Component {
             <Manager>
               <Target>
                 {this.props.notifyCount > 0 ? (
-                  <Tooltip title={'header.notificationTooltip'}>
+                  <Tooltip title={'Notifications'}>
                     <IconButton onClick={this.handleNotifyTouchTap}>
                       <div className='homeHeader__notify'>
                         <div className='title'>{this.props.notifyCount}</div>
                       </div>
                     </IconButton>
                   </Tooltip>)
-                  : (<Tooltip title={'header.notificationTooltip'}>
+                  : (<Tooltip title={'Notifications'}>
                     <IconButton onClick={this.handleNotifyTouchTap}>
                       <NotificationsIcon style={{ color: 'rgba(255, 255, 255, 0.87)' }} />
                     </IconButton>
                   </Tooltip>)}
               </Target>
-              <Notify open={this.state.openNotifyMenu} anchorEl={this.state.anchorEl} onRequestClose={this.handleCloseNotify} />
+              {/* <Notify open={this.state.openNotifyMenu} anchorEl={this.state.anchorEl} onRequestClose={this.handleCloseNotify} /> */}
             </Manager>
 
             <UserAvatarComponent
@@ -192,8 +193,8 @@ export class HomeHeaderComponent extends Component {
                 horizontal: 'right'
               }}
               onClose={this.handleRequestClose}>
-              <MenuItem style={{ backgroundColor: 'white', color: blue[500], fontSize: '14px' }} > {'header.myAccount'} </MenuItem>
-              <MenuItem style={{ fontSize: '14px' }} onClick={this.handleLogout.bind(this)} > {'header.logout'} </MenuItem>
+              <MenuItem style={{ backgroundColor: 'white', color: blue[500], fontSize: '14px' }} > {'My Account'} </MenuItem>
+              <MenuItem style={{ fontSize: '14px' }} onClick={this.handleLogout.bind(this)} > {'Log Out'} </MenuItem>
 
             </Menu>
           </div>

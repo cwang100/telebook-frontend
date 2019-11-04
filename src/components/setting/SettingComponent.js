@@ -8,16 +8,16 @@ import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/Button'
 import Button from 'material-ui/Button'
 import { withStyles } from 'material-ui/styles'
-import config from 'src/config'
-import { getTranslate, getActiveLanguage } from 'react-localize-redux'
+import config from '../../config'
+// import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
 // - Import actions
-import * as authorizeActions from 'actions/authorizeActions'
-import { ISettingComponentProps } from './ISettingComponentProps'
-import { ISettingComponentState } from './ISettingComponentState'
+import {authorizeActions} from '../../actions'
+// import { ISettingComponentProps } from './ISettingComponentProps'
+// import { ISettingComponentState } from './ISettingComponentState'
 import { Grid } from 'material-ui'
 
-const styles = (theme: any) => ({
+const styles = (theme) => ({
   textField: {
     minWidth: 280,
     marginTop: 20
@@ -42,13 +42,13 @@ const styles = (theme: any) => ({
  * @class SettingComponent
  * @extends {Component}
  */
-export class SettingComponent extends Component<ISettingComponentProps,ISettingComponentState> {
+export class SettingComponent extends Component {
 
   /**
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: ISettingComponentProps) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -67,7 +67,7 @@ export class SettingComponent extends Component<ISettingComponentProps,ISettingC
    * Handle data on input change
    * @param  {event} evt is an event of inputs of element on change
    */
-  handleInputChange = (event: any) => {
+  handleInputChange = (event) => {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
     const name = target.name
@@ -101,26 +101,26 @@ export class SettingComponent extends Component<ISettingComponentProps,ISettingC
     let error = false
     if (this.state.passwordInput === '') {
       this.setState({
-        passwordInputError: translate!('changePassword.newPasswordRequiredError')
+        passwordInputError: ('changePassword.newPasswordRequiredError')
       })
       error = true
 
     } else if (this.state.confirmInput === '') {
       this.setState({
-        confirmInputError: translate!('changePassword.confirmPasswordRequiredError')
+        confirmInputError: ('changePassword.confirmPasswordRequiredError')
       })
       error = true
 
     } else if (this.state.confirmInput !== this.state.passwordInput) {
       this.setState({
-        confirmInputError: translate!('changePassword.confirmPasswordEqualNewPasswordError')
+        confirmInputError: ('changePassword.confirmPasswordEqualNewPasswordError')
       })
       error = true
 
     }
 
     if (!error) {
-      this.props.login!(
+      this.props.login(
         this.state.passwordInput,
         this.state.confirmInput
       )
@@ -157,7 +157,7 @@ export class SettingComponent extends Component<ISettingComponentProps,ISettingC
                   fontWeight: 400,
                   lineHeight: '32px',
                   margin: 0
-                }} className='zoomOutLCorner animated g__paper-title'>{translate!('changePassword.title')}</h2>
+                }} className='zoomOutLCorner animated g__paper-title'>{('changePassword.title')}</h2>
               </div>
 
               <TextField
@@ -166,7 +166,7 @@ export class SettingComponent extends Component<ISettingComponentProps,ISettingC
                 onChange={this.handleInputChange}
                 helperText={this.state.passwordInputError}
                 name='passwordInput'
-                label={translate!('changePassword.newPasswordLabel')}
+                label={('changePassword.newPasswordLabel')}
                 type='password'
                 error={this.state.passwordInputError.trim() !== ''}
               /><br />
@@ -175,7 +175,7 @@ export class SettingComponent extends Component<ISettingComponentProps,ISettingC
                 onChange={this.handleInputChange}
                 helperText={this.state.confirmInputError}
                 name='confirmInput'
-                label={translate!('changePassword.confirmPasswordLabel')}
+                label={('changePassword.confirmPasswordLabel')}
                 type='password'
                 error={this.state.confirmInputError.trim() !== ''}
               /><br />
@@ -183,10 +183,10 @@ export class SettingComponent extends Component<ISettingComponentProps,ISettingC
               <br />
               <div className='settings__button-box'>
                 <div>
-                  <Button onClick={this.props.homePage} > {translate!('changePassword.homeButton')} </Button>
+                  <Button onClick={this.props.homePage} > {('changePassword.homeButton')} </Button>
                 </div>
                 <div>
-                  <Button variant='raised' color='primary' onClick={this.handleForm}> {translate!('changePassword.changePasswordButton')} </Button>
+                  <Button variant='raised' color='primary' onClick={this.handleForm}> {('changePassword.changePasswordButton')} </Button>
 
                 </div>
               </div>
@@ -206,9 +206,9 @@ export class SettingComponent extends Component<ISettingComponentProps,ISettingC
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: any, ownProps: ISettingComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    login: (password: string) => {
+    login: (password) => {
       dispatch(authorizeActions.dbUpdatePassword(password))
     },
     homePage: () => {
@@ -223,11 +223,11 @@ const mapDispatchToProps = (dispatch: any, ownProps: ISettingComponentProps) => 
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: ISettingComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    translate: getTranslate(state.locale)
+    // translate: getTranslate(state.locale)
   }
 }
 
 // - Connect component to redux store
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SettingComponent as any) as any) as any)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SettingComponent)))

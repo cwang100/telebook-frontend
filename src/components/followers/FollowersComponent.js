@@ -5,11 +5,11 @@ import PropTypes from 'prop-types'
 import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
 // - Import app components
-import UserBoxList from 'components/userBoxList'
+import UserBoxList from '../userBoxList'
 
-import { IFollowersComponentProps } from './IFollowersComponentProps'
-import { IFollowersComponentState } from './IFollowersComponentState'
-import { Circle } from 'core/domain/circles'
+// import { IFollowersComponentProps } from './IFollowersComponentProps'
+// import { IFollowersComponentState } from './IFollowersComponentState'
+// import { Circle } from 'core/domain/circles'
 
 // - Import API
 
@@ -18,7 +18,7 @@ import { Circle } from 'core/domain/circles'
 /**
  * Create component class
  */
-export class FollowersComponent extends Component<IFollowersComponentProps,IFollowersComponentState> {
+export class FollowersComponent extends Component {
 
   static propTypes = {
 
@@ -28,7 +28,7 @@ export class FollowersComponent extends Component<IFollowersComponentProps,IFoll
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: IFollowersComponentProps) {
+  constructor (props) {
     super(props)
 
     // Defaul state
@@ -50,13 +50,13 @@ export class FollowersComponent extends Component<IFollowersComponentProps,IFoll
           <div>
             {(this.props.followers && Object.keys(this.props.followers).length !== 0) ? (<div>
               <div className='profile__title'>
-                {translate!('people.followersLabel')}
+                {('people.followersLabel')}
                         </div>
                         <UserBoxList users={this.props.followers} />
               <div style={{ height: '24px' }}></div>
               </div>)
               : (<div className='g__title-center'>
-                 {translate!('people.noFollowersLabel')}
+                 {('people.noFollowersLabel')}
                </div>)}
           </div>
     )
@@ -69,7 +69,7 @@ export class FollowersComponent extends Component<IFollowersComponentProps,IFoll
    * @param  {object} ownProps is the props belong to component
    * @return {object}          props of component
    */
-const mapDispatchToProps = (dispatch: any,ownProps: IFollowersComponentProps) => {
+const mapDispatchToProps = (dispatch,ownProps) => {
   return{
 
   }
@@ -81,10 +81,10 @@ const mapDispatchToProps = (dispatch: any,ownProps: IFollowersComponentProps) =>
    * @param  {object} ownProps is the props belong to component
    * @return {object}          props of component
    */
-const mapStateToProps = (state: any,ownProps: IFollowersComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   const {circle, authorize, server} = state
   const { uid } = state.authorize
-  const circles: { [circleId: string]: Circle } = circle ? (circle.circleList || {}) : {}
+  const circles = circle ? (circle.circleList || {}) : {}
   const followers = circle ? circle.userTieds : {}
   return{
     translate: getTranslate(state.locale),
@@ -93,4 +93,4 @@ const mapStateToProps = (state: any,ownProps: IFollowersComponentProps) => {
 }
 
   // - Connect component to redux store
-export default connect(mapStateToProps,mapDispatchToProps)(FollowersComponent as any)
+export default connect(mapStateToProps,mapDispatchToProps)(FollowersComponent)

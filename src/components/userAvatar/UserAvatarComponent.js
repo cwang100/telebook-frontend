@@ -9,7 +9,7 @@ import Avatar from 'material-ui/Avatar'
 // - Import API
 
 // - Import actions
-import * as imageGalleryActions from '../../actions/imageGalleryActions'
+import * as imageGalleryActions from '../../actions/'
 
 /**
  * Create component class
@@ -92,8 +92,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
  */
 const mapStateToProps = (state, ownProps) => {
   return {
-    avatarURL: state.imageGallery.get('imageURLList'),
-    imageRequests: state.imageGallery.get('imageRequests')
+    // avatarURL: state.imageGallery.imageURLList || "",
+    // imageRequests: state.imageGallery.imageRequests
 
   }
 }

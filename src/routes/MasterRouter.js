@@ -9,7 +9,7 @@ import Signup from '../components/signup'
 import EmailVerification from '../components/emailVerification'
 import Login from '../components/login'
 import ResetPassword from '../components/resetPassword'
-// import Setting from 'components/setting'
+import Setting from '../components/setting'
 
 export class MasterRouter extends Component {
   render () {
@@ -23,7 +23,7 @@ export class MasterRouter extends Component {
             <Route path='/emailVerification' component={EmailVerification} />
             <Route render={() => <Home uid={data.uid} />} /> 
             {
-            // <Route path='/settings' component={Setting} />
+            <Route path='/settings' component={<Setting />} />
             }
         </Switch>)
           : ''

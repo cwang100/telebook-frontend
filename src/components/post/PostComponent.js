@@ -52,7 +52,7 @@ import * as globalActions from 'actions/globalActions'
 import { IPostComponentProps } from './IPostComponentProps'
 import { IPostComponentState } from './IPostComponentState'
 
-const styles = (theme: any) => ({
+const styles = (theme) => ({
   iconButton: {
     width: 27,
     marginLeft: 5
@@ -103,7 +103,7 @@ const styles = (theme: any) => ({
 })
 
 // - Create component class
-export class PostComponent extends Component<IPostComponentProps, IPostComponentState> {
+export class PostComponent extends Component {
 
   styles = {
     dialog: {
@@ -118,7 +118,7 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor (props: IPostComponentProps) {
+  constructor (props) {
     super(props)
     const { post } = props
     this.state = {
@@ -141,11 +141,11 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
       /**
        * If it's true comment will be disabled on post
        */
-      disableComments: post.disableComments!,
+      disableComments: post.disableComments,
       /**
        * If it's true share will be disabled on post
        */
-      disableSharing: post.disableSharing!,
+      disableSharing: post.disableSharing,
       /**
        * Title of share post
        */
@@ -189,7 +189,7 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
     const { getPostComments, commentList, post } = this.props
     const { id, ownerUserId } = post
     if (!commentList) {
-      getPostComments!(ownerUserId!, id!)
+      getPostComments(ownerUserId, id)
     }
     this.setState({
       openComments: !this.state.openComments
@@ -228,13 +228,13 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
    */
   handleDelete = () => {
     const { post } = this.props
-    this.props.delete!(post.id!)
+    this.props.delete(post.id)
   }
 
   /**
    * Open post menu
    */
-  openPostMenu = (event: any) => {
+  openPostMenu = (event) => {
     console.log(event.currentTarget)
     this.setState({
       postMenuAnchorEl: event.currentTarget,
@@ -245,7 +245,7 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
   /**
    * Close post menu
    */
-  closePostMenu = (event: any) => {
+  closePostMenu = (event) => {
     this.setState({
       postMenuAnchorEl: event.currentTarget,
       isPostMenuOpen: false
@@ -262,7 +262,7 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
     const {translate} = this.props
     this.setState({
       openCopyLink: true,
-      shareTitle: translate!('post.copyLinkButton')
+      shareTitle: ('post.copyLinkButton')
     })
   }
 
@@ -302,9 +302,9 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
    */
   handleVote = () => {
     if (this.props.currentUserVote) {
-      this.props.unvote!()
+      this.props.unvote()
     } else {
-      this.props.vote!()
+      this.props.vote()
     }
   }
 
@@ -312,7 +312,7 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
    * Set open comment group function on state which passed by CommentGroup component
    * @param  {function} open the function to open comment list
    */
-  getOpenCommentGroup = (open: () => void) => {
+  getOpenCommentGroup = (open) => {
     this.setState({
       openCommentGroup: open
     })
@@ -322,7 +322,7 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
    * Handle read more event
    * @param  {event} evt  is the event passed by click on read more
    */
-  handleReadMore (event: any) {
+  handleReadMore (event) {
     this.setState({
       readMoreState: !this.state.readMoreState
 
@@ -340,7 +340,7 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
       <Manager>
         <Target>
           <IconButton
-            aria-owns={isPostMenuOpen! ? 'post-menu' : ''}
+            aria-owns={isPostMenuOpen ? 'post-menu' : ''}
             aria-haspopup='true'
             onClick={this.openPostMenu.bind(this)}
           >
@@ -350,22 +350,22 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
         </Target>
         <Popper
           placement='bottom-start'
-          eventsEnabled={isPostMenuOpen!}
+          eventsEnabled={isPostMenuOpen}
           className={classNames({ [classes.popperClose]: !isPostMenuOpen }, { [classes.popperOpen]: isPostMenuOpen })}
         >
           <ClickAwayListener onClickAway={this.closePostMenu}>
             <Grow in={isPostMenuOpen} >
               <Paper>
                 <MenuList role='menu'>
-                  <MenuItem onClick={this.handleOpenPostWrite} > {translate!('post.edit')} </MenuItem>
-                  <MenuItem onClick={this.handleDelete} > {translate!('post.delete')} </MenuItem>
+                  <MenuItem onClick={this.handleOpenPostWrite} > {('post.edit')} </MenuItem>
+                  <MenuItem onClick={this.handleDelete} > {('post.delete')} </MenuItem>
                   <MenuItem
-                    onClick={() => this.props.toggleDisableComments!(!post.disableComments)} >
-                    {post.disableComments ? translate!('post.enableComments') : translate!('post.disableComments')}
+                    onClick={() => this.props.toggleDisableComments(!post.disableComments)} >
+                    {post.disableComments ? ('post.enableComments') : ('post.disableComments')}
                   </MenuItem>
                   <MenuItem
-                    onClick={() => this.props.toggleSharingComments!(!post.disableSharing)} >
-                    {post.disableSharing ? translate!('post.enableSharing') : translate!('post.disableSharing')}
+                    onClick={() => this.props.toggleSharingComments(!post.disableSharing)} >
+                    {post.disableSharing ? ('post.enableSharing') : ('post.disableSharing')}
                   </MenuItem>
                 </MenuList>
               </Paper>
@@ -381,8 +381,8 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
       <Card>
         <CardHeader
           title={<NavLink to={`/${ownerUserId}`}>{ownerDisplayName}</NavLink>}
-          subheader={moment.unix(creationDate!).fromNow() + ' | ' + translate!('post.public')}
-          avatar={<NavLink to={`/${ownerUserId}`}><UserAvatar fullName={fullName!} fileName={avatar!} size={36} /></NavLink>}
+          subheader={moment.unix(creationDate).fromNow() + ' | ' + ('post.public')}
+          avatar={<NavLink to={`/${ownerUserId}`}><UserAvatar fullName={fullName} fileName={avatar} size={36} /></NavLink>}
           action={isPostOwner ? rightIconMenu : ''}
         >
         </CardHeader>
@@ -393,15 +393,15 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
 
         <CardContent className={classes.postBody}>
           <Linkify properties={{ target: '_blank', style: { color: 'blue' } }}>
-            {reactStringReplace(body, /#(\w+)/g, (match: string, i: string) => (
+            {reactStringReplace(body, /#(\w+)/g, (match, i) => (
               <NavLink
                 style={{ color: 'green' }}
                 key={match + i}
                 to={`/tag/${match}`}
                 onClick={evt => {
                   evt.preventDefault()
-                  goTo!(`/tag/${match}`)
-                  setHomeTitle!(`#${match}`)
+                  goTo(`/tag/${match}`)
+                  setHomeTitle(`#${match}`)
                 }}
               >
                 #{match}
@@ -423,7 +423,7 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
                 icon={<SvgFavoriteBorder style={{ fill: '#757575' }} />}
                 checked={this.props.currentUserVote}
               />
-              <div className={classes.voteCounter}> {this.props.voteCount! > 0 ? this.props.voteCount : ''} </div>
+              <div className={classes.voteCounter}> {this.props.voteCount > 0 ? this.props.voteCount : ''} </div>
             </IconButton>
           </div>
           {!post.disableComments ?
@@ -432,7 +432,7 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
               onClick={this.handleOpenComments}
               aria-label='Comment'>
               <SvgComment />
-              <div className={classes.commentCounter}>{post.commentCounter! > 0 ? post.commentCounter : ''} </div>
+              <div className={classes.commentCounter}>{post.commentCounter > 0 ? post.commentCounter : ''} </div>
             </IconButton>
             </div>) : ''}
           {!post.disableSharing ? (<IconButton
@@ -444,7 +444,7 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
 
         </CardActions>
 
-        <CommentGroup open={this.state.openComments} comments={commentList} ownerPostUserId={post.ownerUserId!} onToggleRequest={this.handleOpenComments} isPostOwner={this.props.isPostOwner!} disableComments={post.disableComments!} postId={post.id!} />
+        <CommentGroup open={this.state.openComments} comments={commentList} ownerPostUserId={post.ownerUserId} onToggleRequest={this.handleOpenComments} isPostOwner={this.props.isPostOwner} disableComments={post.disableComments} postId={post.id} />
 
         <ShareDialog 
         onClose={this.handleCloseShare} 
@@ -474,23 +474,23 @@ export class PostComponent extends Component<IPostComponentProps, IPostComponent
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: any, ownProps: IPostComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   const { post } = ownProps
   return {
-    vote: () => dispatch(voteActions.dbAddVote(post.id!, post.ownerUserId!)),
-    unvote: () => dispatch(voteActions.dbDeleteVote(post.id!, post.ownerUserId!)),
-    delete: (id: string) => dispatch(postActions.dbDeletePost(id)),
-    toggleDisableComments: (status: boolean) => {
+    vote: () => dispatch(voteActions.dbAddVote(post.id, post.ownerUserId)),
+    unvote: () => dispatch(voteActions.dbDeleteVote(post.id, post.ownerUserId)),
+    delete: (id) => dispatch(postActions.dbDeletePost(id)),
+    toggleDisableComments: (status) => {
       post.disableComments = status
-      dispatch(postActions.dbUpdatePost(post, (x: any) => x))
+      dispatch(postActions.dbUpdatePost(post, (x) => x))
     },
-    toggleSharingComments: (status: boolean) => {
+    toggleSharingComments: (status) => {
       post.disableSharing = status
-      dispatch(postActions.dbUpdatePost(post, (x: any) => x))
+      dispatch(postActions.dbUpdatePost(post, (x) => x))
     },
-    goTo: (url: string) => dispatch(push(url)),
-    setHomeTitle: (title: string) => dispatch(globalActions.setHeaderTitle(title || '')),
-    getPostComments: (ownerUserId: string, postId: string) => dispatch(commentActions.dbGetComments(ownerUserId, postId))
+    goTo: (url) => dispatch(push(url)),
+    setHomeTitle: (title) => dispatch(globalActions.setHeaderTitle(title || '')),
+    getPostComments: (ownerUserId, postId) => dispatch(commentActions.dbGetComments(ownerUserId, postId))
 
   }
 }
@@ -501,18 +501,18 @@ const mapDispatchToProps = (dispatch: any, ownProps: IPostComponentProps) => {
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: IPostComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   const { post, vote, authorize, comment } = state
   const { uid } = authorize
   let currentUserVote = ownProps.post.votes ? ownProps.post.votes[uid] : false
-  const postModel = post.userPosts[ownProps.post.ownerUserId!][ownProps.post.id!]
+  const postModel = post.userPosts[ownProps.post.ownerUserId][ownProps.post.id]
   const postOwner = (post.userPosts[uid] ? Object.keys(post.userPosts[uid]).filter((key) => { return ownProps.post.id === key }).length : 0)
-  const commentList: { [commentId: string]: Comment } = comment.postComments[ownProps.post.id!]
+  const commentList = comment.postComments[ownProps.post.id]
   return {
     translate: getTranslate(state.locale),
     commentList,
-    avatar: state.user.info && state.user.info[ownProps.post.ownerUserId!] ? state.user.info[ownProps.post.ownerUserId!].avatar || '' : '',
-    fullName: state.user.info && state.user.info[ownProps.post.ownerUserId!] ? state.user.info[ownProps.post.ownerUserId!].fullName || '' : '',
+    avatar: state.user.info && state.user.info[ownProps.post.ownerUserId] ? state.user.info[ownProps.post.ownerUserId].avatar || '' : '',
+    fullName: state.user.info && state.user.info[ownProps.post.ownerUserId] ? state.user.info[ownProps.post.ownerUserId].fullName || '' : '',
     voteCount: postModel.score,
     currentUserVote,
     isPostOwner: postOwner > 0
@@ -520,4 +520,4 @@ const mapStateToProps = (state: any, ownProps: IPostComponentProps) => {
 }
 
 // - Connect component to redux store
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(PostComponent as any) as any)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PostComponent))

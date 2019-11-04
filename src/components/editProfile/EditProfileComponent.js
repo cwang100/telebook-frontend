@@ -52,7 +52,7 @@ import { IEditProfileComponentProps } from './IEditProfileComponentProps'
 import { IEditProfileComponentState } from './IEditProfileComponentState'
 import { Profile } from 'core/domain/users'
 
-const styles = (theme: any) => ({
+const styles = (theme) => ({
   dialogTitle: {
     padding: 0
   },
@@ -103,7 +103,7 @@ const styles = (theme: any) => ({
 /**
  * Create component class
  */
-export class EditProfileComponent extends Component<IEditProfileComponentProps, IEditProfileComponentState> {
+export class EditProfileComponent extends Component {
 
   static propTypes = {
 
@@ -166,7 +166,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
    * Component constructor
    * @param  {object} props is an object properties of component
    */
-  constructor(props: IEditProfileComponentProps) {
+  constructor(props) {
     super(props)
     // Defaul state
     this.state = {
@@ -177,11 +177,11 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
       /**
        * User tag line input value
        */
-      tagLineInput: props.info!.tagLine || '',
+      tagLineInput: props.info.tagLine || '',
       /**
        * User full name input value
        */
-      fullNameInput: props.info!.fullName || '',
+      fullNameInput: props.info.fullName || '',
       /**
        * Error message of full name input
        */
@@ -205,7 +205,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
       /**
        * Default birth day
        */
-      defaultBirthday: (props.info && props.info.birthday) ? moment.unix(props.info!.birthday!).toDate() : '',
+      defaultBirthday: (props.info && props.info.birthday) ? moment.unix(props.info.birthday).toDate() : '',
       /**
        * Seleted birth day
        */
@@ -271,7 +271,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
   /**
    * Set banner image url
    */
-  handleRequestSetBanner = (url: string) => {
+  handleRequestSetBanner = (url) => {
     this.setState({
       banner: url
     })
@@ -280,7 +280,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
   /**
    * Set avatar image url
    */
-  handleRequestSetAvatar = (fileName: string) => {
+  handleRequestSetAvatar = (fileName) => {
     this.setState({
       avatar: fileName
     })
@@ -305,7 +305,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
         fullNameInputError: ''
       })
 
-      this.props.update!({
+      this.props.update({
         fullName: fullNameInput,
         tagLine: tagLineInput,
         avatar: avatar,
@@ -313,8 +313,8 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
         companyName: companyName,
         webUrl: webUrl,
         twitterId: twitterId,
-        creationDate: this.props.info!.creationDate,
-        birthday: selectedBirthday > 0 ? selectedBirthday : ((info && info.birthday) ? info!.birthday! : 0)
+        creationDate: this.props.info.creationDate,
+        birthday: selectedBirthday > 0 ? selectedBirthday : ((info && info.birthday) ? info.birthday : 0)
       })
     }
   }
@@ -323,7 +323,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
    * Handle data on input change
    * @param  {event} evt is an event of inputs of element on change
    */
-  handleInputChange = (event: any) => {
+  handleInputChange = (event) => {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
     const name = target.name
@@ -336,7 +336,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
    * Handle resize event for window to change sidebar status
    * @param  {any} event is the event is passed by winodw resize event
    */
-  handleResize = (event: any) => {
+  handleResize = (event) => {
 
     // Set initial state
     let width = window.innerWidth
@@ -356,7 +356,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
   /**
    * Handle birthday date changed
    */
-  handleBirthdayDateChange = (date: any) => {
+  handleBirthdayDateChange = (date) => {
     this.setState({ selectedBirthday: moment(date).unix() })
   }
 
@@ -394,7 +394,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
         <Dialog
           PaperProps={{ className: classes.fullPageXs }}
           key='Edit-Profile'
-          open={this.props.open!}
+          open={this.props.open}
           onClose={this.props.onRequestClose}
           maxWidth='sm'
         >
@@ -432,10 +432,10 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
 
             {/* Edit user information box*/}
             <Paper style={this.styles.paper} elevation={1}>
-              <div style={this.styles.title as any}>{translate!('profile.personalInformationLabel')}</div>
+              <div style={this.styles.title}>{('profile.personalInformationLabel')}</div>
               <div className={classes.box}>
                 <FormControl fullWidth aria-describedby='fullNameInputError'>
-                  <InputLabel htmlFor='fullNameInput'>{translate!('profile.fullName')}</InputLabel>
+                  <InputLabel htmlFor='fullNameInput'>{('profile.fullName')}</InputLabel>
                   <Input id='fullNameInput'
                     onChange={this.handleInputChange}
                     name='fullNameInput'
@@ -446,7 +446,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
               </div>
               <div className={classes.box}>
                 <FormControl fullWidth aria-describedby='tagLineInputError'>
-                  <InputLabel htmlFor='tagLineInput'>{translate!('profile.tagline')}</InputLabel>
+                  <InputLabel htmlFor='tagLineInput'>{('profile.tagline')}</InputLabel>
                   <Input id='tagLineInput'
                     onChange={this.handleInputChange}
                     name='tagLineInput'
@@ -461,7 +461,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
                   onChange={this.handleInputChange}
                   name='companyName'
                   value={companyName}
-                  label={translate!('profile.companyName')}
+                  label={('profile.companyName')}
                   fullWidth
                 />
               </div>
@@ -471,7 +471,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
                   onChange={this.handleInputChange}
                   name='twitterId'
                   value={twitterId}
-                  label={translate!('profile.twitterId')}
+                  label={('profile.twitterId')}
                   fullWidth
                 />
               </div>
@@ -481,7 +481,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
                   onChange={this.handleInputChange}
                   name='webUrl'
                   value={webUrl}
-                  label={translate!('profile.webUrl')}
+                  label={('profile.webUrl')}
                   fullWidth
                 />
               </div>
@@ -507,8 +507,8 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
             <div className={classes.bottomPaperSpace}></div>
           </DialogContent>
           <DialogActions className={classes.fixedDownStickyXS}>
-            <Button onClick={this.props.onRequestClose} > {translate!('profile.cancelButton')} </Button>
-            <Button variant='raised' color='primary' onClick={this.handleUpdate} style={this.styles.updateButton}> {translate!('profile.updateButton')} </Button>
+            <Button onClick={this.props.onRequestClose} > {('profile.cancelButton')} </Button>
+            <Button variant='raised' color='primary' onClick={this.handleUpdate} style={this.styles.updateButton}> {('profile.updateButton')} </Button>
           </DialogActions>
         </Dialog>
 
@@ -520,7 +520,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
 
         >
           <DialogTitle className={classes.dialogTitle}>
-            <AppDialogTitle title={translate!('profile.chooseBanerDialogTitle')} onRequestClose={this.handleCloseBannerGallery} />
+            <AppDialogTitle title={('profile.chooseBanerDialogTitle')} onRequestClose={this.handleCloseBannerGallery} />
           </DialogTitle>
           <ImageGallery set={this.handleRequestSetBanner} close={this.handleCloseBannerGallery} />
         </Dialog>
@@ -532,7 +532,7 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
           onClose={this.handleCloseAvatarGallery}
         >
           <DialogTitle className={classes.dialogTitle}>
-            <AppDialogTitle title={translate!('profile.chooseAvatarDialogTitle')} onRequestClose={this.handleCloseAvatarGallery} />
+            <AppDialogTitle title={('profile.chooseAvatarDialogTitle')} onRequestClose={this.handleCloseAvatarGallery} />
           </DialogTitle>
           <ImageGallery set={this.handleRequestSetAvatar} close={this.handleCloseAvatarGallery} />
         </Dialog>
@@ -548,9 +548,9 @@ export class EditProfileComponent extends Component<IEditProfileComponentProps, 
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: any, ownProps: IEditProfileComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    update: (info: Profile) => dispatch(userActions.dbUpdateUserInfo(info)),
+    update: (info) => dispatch(userActions.dbUpdateUserInfo(info)),
     onRequestClose: () => dispatch(userActions.closeEditProfile())
 
   }
@@ -562,7 +562,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: IEditProfileComponentProps)
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: IEditProfileComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   return {
     currentLanguage: getActiveLanguage(state.locale).code,
     translate: getTranslate(state.locale),
@@ -574,4 +574,4 @@ const mapStateToProps = (state: any, ownProps: IEditProfileComponentProps) => {
 }
 
 // - Connect component to redux store
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EditProfileComponent as any) as any)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(EditProfileComponent))
