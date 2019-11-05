@@ -97,10 +97,6 @@ export class PostComponent extends Component {
 
   }
 
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
   constructor (props) {
     super(props)
     const { post } = props
@@ -109,114 +105,36 @@ export class PostComponent extends Component {
        * Post text
        */
       text: post.body ? post.body : '',
-      /**
-       * It's true if whole the text post is visible
-       */
       readMoreState: false,
-      /**
-       * Handle open comment from parent component
-       */
-      openComments: false,
-      /**
-       * If it's true, share dialog will be open
-       */
-      shareOpen: false,
-      /**
-       * If it's true comment will be disabled on post
-       */
-      disableComments: post.disableComments,
-      /**
-       * If it's true share will be disabled on post
-       */
-      disableSharing: post.disableSharing,
-      /**
-       * Title of share post
-       */
-      shareTitle: 'Share On',
-      /**
-       * If it's true, post link will be visible in share post dialog
-       */
-      openCopyLink: false,
-      /**
-       * If it's true, post write will be open
-       */
-      openPostWrite: false,
-      /**
-       * Post menu anchor element
-       */
+      
       postMenuAnchorEl: null,
-      /**
-       * Whether post menu open
-       */
       isPostMenuOpen: false
     }
 
     // Binding functions to this
     this.handleReadMore = this.handleReadMore.bind(this)
-    this.getOpenCommentGroup = this.getOpenCommentGroup.bind(this)
-    this.handleVote = this.handleVote.bind(this)
-    this.handleOpenShare = this.handleOpenShare.bind(this)
-    this.handleCloseShare = this.handleCloseShare.bind(this)
-    this.handleCopyLink = this.handleCopyLink.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleOpenPostWrite = this.handleOpenPostWrite.bind(this)
     this.handleClosePostWrite = this.handleClosePostWrite.bind(this)
-    this.handleOpenComments = this.handleOpenComments.bind(this)
   }
 
-  /**
-   * Toggle on show/hide comment
-   * @param  {event} evt passed by clicking on comment slide show
-   */
-  handleOpenComments = () => {
-    const { getPostComments, commentList, post } = this.props
-    const { id, ownerUserId } = post
-    if (!commentList) {
-      getPostComments(ownerUserId, id)
-    }
-    this.setState({
-      openComments: !this.state.openComments
-    })
-  }
-
-  /**
-   * Open post write
-   *
-   *
-   * @memberof StreamComponent
-   */
   handleOpenPostWrite = () => {
     this.setState({
       openPostWrite: true
     })
   }
 
-  /**
-   * Close post write
-   *
-   *
-   * @memberof StreamComponent
-   */
   handleClosePostWrite = () => {
     this.setState({
       openPostWrite: false
     })
   }
 
-  /**
-   * Delete a post
-   *
-   *
-   * @memberof Post
-   */
   handleDelete = () => {
     const { post } = this.props
     this.props.delete(post.id)
   }
 
-  /**
-   * Open post menu
-   */
   openPostMenu = (event) => {
     console.log(event.currentTarget)
     this.setState({
@@ -225,9 +143,6 @@ export class PostComponent extends Component {
     })
   }
 
-  /**
-   * Close post menu
-   */
   closePostMenu = (event) => {
     this.setState({
       postMenuAnchorEl: event.currentTarget,
@@ -235,18 +150,6 @@ export class PostComponent extends Component {
     })
   }
 
-  /**
-   * Show copy link
-   *
-   *
-   * @memberof Post
-   */
-  handleCopyLink = () => {
-    this.setState({
-      openCopyLink: true,
-      shareTitle: ('post.copyLinkButton')
-    })
-  }
 
   /**
    * Handle read more event
@@ -305,7 +208,7 @@ export class PostComponent extends Component {
       </Manager>
     )
 
-    const { ownerUserId, ownerDisplayName, creationDate, image, body } = post
+    const { ownerUserId, ownerDisplayName, creationDate, body } = post
     // Define variables
     return (
       <Card>
@@ -329,12 +232,6 @@ export class PostComponent extends Component {
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   const { post } = ownProps
   return {
@@ -344,25 +241,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
-  const { post, vote, authorize, comment } = state
-  const { uid } = authorize
-  let currentUserVote = ownProps.post.votes ? ownProps.post.votes[uid] : false
-  const postModel = post.userPosts[ownProps.post.ownerUserId][ownProps.post.id]
-  const postOwner = (post.userPosts[uid] ? Object.keys(post.userPosts[uid]).filter((key) => { return ownProps.post.id === key }).length : 0)
-  const commentList = comment.postComments[ownProps.post.id]
+  const { post, authorize } = state
+  const uid= authorize.get('uid')
+  const postModel = post.get('userPosts')[ownProps.post.ownerUserId][ownProps.post.id]
+  const postOwner = (post.get('userPosts')[uid] ? Object.keys(post.get('userPosts')[uid]).filter((key) => { return ownProps.post.id === key }).length : 0)
   return {
-    commentList,
-    avatar: state.user.info && state.user.info[ownProps.post.ownerUserId] ? state.user.info[ownProps.post.ownerUserId].avatar || '' : '',
-    fullName: state.user.info && state.user.info[ownProps.post.ownerUserId] ? state.user.info[ownProps.post.ownerUserId].fullName || '' : '',
-    voteCount: postModel.score,
-    currentUserVote,
+    avatar: state.user.get('info') && state.user.get('info')[ownProps.post.ownerUserId] ? state.user.info[ownProps.post.ownerUserId].avatar || '' : '',
+    fullName: state.user.get('info') && state.user.get('info')[ownProps.post.ownerUserId] ? state.user.get('info')[ownProps.post.ownerUserId].fullName || '' : '',
     isPostOwner: postOwner > 0
   }
 }

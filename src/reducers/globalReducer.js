@@ -1,15 +1,8 @@
 // - Import action types
 import { GlobalActionType } from '../constants/globalActionType'
 
-// import { GlobalState } from './GlobalState'
-// import { IGlobalAction } from './IGlobalAction'
 import { Map, fromJS } from 'immutable'
 
-/**
- * Global reducer
- * @param {object} state
- * @param {object} action
- */
 export const globalReducer = (state = Map({progress:{visible: true}}), action) => {
   const { payload } = action
   switch (action.type) {
