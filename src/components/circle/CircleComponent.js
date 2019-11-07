@@ -1,16 +1,16 @@
 // - Import react components
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { push } from 'react-router-redux'
+import { push } from 'connected-react-router'
 import List, {
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText
 } from 'material-ui/List'
-import SvgGroup from 'material-ui-icons/GroupWork'
+import SvgGroup from '@material-ui/icons/GroupWork'
 import IconButton from 'material-ui/IconButton'
-import MoreVertIcon from 'material-ui-icons/MoreVert'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 import TextField from 'material-ui/TextField'
 import { MenuList, MenuItem } from 'material-ui/Menu'
 import { withStyles } from 'material-ui/styles'
@@ -18,7 +18,7 @@ import { Manager, Target, Popper } from 'react-popper'
 import Grow from 'material-ui/transitions/Grow'
 import ClickAwayListener from 'material-ui/utils/ClickAwayListener'
 import classNames from 'classnames'
-import IconButtonElement from 'layouts/IconButtonElement'
+import IconButtonElement from '../iconButtonElement'
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -32,9 +32,6 @@ import SvgClose from 'material-ui-icons/Close'
 import AppBar from 'material-ui/AppBar'
 import Paper from 'material-ui/Paper'
 import Collapse from 'material-ui/transitions/Collapse'
-
-// - Import app components
-import UserAvatar from '../userAvatar'
 
 // - Import API
 
@@ -216,7 +213,6 @@ export class CircleComponent extends Component {
             value={2}
             onClick={() => this.props.goTo(`/${userId}`)}
           >
-            <UserAvatar fullName={fullName} fileName={avatar} />
             <ListItemText inset primary={fullName} />
             </ListItem>)
 

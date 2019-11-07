@@ -15,12 +15,8 @@ export default class AppInputComponent extends Component {
   constructor(props) {
     super(props)
 
-    // Defaul state
     this.state = {
     }
-
-    // Binding functions to `this`
-
   }
   focus = () => {
     this.input.focus()

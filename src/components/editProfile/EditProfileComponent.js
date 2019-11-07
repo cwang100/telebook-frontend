@@ -12,8 +12,8 @@ import MomentLocaleUtils, {
 
 import { grey } from 'material-ui/colors'
 import IconButton from 'material-ui/IconButton'
-import MoreVertIcon from 'material-ui-icons/MoreVert'
-import SvgCamera from 'material-ui-icons/PhotoCamera'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import SvgCamera from '@material-ui/icons/PhotoCamera'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import Menu, { MenuList, MenuItem } from 'material-ui/Menu'
 import Button from 'material-ui/Button'

@@ -9,20 +9,12 @@ import InfiniteScroll from 'react-infinite-scroller'
 import UserBoxList from '../userBoxList'
 import LoadMoreProgressComponent from '../loadMoreProgress'
 
-// - Import API
-
-// - Import actions
 import * as userActions from '../../actions/userActions'
 
 /**
  * Create component class
  */
 export class FindPeopleComponent extends Component {
-
-    /**
-     * Component constructor
-     * @param  {object} props is an object properties of component
-     */
   constructor (props) {
     super(props)
 
@@ -46,7 +38,7 @@ export class FindPeopleComponent extends Component {
      * @return {react element} return the DOM which rendered by component
      */
   render () {
-    const {hasMorePeople, translate} = this.props
+    const {hasMorePeople} = this.props
 
     return (
             <div>
@@ -88,16 +80,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
-  const {people, info} = state.user
+  const people = state.user.get('people') || {}
+  const info = state.user.get('info') 
   return {
-    // translate: getTranslate(state.locale),
     peopleInfo: info,
     hasMorePeople: people.hasMoreData
   }

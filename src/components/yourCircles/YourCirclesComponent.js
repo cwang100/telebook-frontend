@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import List from 'material-ui/List'
 
 // - Import app components
-import CircleComponent from 'components/circle'
+import CircleComponent from '../circle'
 
 // - Import API
 

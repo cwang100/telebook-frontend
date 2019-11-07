@@ -405,19 +405,18 @@ const mapDispatchToProps = (dispatch, ownProps) => {
  * @return {object}          props of component
  */
 const mapStateToProps = (state, ownProps) => {
-
   const { circle, authorize, server } = state
-  const { uid } = authorize
-  const { request } = server
+  const uid = authorize.get('uid')
+  const request = server.get('request')
 
-  const circles = circle ? (circle.circleList || {}) : {}
-  const userBelongCircles = circle ? (circle.userTies[ownProps.userId] ? circle.userTies[ownProps.userId].circleIdList : []) : []
+  const circles = circle ? (circle.get('circleList') || {}) : {}
+  const userBelongCircles = circle ? (circle.get('userTies')[ownProps.userId] ? circle.get('userTies')[ownProps.userId].circleIdList : []) : []
   const isFollowed = userBelongCircles.length > 0
   const followingCircleId = circles ? Object.keys(circles)
     .filter((circleId) => circles[circleId].isSystem && circles[circleId].name === `Following`)[0] : ''
-  const followRequest = request ? request[StringAPI.createServerRequestId(ServerRequestType.CircleFollowUser, ownProps.userId)] : null
-  const addToCircleRequest = request ? request[StringAPI.createServerRequestId(ServerRequestType.CircleAddToCircle, ownProps.userId)] : null
-  const deleteFollowingUserRequest = request ? request[StringAPI.createServerRequestId(ServerRequestType.CircleDeleteFollowingUser, ownProps.userId)] : null
+  const followRequest = request ? request[ServerRequestType.CircleFollowUser + ownProps.userId] : null
+  const addToCircleRequest = request ? request[ServerRequestType.CircleAddToCircle + ownProps.userId] : null
+  const deleteFollowingUserRequest = request ? request[ServerRequestType.CircleDeleteFollowingUser + ownProps.userId] : null
   const selectedCircles = circle.selectedCircles ? circle.selectedCircles[ownProps.userId] : []
   const isSelecteCirclesOpen = circle.openSelecteCircles ? circle.openSelecteCircles[ownProps.userId] : []
 

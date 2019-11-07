@@ -4,10 +4,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
 // - Import app components
-import UserBox from 'components/userBox'
-
-import { IUserBoxListComponentProps } from './IUserBoxListComponentProps'
-import { IUserBoxListComponentState } from './IUserBoxListComponentState'
+import UserBox from '../userBox'
 
 // - Import API
 
@@ -92,7 +89,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
  * @return {object}          props of component
  */
 const mapStateToProps = (state, ownProps) => {
-  const {uid} = state.authorize
+  const uid = state.authorize.get('uid')
   return {
     uid
   }
