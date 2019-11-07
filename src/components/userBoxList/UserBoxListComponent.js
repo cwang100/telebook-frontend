@@ -16,7 +16,7 @@ import { IUserBoxListComponentState } from './IUserBoxListComponentState'
 /**
  * Create component class
  */
-export class UserBoxListComponent extends Component<IUserBoxListComponentProps,IUserBoxListComponentState> {
+export class UserBoxListComponent extends Component {
 
   static propTypes = {
         /**
@@ -29,7 +29,7 @@ export class UserBoxListComponent extends Component<IUserBoxListComponentProps,I
      * Component constructor
      * @param  {object} props is an object properties of component
      */
-  constructor (props: IUserBoxListComponentProps) {
+  constructor (props) {
     super(props)
 
         // Defaul state
@@ -79,7 +79,7 @@ export class UserBoxListComponent extends Component<IUserBoxListComponentProps,I
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapDispatchToProps = (dispatch: Function, ownProps: IUserBoxListComponentProps) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
 
   }
@@ -91,7 +91,7 @@ const mapDispatchToProps = (dispatch: Function, ownProps: IUserBoxListComponentP
  * @param  {object} ownProps is the props belong to component
  * @return {object}          props of component
  */
-const mapStateToProps = (state: any, ownProps: IUserBoxListComponentProps) => {
+const mapStateToProps = (state, ownProps) => {
   const {uid} = state.authorize
   return {
     uid
@@ -99,4 +99,4 @@ const mapStateToProps = (state: any, ownProps: IUserBoxListComponentProps) => {
 }
 
 // - Connect component to redux store
-export default connect(mapStateToProps, mapDispatchToProps)(UserBoxListComponent as any)
+export default connect(mapStateToProps, mapDispatchToProps)(UserBoxListComponent)
