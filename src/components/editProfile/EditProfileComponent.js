@@ -229,13 +229,7 @@ export class EditProfileComponent extends Component {
     })
   }
 
-  /**
-   * Handle resize event for window to change sidebar status
-   * @param  {any} event is the event is passed by winodw resize event
-   */
   handleResize = (event) => {
-
-    // Set initial state
     let width = window.innerWidth
 
     if (width > 900) {
@@ -250,9 +244,6 @@ export class EditProfileComponent extends Component {
     }
   }
 
-  /**
-   * Handle birthday date changed
-   */
   handleBirthdayDateChange = (date) => {
     this.setState({ selectedBirthday: moment(date).unix() })
   }
@@ -261,13 +252,9 @@ export class EditProfileComponent extends Component {
     this.handleResize(null)
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render() {
 
-    const { classes, translate, currentLanguage } = this.props
+    const { classes, currentLanguage } = this.props
     const { defaultBirthday, webUrl, twitterId, companyName } = this.state
     const iconButtonElement = (
       <IconButton style={this.state.isSmall ? this.styles.iconButtonSmall : this.styles.iconButton}>
@@ -409,7 +396,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     update: (info) => dispatch(userActions.dbUpdateUserInfo(info)),
     onRequestClose: () => dispatch(userActions.closeEditProfile())
-
   }
 }
 

@@ -71,7 +71,7 @@ export const globalReducer = (state = Map({progress:{visible: true}}), action) =
 
     case GlobalActionType.TEMP:
       return state
-        .mergeIn(['temp', 'caller'], fromJS([payload.caller]))
+        .mergeIn(['temp', 'caller'], fromJS({'caller': payload.caller}))
 
     case GlobalActionType.CLEAR_ALL_GLOBAL:
       return state

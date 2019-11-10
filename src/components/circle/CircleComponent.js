@@ -64,11 +64,7 @@ const styles = (theme) => ({
   }
 })
 
-/**
- * Create component class
- */
 export class CircleComponent extends Component {
-
   styles = {
     userListItem: {
       backgroundColor: '#e2e2e2'
@@ -95,10 +91,6 @@ export class CircleComponent extends Component {
     }
   }
 
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
   constructor (props) {
     super(props)
 
@@ -130,12 +122,6 @@ export class CircleComponent extends Component {
     this.handleChangeCircleName = this.handleChangeCircleName.bind(this)
   }
 
-  /**
-   * Handle chage circle name
-   *
-   *
-   * @memberof CircleComponent
-   */
   handleChangeCircleName = (evt) => {
     const { value } = evt.target
     this.setState({
@@ -144,30 +130,18 @@ export class CircleComponent extends Component {
     })
   }
 
-  /**
-   * Handle close menu
-   */
   handleCloseMenu = () => {
     this.setState({
       isMenuOpen: false
     })
   }
 
-  /**
-   * Handle open menu
-   */
   handleOpenMenu = () => {
     this.setState({
       isMenuOpen: true
     })
   }
 
-  /**
-   * Update user's circle
-   *
-   *
-   * @memberof CircleComponent
-   */
   handleUpdateCircle = () => {
     const { circleName } = this.state
     if (circleName && circleName.trim() !== '') {
@@ -175,22 +149,10 @@ export class CircleComponent extends Component {
     }
   }
 
-  /**
-   * Handle delete circle
-   *
-   *
-   * @memberof CircleComponent
-   */
   handleDeleteCircle = () => {
     this.props.deleteCircle(this.props.id)
   }
 
-  /**
-   * Toggle circle to close/open
-   *
-   *
-   * @memberof CircleComponent
-   */
   handleToggleCircle = () => {
     this.setState({
       open: !this.state.open
@@ -221,19 +183,11 @@ export class CircleComponent extends Component {
     }
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render () {
 
     const { circle, classes } = this.props
     const { isMenuOpen } = this.state
-    /**
-     * Right icon menue of circle
-     *
-     */
-    // tslint:disable-next-line:member-ordering
+
     const rightIconMenu = (
       <Manager>
         <Target>
@@ -348,17 +302,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   const { circle, authorize, server } = state
-  const { userTies } = circle
-  const { uid } = state.authorize
-  const circles = circle ? (circle.circleList || {}) : {}
+  const userTies = circle.get('userTies')
+  const uid = state.authorize.get('uid')
+  const circles = circle ? (circle.get('circleList') || {}) : {}
   const currentCircle = (circles ? circles[ownProps.id] : {})
   const circleId = ownProps.circle.id
   let usersOfCircle = {}
@@ -373,11 +321,9 @@ const mapStateToProps = (state, ownProps) => {
   })
   return {
     usersOfCircle,
-    openSetting: (state.circle && state.circle.openSetting && state.circle.openSetting[circleId]) ? state.circle.openSetting[circleId] : false,
-    userInfo: state.user.info
-
+    openSetting: (state.circle && state.circle.get('openSetting') && state.circle.get('openSetting')[circleId]) ? state.circle.get('openSetting')[circleId] : false,
+    userInfo: state.user.get('info')
   }
 }
 
-// - Connect component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CircleComponent))

@@ -5,44 +5,34 @@ import PropTypes from 'prop-types'
 import Paper from 'material-ui/Paper'
 import InfiniteScroll from 'react-infinite-scroller'
 
-// - Import app components
 import UserBoxList from '../userBoxList'
 import LoadMoreProgressComponent from '../loadMoreProgress'
 
 import * as userActions from '../../actions/userActions'
 
-/**
- * Create component class
- */
 export class FindPeopleComponent extends Component {
   constructor (props) {
     super(props)
-
-        // Defaul state
     this.state = {
 
     }
-
   }
 
-  /**
-   * Scroll loader
-   */
+  componentWillMount () {
+    this.scrollLoad(0)
+  }
+
   scrollLoad = (page) => {
     const {loadPeople} = this.props
     loadPeople(page, 10)
   }
 
-    /**
-     * Reneder component DOM
-     * @return {react element} return the DOM which rendered by component
-     */
   render () {
     const {hasMorePeople} = this.props
 
     return (
             <div>
-                <InfiniteScroll
+              <InfiniteScroll
                 pageStart={0}
                 loadMore={this.scrollLoad}
                 hasMore={hasMorePeople}
@@ -60,20 +50,14 @@ export class FindPeopleComponent extends Component {
                 <div style={{ height: '24px' }}></div>
                 </div>) : (<div className='g__title-center'>
                 {('people.nothingToShowLabel')}
-               </div>)}
+                </div>)}
                 </div>
-            </InfiniteScroll>
+              </InfiniteScroll>
             </div>
     )
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     loadPeople: (page, limit) => dispatch(userActions.dbGetPeopleInfo(page, limit))
@@ -89,5 +73,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-// - Connect component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(FindPeopleComponent)

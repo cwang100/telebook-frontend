@@ -119,7 +119,7 @@ export const setHeaderTitleOpt = (callerKey, payload) => {
   return (dispatch, getState) => {
     switch (callerKey) {
       case 'profile':
-        const userName = getState().user.info && getState().user.info[payload] ? getState().user.info[payload].fullName : ''
+        const userName = getState().user.get('info') && getState().user.get('info').get(payload) ? getState().user.get('info').get(payload).fullName : ''
         dispatch(setHeaderTitle(userName))
         break
       default:

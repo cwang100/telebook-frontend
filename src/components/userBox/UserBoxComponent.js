@@ -287,7 +287,7 @@ export class UserBoxComponent extends Component {
 
   render () {
     const { disabledDoneCircles } = this.state
-    const { isFollowed, followRequest, userId, isSelecteCirclesOpen, addToCircleRequest, deleteFollowingUserRequest, classes, translate } = this.props
+    const { isFollowed, followRequest, userId, isSelecteCirclesOpen, addToCircleRequest, deleteFollowingUserRequest, classes } = this.props
 
     return (
       <Paper key={userId} elevation={1} className={classNames('grid-cell', classes.paper)}>
@@ -303,7 +303,7 @@ export class UserBoxComponent extends Component {
         }}>
           <div onClick={() => this.props.goTo(`/${this.props.userId}`)} className='people__name' style={{ cursor: 'pointer' }}>
             <div>
-              {this.props.user.fullName}
+              {this.props.fullName}
             </div>
           </div>
           <div style={this.styles.followButton}>
@@ -325,7 +325,6 @@ export class UserBoxComponent extends Component {
           key={this.props.userId || 0}
           open={isSelecteCirclesOpen === true}
           onClose={this.onRequestCloseAddCircle}
-
         >
           <DialogContent className={classes.dialogContent}>
             <List>
@@ -398,19 +397,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   const { circle, authorize, server } = state
   const uid = authorize.get('uid')
   const request = server.get('request')
 
   const circles = circle ? (circle.get('circleList') || {}) : {}
-  const userBelongCircles = circle ? (circle.get('userTies')[ownProps.userId] ? circle.get('userTies')[ownProps.userId].circleIdList : []) : []
+  const userBelongCircles = circle.get('userTies') ? (circle.get('userTies')[ownProps.userId] ? circle.get('userTies')[ownProps.userId].circleIdList : []) : []
   const isFollowed = userBelongCircles.length > 0
   const followingCircleId = circles ? Object.keys(circles)
     .filter((circleId) => circles[circleId].isSystem && circles[circleId].name === `Following`)[0] : ''
@@ -430,8 +423,8 @@ const mapStateToProps = (state, ownProps) => {
     followRequest,
     belongCirclesCount: userBelongCircles.length || 0,
     firstBelongCircle: userBelongCircles ? (circles ? circles[userBelongCircles[0]] : {}) : {},
-    avatar: state.user.info && state.user.info[ownProps.userId] ? state.user.info[ownProps.userId].avatar || '' : '',
-    fullName: state.user.info && state.user.info[ownProps.userId] ? state.user.info[ownProps.userId].fullName || '' : ''
+    avatar: state.user.get('info') && state.user.get('info')[ownProps.userId] ? state.user.get('info')[ownProps.userId].avatar || '' : '',
+    fullName: state.user.get('info') && state.user.get('info')[ownProps.userId] ? state.user.get('info')[ownProps.userId].fullName || '' : ''
   }
 }
 

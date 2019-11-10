@@ -17,10 +17,6 @@ export class HomeRouter extends Component {
           enabled ? (
           <Switch>
             <PrivateRoute path='/people/:tab?' component={<People />} />
-
-            <PrivateRoute path='/tag/:tag' component={(
-              <div><St displayWriting={false} homeTitle={`#${match.params.tag}`} posts={data.mergedPosts} /></div>
-            )} />
             <Route path='/:userId/posts/:postId/:tag?' component={PostPage} />
             <Route path='/:userId' component={Profile} />
             <PrivateRoute path='/' component={(

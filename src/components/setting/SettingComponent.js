@@ -9,12 +9,8 @@ import RaisedButton from 'material-ui/Button'
 import Button from 'material-ui/Button'
 import { withStyles } from 'material-ui/styles'
 import config from '../../config'
-// import { getTranslate, getActiveLanguage } from 'react-localize-redux'
 
-// - Import actions
 import {authorizeActions} from '../../actions'
-// import { ISettingComponentProps } from './ISettingComponentProps'
-// import { ISettingComponentState } from './ISettingComponentState'
 import { Grid } from 'material-ui'
 
 const styles = (theme) => ({
@@ -35,19 +31,8 @@ const styles = (theme) => ({
     margin: 'auto'
   },
 })
-/**
- * Create component class
- *
- * @export
- * @class SettingComponent
- * @extends {Component}
- */
-export class SettingComponent extends Component {
 
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
+export class SettingComponent extends Component {
   constructor (props) {
     super(props)
 
@@ -58,15 +43,10 @@ export class SettingComponent extends Component {
       confirmInputError: ''
 
     }
-    // Binding function to `this`
-    this.handleForm = this.handleForm.bind(this)
 
+    this.handleForm = this.handleForm.bind(this)
   }
 
-  /**
-   * Handle data on input change
-   * @param  {event} evt is an event of inputs of element on change
-   */
   handleInputChange = (event) => {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
@@ -101,19 +81,19 @@ export class SettingComponent extends Component {
     let error = false
     if (this.state.passwordInput === '') {
       this.setState({
-        passwordInputError: ('changePassword.newPasswordRequiredError')
+        passwordInputError: ('Password is required.')
       })
       error = true
 
     } else if (this.state.confirmInput === '') {
       this.setState({
-        confirmInputError: ('changePassword.confirmPasswordRequiredError')
+        confirmInputError: ('Confirm password is required.')
       })
       error = true
 
     } else if (this.state.confirmInput !== this.state.passwordInput) {
       this.setState({
-        confirmInputError: ('changePassword.confirmPasswordEqualNewPasswordError')
+        confirmInputError: ('Confirm password needs to equal to password.')
       })
       error = true
 
@@ -128,13 +108,9 @@ export class SettingComponent extends Component {
 
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render () {
 
-    const {classes, translate} = this.props
+    const {classes} = this.props
 
     return (
       <Grid container spacing={24}>
@@ -157,7 +133,7 @@ export class SettingComponent extends Component {
                   fontWeight: 400,
                   lineHeight: '32px',
                   margin: 0
-                }} className='zoomOutLCorner animated g__paper-title'>{('changePassword.title')}</h2>
+                }} className='zoomOutLCorner animated g__paper-title'>{('Change Password')}</h2>
               </div>
 
               <TextField
@@ -166,7 +142,7 @@ export class SettingComponent extends Component {
                 onChange={this.handleInputChange}
                 helperText={this.state.passwordInputError}
                 name='passwordInput'
-                label={('changePassword.newPasswordLabel')}
+                label={('New Password')}
                 type='password'
                 error={this.state.passwordInputError.trim() !== ''}
               /><br />
@@ -175,7 +151,7 @@ export class SettingComponent extends Component {
                 onChange={this.handleInputChange}
                 helperText={this.state.confirmInputError}
                 name='confirmInput'
-                label={('changePassword.confirmPasswordLabel')}
+                label={('Confirm Password')}
                 type='password'
                 error={this.state.confirmInputError.trim() !== ''}
               /><br />
@@ -183,10 +159,10 @@ export class SettingComponent extends Component {
               <br />
               <div className='settings__button-box'>
                 <div>
-                  <Button onClick={this.props.homePage} > {('changePassword.homeButton')} </Button>
+                  <Button onClick={this.props.homePage} > {('Home')} </Button>
                 </div>
                 <div>
-                  <Button variant='raised' color='primary' onClick={this.handleForm}> {('changePassword.changePasswordButton')} </Button>
+                  <Button variant='raised' color='primary' onClick={this.handleForm}> {('Change Password')} </Button>
 
                 </div>
               </div>

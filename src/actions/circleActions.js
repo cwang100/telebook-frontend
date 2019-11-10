@@ -43,7 +43,7 @@ export const dbFollowUser = (followingCircleId, userFollowing) => {
   return (dispatch, getState) => {
     const state = getState()
     let uid = state.authorize.get('uid')
-    let user = { ...state.user.get('info')[uid], userId: uid }
+    let user = { ...state.user.get('info').get(uid), userId: uid }
 
     const followReqestModel = createFollowRequest(userFollowing.userId)
     dispatch(serverActions.sendRequest(followReqestModel))
@@ -89,7 +89,7 @@ export let dbUpdateUserInCircles = (circleIdList, userFollowing) => {
   return (dispatch, getState) => {
     const state = getState()
     let uid = state.authorize.get('uid')
-    let user = { ...state.user.get('info')[uid].userId }
+    let user = { ...state.user.get('info').get(uid) }
 
     const addToCircleRequest = createAddToCircleRequest(userFollowing.userId)
     dispatch(serverActions.sendRequest(addToCircleRequest))

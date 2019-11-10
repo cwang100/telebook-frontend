@@ -124,7 +124,7 @@ export const dbGetPeopleInfo = (page, limit) => {
         if (!result.users || !(result.users.length > 0)) {
           return dispatch(notMoreDataPeople())
         }
-        // Store last user Id
+
         dispatch(lastUserPeople(result.newLastUserId))
 
         let parsedData: {[userId]: Profile} = {}
@@ -146,11 +146,6 @@ export const dbGetPeopleInfo = (page, limit) => {
   }
 }
 
-/* _____________ CRUD State _____________ */
-
-/**
- * Add user information
- */
 export const addUserInfo = (uid: string, info: Profile) => {
   return {
     type: UserActionType.ADD_USER_INFO,
@@ -158,21 +153,14 @@ export const addUserInfo = (uid: string, info: Profile) => {
   }
 }
 
-/**
- * Add people information
- * @param {[userId: string]: Profile} infoList is the lst of information about users
- */
-export const addPeopleInfo = (infoList: {[userId: string]: Profile}) => {
+export const addPeopleInfo = (infoList) => {
   return {
     type: UserActionType.ADD_PEOPLE_INFO,
     payload: infoList
   }
 }
 
-/**
- * Update user information
- */
-export const updateUserInfo = (uid: string, info: Profile) => {
+export const updateUserInfo = (uid, info) => {
   return {
     type: UserActionType.UPDATE_USER_INFO,
     payload: { uid, info }
@@ -185,9 +173,6 @@ export const clearAllData = () => {
   }
 }
 
-/**
- * Open edit profile
- */
 export const openEditProfile = () => {
   return {
     type: UserActionType.OPEN_EDIT_PROFILE
@@ -195,9 +180,6 @@ export const openEditProfile = () => {
 
 }
 
-/**
- * Close edit profile
- */
 export const closeEditProfile = () => {
   return {
     type: UserActionType.CLOSE_EDIT_PROFILE
@@ -205,9 +187,6 @@ export const closeEditProfile = () => {
 
 }
 
-/**
- * Set profile posts has more data to show
- */
 export const hasMoreDataPeople = () => {
   return {
     type: UserActionType.HAS_MORE_DATA_PEOPLE
@@ -215,9 +194,6 @@ export const hasMoreDataPeople = () => {
 
 }
 
-/**
- * Set profile posts has not data any more to show
- */
 export const notMoreDataPeople = () => {
   return {
     type: UserActionType.NOT_MORE_DATA_PEOPLE
@@ -225,9 +201,6 @@ export const notMoreDataPeople = () => {
 
 }
 
-/**
- * Set last page request of profile posts
- */
 export const requestPagePeople = (page: number) => {
   return {
     type: UserActionType.REQUEST_PAGE_PEOPLE,
@@ -236,13 +209,9 @@ export const requestPagePeople = (page: number) => {
 
 }
 
-/**
- * Set last user identification of find people page
- */
 export const lastUserPeople = (lastUserId: string) => {
   return {
     type: UserActionType.LAST_USER_PEOPLE,
     payload: { lastUserId}
   }
-
 }
