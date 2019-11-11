@@ -304,11 +304,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
   const { circle, authorize, server } = state
-  const userTies = circle.get('userTies')
+  let userTies = circle.get('userTies') ? circle.get('userTies').toJS() : {}
   const uid = state.authorize.get('uid')
   const circles = circle ? (circle.get('circleList') || {}) : {}
   const currentCircle = (circles ? circles[ownProps.id] : {})
   const circleId = ownProps.circle.id
+
   let usersOfCircle = {}
   Object.keys(userTies).forEach((userTieId) => {
     const theUserTie = userTies[userTieId]

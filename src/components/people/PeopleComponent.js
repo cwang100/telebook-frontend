@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import { grey, cyan } from 'material-ui/colors'
 import { push } from 'connected-react-router'

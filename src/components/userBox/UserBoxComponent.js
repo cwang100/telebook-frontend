@@ -2,11 +2,9 @@
 import React, { Component } from 'react'
 import moment from 'moment/moment'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import { push } from 'connected-react-router'
 import classNames from 'classnames'
 
-// - Material UI
 import Paper from 'material-ui/Paper'
 import Button from 'material-ui/Button'
 import RaisedButton from 'material-ui/Button'
@@ -28,7 +26,6 @@ import SvgAdd from 'material-ui-icons/Add'
 import IconButton from 'material-ui/IconButton'
 import { grey } from 'material-ui/colors'
 
-// - Import actions
 import * as circleActions from '../../actions/circleActions'
 
 import { ServerRequestType } from '../../constants/serverRequestType'
@@ -68,25 +65,7 @@ const styles = (theme) => ({
   }
 })
 
-/**
- * Create component class
- */
 export class UserBoxComponent extends Component {
-  /**
-   * Fields
-   */
-  static propTypes = {
-    /**
-     * User identifier
-     */
-    userId: PropTypes.string,
-    /**
-     * User information
-     */
-    user: PropTypes.object
-
-  }
-
   styles = {
     followButton: {
       position: 'absolute',
@@ -100,12 +79,7 @@ export class UserBoxComponent extends Component {
       borderRadius: '4px'
     }
   }
-  selectedCircles
 
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
   constructor (props) {
     super(props)
     const { userBelongCircles, circles, userId } = this.props
@@ -315,7 +289,7 @@ export class UserBoxComponent extends Component {
                 (deleteFollowingUserRequest ? deleteFollowingUserRequest.status === ServerRequestStatusType.Sent : false)
               }
             >
-              {!isFollowed ? ('userBox.followButton')
+              {!isFollowed ? ('Follow')
                 : (this.props.belongCirclesCount > 1 ? ('userBox.numberOfCircleButton', {circlesCount: this.props.belongCirclesCount}) : ((this.props.firstBelongCircle) ? this.props.firstBelongCircle.name : ('Follow')))}
             </Button>
           </div>
@@ -358,7 +332,7 @@ export class UserBoxComponent extends Component {
               onClick={this.onRequestCloseAddCircle}
               style={{ color: grey[800] }}
             >
-              {('cancelButton')}
+              {'Cancel'}
         </Button>
             <Button
               color='primary'
@@ -367,7 +341,7 @@ export class UserBoxComponent extends Component {
               disabled={disabledDoneCircles || (addToCircleRequest ? addToCircleRequest.status === ServerRequestStatusType.Sent : false)}
               onClick={this.handleDoneAddCircle}
             >
-              {('doneButton')}
+              {'Done'}
         </Button>
           </DialogActions>
         </Dialog>
@@ -402,7 +376,7 @@ const mapStateToProps = (state, ownProps) => {
   const uid = authorize.get('uid')
   const request = server.get('request')
 
-  const circles = circle ? (circle.get('circleList') || {}) : {}
+  const circles = circle ? (circle.get('circleList').toJS() || {}) : {}
   const userBelongCircles = circle.get('userTies') ? (circle.get('userTies')[ownProps.userId] ? circle.get('userTies')[ownProps.userId].circleIdList : []) : []
   const isFollowed = userBelongCircles.length > 0
   const followingCircleId = circles ? Object.keys(circles)
@@ -410,8 +384,8 @@ const mapStateToProps = (state, ownProps) => {
   const followRequest = request ? request[ServerRequestType.CircleFollowUser + ownProps.userId] : null
   const addToCircleRequest = request ? request[ServerRequestType.CircleAddToCircle + ownProps.userId] : null
   const deleteFollowingUserRequest = request ? request[ServerRequestType.CircleDeleteFollowingUser + ownProps.userId] : null
-  const selectedCircles = circle.selectedCircles ? circle.selectedCircles[ownProps.userId] : []
-  const isSelecteCirclesOpen = circle.openSelecteCircles ? circle.openSelecteCircles[ownProps.userId] : []
+  const selectedCircles = circle.get('selectedCircles') ? circle.get('selectedCircles')[ownProps.userId] : []
+  const isSelecteCirclesOpen = circle.get('openSelecteCircles') ? circle.get('openSelecteCircles')[ownProps.userId] : []
 
   return {
     isSelecteCirclesOpen,

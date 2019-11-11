@@ -11,9 +11,9 @@ export class GraphService {
         .then(() => {
           resolve(graphRef.id)
         })
-        .catch((error) => {
-          reject(new SocialError(error.code,error.message))
-        })
+        // .catch((error) => {
+        //   reject(new SocialError(error.code,error.message))
+        // })
       })
     }
 

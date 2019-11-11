@@ -26,7 +26,7 @@ export class UserTieService {
     ).then((result) => {
       resolve()
     })
-    .catch((error) => reject(new SocialError(error.code, 'firestore/tieUseres :' + error.message)))
+    //.catch((error) => reject(new SocialError(error.code, 'firestore/tieUseres :' + error.message)))
     })
   }
 

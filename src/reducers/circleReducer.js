@@ -8,14 +8,14 @@ import { CircleActionType } from '../constants/circleActionType'
 const addCircle = (state , payload) => {
   const circle = payload.circle
   return state
-    .setIn(['circleList', circle.get('id')], payload.circle)
+    .setIn(['circleList', circle.id], payload.circle)
 }
 
 const updateCircle = (state , payload) => {
   const circle = payload.circle
   return state
-        .setIn(['openSetting', circle.get('id')], false)
-        .setIn(['circleList', circle.get('id')], payload.circle)
+        .setIn(['openSetting', circle.id], false)
+        .setIn(['circleList', circle.id], payload.circle)
 }
 
 export let circleReducer = (state = Map(), action) => {
@@ -39,8 +39,8 @@ export let circleReducer = (state = Map(), action) => {
     case CircleActionType.ADD_FOLLOWING_USER:
     const userTie = payload.userTie
       return state
-        .setIn(['userTies', userTie.get('userId')], payload.userTie)
-        .setIn(['selectedCircles', userTie.get('userId')], userTie.get('circleIdList'))
+        .setIn(['userTies', userTie.userId], payload.userTie)
+        .setIn(['selectedCircles', userTie.userId], userTie.circleIdList)
 
     case CircleActionType.UPDATE_USER_TIE:
       return state
@@ -117,7 +117,7 @@ export let circleReducer = (state = Map(), action) => {
 const getSelectedCircles = (userTies) => {
   let selectedCircles = Map({})
   userTies.forEach((userTie) => {
-    selectedCircles = selectedCircles.set(userTie.get('userId'), List(userTie.get('circleIdList')))
+    selectedCircles = selectedCircles.set(userTie.userId, List(userTie.circleIdList))
   })
 
   return selectedCircles
