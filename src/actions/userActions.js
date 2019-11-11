@@ -8,7 +8,7 @@ import { UserActionType } from '../constants/userActionType'
 let userService = new UserService()
 export const dbGetUserInfo = () => {
   return (dispatch, getState) => {
-    let uid: string = getState().authorize.uid
+    let uid = getState().authorize.get('uid')
     if (uid) {
       return userService.getUserProfile(uid).then((userProfile) => {
         dispatch(addUserInfo(uid, {
@@ -37,7 +37,8 @@ export const dbGetUserInfoByUserId = (uid, callerKey) => {
   return (dispatch, getState) => {
     if (uid) {
 
-      let caller = getState().global.temp.caller
+      let temp = getState().global.get('temp') || {}
+      let caller = temp.caller
       if ( caller && caller.indexOf(`dbGetUserInfoByUserId-${uid}`) > -1) {
         return undefined
       }
@@ -80,10 +81,10 @@ export const dbUpdateUserInfo = (newProfile) => {
   return (dispatch, getState) => {
     console.trace('newProfile', newProfile)
     // Get current user id
-    let uid: string = getState().authorize.uid
+    let uid = getState().authorize.get('uid')
 
-    let profile: Profile = getState().user.info[uid]
-    let updatedProfile: Profile = {
+    let profile = getState().user.get('info').get(uid).toJS()
+    let updatedProfile = {
       avatar: newProfile.avatar || profile.avatar || '',
       banner: newProfile.banner || profile.banner || 'https://firebasestorage.googleapis.com/v0/b/open-social-33d92.appspot.com/o/images%2F751145a1-9488-46fd-a97e-04018665a6d3.JPG?alt=media&token=1a1d5e21-5101-450e-9054-ea4a20e06c57',
       email: newProfile.email || profile.email || '',
@@ -107,14 +108,14 @@ export const dbUpdateUserInfo = (newProfile) => {
 }
 
 // - Get people info from database
-export const dbGetPeopleInfo = (page: number, limit: number) => {
-  return (dispatch: any, getState: Function) => {
+export const dbGetPeopleInfo = (page, limit) => {
+  return (dispatch, getState) => {
     const state = getState()
-    const {people} = state.user
+    const people = state.user.get('people') || {}
     const lastPageRequest = people.lastPageRequest
     const lastUserId = people.lastUserId
 
-    let uid: string = state.authorize.uid
+    let uid = state.authorize.get('uid')
 
     if (uid && lastPageRequest !== page) {
 
@@ -123,10 +124,10 @@ export const dbGetPeopleInfo = (page: number, limit: number) => {
         if (!result.users || !(result.users.length > 0)) {
           return dispatch(notMoreDataPeople())
         }
-        // Store last user Id
+
         dispatch(lastUserPeople(result.newLastUserId))
 
-        let parsedData: {[userId: string]: Profile} = {}
+        let parsedData: {[userId]: Profile} = {}
         result.users.forEach((post) => {
           const userId = Object.keys(post)[0]
           const postData = post[userId]
@@ -145,33 +146,21 @@ export const dbGetPeopleInfo = (page: number, limit: number) => {
   }
 }
 
-/* _____________ CRUD State _____________ */
-
-/**
- * Add user information
- */
-export const addUserInfo = (uid: string, info: Profile) => {
+export const addUserInfo = (uid, info) => {
   return {
     type: UserActionType.ADD_USER_INFO,
     payload: { uid, info }
   }
 }
 
-/**
- * Add people information
- * @param {[userId: string]: Profile} infoList is the lst of information about users
- */
-export const addPeopleInfo = (infoList: {[userId: string]: Profile}) => {
+export const addPeopleInfo = (infoList) => {
   return {
     type: UserActionType.ADD_PEOPLE_INFO,
     payload: infoList
   }
 }
 
-/**
- * Update user information
- */
-export const updateUserInfo = (uid: string, info: Profile) => {
+export const updateUserInfo = (uid, info) => {
   return {
     type: UserActionType.UPDATE_USER_INFO,
     payload: { uid, info }
@@ -184,9 +173,6 @@ export const clearAllData = () => {
   }
 }
 
-/**
- * Open edit profile
- */
 export const openEditProfile = () => {
   return {
     type: UserActionType.OPEN_EDIT_PROFILE
@@ -194,9 +180,6 @@ export const openEditProfile = () => {
 
 }
 
-/**
- * Close edit profile
- */
 export const closeEditProfile = () => {
   return {
     type: UserActionType.CLOSE_EDIT_PROFILE
@@ -204,9 +187,6 @@ export const closeEditProfile = () => {
 
 }
 
-/**
- * Set profile posts has more data to show
- */
 export const hasMoreDataPeople = () => {
   return {
     type: UserActionType.HAS_MORE_DATA_PEOPLE
@@ -214,9 +194,6 @@ export const hasMoreDataPeople = () => {
 
 }
 
-/**
- * Set profile posts has not data any more to show
- */
 export const notMoreDataPeople = () => {
   return {
     type: UserActionType.NOT_MORE_DATA_PEOPLE
@@ -224,9 +201,6 @@ export const notMoreDataPeople = () => {
 
 }
 
-/**
- * Set last page request of profile posts
- */
 export const requestPagePeople = (page: number) => {
   return {
     type: UserActionType.REQUEST_PAGE_PEOPLE,
@@ -235,13 +209,9 @@ export const requestPagePeople = (page: number) => {
 
 }
 
-/**
- * Set last user identification of find people page
- */
 export const lastUserPeople = (lastUserId: string) => {
   return {
     type: UserActionType.LAST_USER_PEOPLE,
     payload: { lastUserId}
   }
-
 }

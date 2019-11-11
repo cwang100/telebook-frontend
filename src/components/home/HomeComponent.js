@@ -26,12 +26,10 @@ import Hidden from 'material-ui/Hidden'
 import MenuIcon from '@material-ui/icons/Menu'
 
 import Sidebar from '../sidebar'
-//import StreamComponent from '../stream'
-//import HomeHeader from '../homeHeader'
+import HomeHeader from '../homeHeader'
 import SidebarContent from '../sidebarContent'
 import SidebarMain from '../sidebarMain'
 import Profile from '../profile'
-//import PostPage from '../postPage'
 import People from '../people'
 
 import * as authorizeActions from '../../actions/authorizeActions'
@@ -130,7 +128,7 @@ export class HomeComponent extends Component {
     super(props)
 
     this.state = {
-      drawerOpen: true
+      drawerOpen: false
     }
   }
 
@@ -147,8 +145,7 @@ export class HomeComponent extends Component {
     if (!isVerified) {
       goTo('/emailVerification')
 
-    } else if (!global.defaultLoadDataStatus) {
-
+    } else if (!global.get('defaultLoadDataStatus')) {
       clearData()
       loadData()
       defaultDataEnable()
@@ -199,11 +196,11 @@ export class HomeComponent extends Component {
     )
 
     const anchor = theme.direction === 'rtl' ? 'right' : 'left'
-    //<HomeHeader onToggleDrawer={this.handleDrawerToggle} drawerStatus={this.state.drawerOpen} />
+
     return (
       <div className={classes.root}>
-        <h3>Welcome!</h3>
         <div className={classes.appFrame}> 
+        <HomeHeader onToggleDrawer={this.handleDrawerToggle} drawerStatus={this.state.drawerOpen} />
           <Hidden mdUp>
             <Drawer
               variant='temporary'
@@ -266,7 +263,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(circleActions.dbGetCircles())
       dispatch(circleActions.dbGetUserTies())
       dispatch(circleActions.dbGetFollowers())
-
     },
     clearData: () => {
       dispatch(postActions.clearAllData())
@@ -281,16 +277,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     defaultDataEnable: () => {
       dispatch(globalActions.defaultDataEnable())
     },
-    goTo: (url) => dispatch(push(url)),
-    showSendFeedback: () => dispatch(globalActions.showSendFeedback()),
-    hideSendFeedback: () => dispatch(globalActions.hideSendFeedback())
-
+    goTo: (url) => dispatch(push(url))
   }
 
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { authorize, global, user, post, imageGallery, notify, circle } = state
+  const { authorize, global, user, post, notify, circle } = state
   const uid = authorize.get('uid')
   let mergedPosts = {}
   const circles = circle ? (circle.get('circleList') || {}) : {}

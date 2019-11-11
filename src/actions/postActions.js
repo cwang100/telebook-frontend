@@ -15,22 +15,16 @@ let postService = new PostService()
 export let dbAddPost = (newPost, callBack) => {
   return (dispatch, getState) => {
 
-    let uid: string = getState().authorize.get('uid')
+    let uid = getState().authorize.get('uid')
     let post = {
       postTypeId: 0,
       creationDate: moment().unix(),
       deleteDate: 0,
-      score: 0,
       viewCount: 0,
       body: newPost.body,
       ownerUserId: uid,
       ownerDisplayName: newPost.ownerDisplayName,
-      ownerAvatar: newPost.ownerAvatar,
       lastEditDate: 0,
-      commentCounter: 0,
-      comments: {},
-      image: '',
-      imageFullPath: '',
       deleted: false
     }
 
@@ -43,51 +37,6 @@ export let dbAddPost = (newPost, callBack) => {
     })
       .catch((error) => dispatch(globalActions.showMessage(error.message)))
   }
-}
-
-/**
- * Add a post with image
- */
-export const dbAddImagePost = (newPost, callBack) => {
-  return (dispatch, getState) => {
-
-    dispatch(globalActions.showTopLoading())
-
-    let uid: string = getState().authorize.get('uid')
-    let post: Post = {
-      postTypeId: 1,
-      creationDate: moment().unix(),
-      deleteDate: 0,
-      score: 0,
-      viewCount: 0,
-      body: newPost.body,
-      ownerUserId: uid,
-      ownerDisplayName: newPost.ownerDisplayName,
-      ownerAvatar: newPost.ownerAvatar,
-      lastEditDate: 0,
-      tags: newPost.tags || [],
-      commentCounter: 0,
-      image: newPost.image || '',
-      imageFullPath: newPost.imageFullPath || '',
-      video: '',
-      disableComments: newPost.disableComments ? newPost.disableComments : false,
-      disableSharing: newPost.disableSharing ? newPost.disableSharing : false,
-      deleted: false
-    }
-
-    return postService.addPost(post).then((postKey) => {
-      dispatch(addPost(uid, {
-        ...post,
-        id: postKey
-      }))
-      callBack()
-      dispatch(globalActions.hideTopLoading())
-
-    })
-      .catch((error) => dispatch(globalActions.showMessage(error.message)))
-
-  }
-
 }
 
 /**
@@ -189,7 +138,7 @@ export const dbGetPosts = (page = 0, limit = 10) => {
 export const dbGetPostsByUserId = (userId, page = 0, limit = 10) => {
   return (dispatch, getState) => {
     const state = getState()
-    const {profile} = state.post
+    const profile = state.post.get('profile') || {}
     const lastPageRequest = profile[userId] ? profile[userId].lastPageRequest : -1
     const lastPostId = profile[userId] ? profile[userId].lastPostId : ''
 

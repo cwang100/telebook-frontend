@@ -89,7 +89,7 @@ export class MasterComponent extends Component {
           loading: false,
           isVerified: false
         })
-        if (global.defaultLoadDataStatus) {
+        if (global.get('defaultLoadDataStatus')) {
           defaultDataDisable()
           clearData()
         }
@@ -112,17 +112,16 @@ export class MasterComponent extends Component {
 
     return (
       <div id='master'>
-        <div className='master__progress' style={{ display: (progress.visible ? 'block' : 'none') }}>
+{/*        <div className='master__progress' style={{ display: (progress.visible ? 'block' : 'none') }}>
           <LinearProgress variant='determinate' value={progress.percent} />
-        </div>
-        <div className='master__loading animate-fading2' style={{ display: (global.showTopLoading ? 'flex' : 'none') }}>
+        </div>*/}
+        <div className='master__loading animate-fading2' style={{ display: (global.get('showTopLoading') ? 'flex' : 'none') }}>
           <div className='title'>Loading ... </div>
         </div>
-        <MasterLoadingComponent activeLoading={global.showMasterLoading} handleLoading={this.handleLoading} />
       <MasterRouter enabled={!loading} data={{uid}} />
         <Snackbar
-          open={this.props.global.messageOpen}
-          message={this.props.global.message}
+          open={this.props.global.get('messageOpen')}
+          message={this.props.global.get('message')}
           onClose={hideMessage}
           autoHideDuration={4000}
           style={{ left: '1%', transform: 'none' }}

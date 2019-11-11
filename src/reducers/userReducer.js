@@ -1,6 +1,6 @@
 // - Import action types
 import { UserActionType } from '../constants/userActionType'
-import { Map } from 'immutable'
+import { Map, fromJS } from 'immutable'
 
 // // - Import domain
 // import { User, Profile } from 'src/core/domain/users'
@@ -25,7 +25,7 @@ export let userReducer = (state = Map(), action) => {
 
     case UserActionType.ADD_PEOPLE_INFO:
       return state
-        .mergeIn(['info'], payload)
+        .mergeIn(['info'], fromJS(payload))
 
     case UserActionType.UPDATE_USER_INFO:
       return state

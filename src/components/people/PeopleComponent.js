@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import { grey, cyan } from 'material-ui/colors'
 import { push } from 'connected-react-router'
@@ -10,10 +9,10 @@ import AppBar from 'material-ui/AppBar'
 import Typography from 'material-ui/Typography'
 
 // - Import app components
-// import FindPeople from 'components/findPeople'
-// import Following from 'components/following'
-// import Followers from 'components/followers'
-// import YourCircles from 'components/yourCircles'
+import FindPeople from '../findPeople'
+import Following from '../following'
+import Followers from '../followers'
+import YourCircles from '../yourCircles'
 
 // - Import API
 
@@ -118,12 +117,12 @@ export class PeopleComponent extends Component {
         <Tab label={'people.followersTab'} />
       </Tabs>
       </AppBar>
-      {/* //{tabIndex === 0 && <TabContainer>{circlesLoaded ? <FindPeople /> : ''}</TabContainer>}
-      //{tabIndex === 1 && <TabContainer>
-        //{circlesLoaded ? <Following/> : ''}
-        //{circlesLoaded ? <YourCircles/> : ''}
-      //</TabContainer>}
-      //{tabIndex === 2 && <TabContainer>{circlesLoaded ? <Followers /> : ''}</TabContainer>} */}
+        {tabIndex === 0 && <TabContainer>{circlesLoaded ? <FindPeople /> : ''}</TabContainer>}
+        {tabIndex === 1 && <TabContainer>
+          {circlesLoaded ? <Following/> : ''}
+          {circlesLoaded ? <YourCircles/> : ''}
+        </TabContainer>}
+        {tabIndex === 2 && <TabContainer>{circlesLoaded ? <Followers /> : ''}</TabContainer>}
       </div>
     )
   }

@@ -42,7 +42,7 @@ export const dbGetNotifications = () => {
       return notificationService.getNotifications(uid,
         (notifications) => {
           Object.keys(notifications).forEach((key => {
-            if (!getState().user.get('info')[notifications[key].notifierUserId]) {
+            if (!getState().user.get('info').get(notifications[key].notifierUserId)) {
               dispatch(userActions.dbGetUserInfoByUserId(notifications[key].notifierUserId,''))
             }
           }))
@@ -65,7 +65,7 @@ export const dbDeleteNotification = (id) => {
     return notificationService.deleteNotification(id,uid).then(() => {
       dispatch(deleteNotify(id))
     })
-    .catch((error: SocialError) => dispatch(globalActions.showMessage(error.message)))
+    .catch((error) => dispatch(globalActions.showMessage(error.message)))
   }
 
 }
