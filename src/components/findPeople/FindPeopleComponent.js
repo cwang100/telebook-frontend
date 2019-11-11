@@ -66,7 +66,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
   const people = state.user.get('people') || {}
-  const info = state.user.get('info') 
+  const info = state.user.get('info').toJS()
   return {
     peopleInfo: info,
     hasMorePeople: people.hasMoreData

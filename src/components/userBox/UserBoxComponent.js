@@ -303,7 +303,7 @@ export class UserBoxComponent extends Component {
         }}>
           <div onClick={() => this.props.goTo(`/${this.props.userId}`)} className='people__name' style={{ cursor: 'pointer' }}>
             <div>
-              {this.props.fullName}
+              {this.props.user.fullName}
             </div>
           </div>
           <div style={this.styles.followButton}>
@@ -424,7 +424,7 @@ const mapStateToProps = (state, ownProps) => {
     belongCirclesCount: userBelongCircles.length || 0,
     firstBelongCircle: userBelongCircles ? (circles ? circles[userBelongCircles[0]] : {}) : {},
     avatar: state.user.get('info') && state.user.get('info')[ownProps.userId] ? state.user.get('info')[ownProps.userId].avatar || '' : '',
-    fullName: state.user.get('info') && state.user.get('info')[ownProps.userId] ? state.user.get('info')[ownProps.userId].fullName || '' : ''
+    fullName: state.user.get('info') && state.user.get('info').get(ownProps.userId) ? state.user.get('info').get(ownProps.userId).fullName || '' : ''
   }
 }
 

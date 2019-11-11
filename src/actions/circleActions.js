@@ -75,13 +75,13 @@ export const dbFollowUser = (followingCircleId, userFollowing) => {
             notifierUserId: uid,
             isSeen: false
           }))
-
-      }, (error) => {
-        dispatch(globalActions.showMessage(error.message))
-
-        followReqestModel.status = ServerRequestStatusType.Error
-        dispatch(serverActions.sendRequest(followReqestModel))
       })
+      // }, (error) => {
+      //   dispatch(globalActions.showMessage(error.message))
+
+      //   followReqestModel.status = ServerRequestStatusType.Error
+      //   dispatch(serverActions.sendRequest(followReqestModel))
+      // })
   }
 }
 

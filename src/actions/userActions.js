@@ -83,8 +83,8 @@ export const dbUpdateUserInfo = (newProfile) => {
     // Get current user id
     let uid = getState().authorize.get('uid')
 
-    let profile = getState().user.get('info')[uid]
-    let updatedProfile: Profile = {
+    let profile = getState().user.get('info').get(uid)
+    let updatedProfile = {
       avatar: newProfile.avatar || profile.avatar || '',
       banner: newProfile.banner || profile.banner || 'https://firebasestorage.googleapis.com/v0/b/open-social-33d92.appspot.com/o/images%2F751145a1-9488-46fd-a97e-04018665a6d3.JPG?alt=media&token=1a1d5e21-5101-450e-9054-ea4a20e06c57',
       email: newProfile.email || profile.email || '',
@@ -146,7 +146,7 @@ export const dbGetPeopleInfo = (page, limit) => {
   }
 }
 
-export const addUserInfo = (uid: string, info: Profile) => {
+export const addUserInfo = (uid, info) => {
   return {
     type: UserActionType.ADD_USER_INFO,
     payload: { uid, info }

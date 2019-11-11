@@ -1,30 +1,16 @@
-// - Import react components
+
 import moment from 'moment/moment'
 import _ from 'lodash'
 import { Map, List } from 'immutable'
 
-// - Import domain
-// import { User } from 'src/core/domain/users'
-// import { Circle, UserTie } from 'src/core/domain/circles'
-
-// - Import action types
 import { CircleActionType } from '../constants/circleActionType'
 
-// import { CircleState } from './CircleState'
-// import { ICircleAction } from './ICircleAction'
-
-/**
- * Add circle
- */
 const addCircle = (state , payload) => {
   const circle = payload.circle
   return state
     .setIn(['circleList', circle.get('id')], payload.circle)
 }
 
-/**
- * Update circle
- */
 const updateCircle = (state , payload) => {
   const circle = payload.circle
   return state
@@ -32,11 +18,6 @@ const updateCircle = (state , payload) => {
         .setIn(['circleList', circle.get('id')], payload.circle)
 }
 
-/**
- * Circle reducer
- * @param state
- * @param action
- */
 export let circleReducer = (state = Map(), action) => {
   const { payload } = action
   switch (action.type) {
@@ -133,9 +114,6 @@ export let circleReducer = (state = Map(), action) => {
   }
 }
 
-/**
- * Map user ties selected to selected circles
- */
 const getSelectedCircles = (userTies) => {
   let selectedCircles = Map({})
   userTies.forEach((userTie) => {

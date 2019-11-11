@@ -5,8 +5,7 @@ import { Graph } from '../../class/graphs'
 
 export class GraphService {
   addGraph(graph, collection) {
-      return new Promise<string>((resolve,reject) => {
-
+      return new Promise((resolve,reject) => {
         let graphRef = db.collection(`graphs:${collection}`).doc()
         graphRef.set({...graph, nodeId: graphRef.id})
         .then(() => {
