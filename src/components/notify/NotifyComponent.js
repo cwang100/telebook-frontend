@@ -12,7 +12,7 @@ import Paper from 'material-ui/Paper'
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
 
 // - Import app components
-import NotifyItem from '../notifyItem'
+import NotifyItem from '../notifyitem'
 // - Import API
 
 // - Import actions
@@ -90,12 +90,12 @@ export class NotifyComponent extends Component {
         parsedDOM.push(
           <NotifyItem
             key={key}
-            description={(notifications[key] ? notifications[key].description || '' : '')}
-            fullName={(info[notifierUserId] ? info[notifierUserId].fullName || '' : '')}
-            avatar={(info[notifierUserId] ? info[notifierUserId].avatar || '' : '')}
+            description={(notifications && notifications[key] ? notifications[key].description || '' : '')}
+            fullName={(info && info[notifierUserId] ? info[notifierUserId].fullName || '' : '')}
+            avatar={(info && info[notifierUserId] ? info[notifierUserId].avatar || '' : '')}
             id={key}
-            isSeen={(notifications[key] ? notifications[key].isSeen || false : false)}
-            url={(notifications[key] ? notifications[key].url || '' : '')}
+            isSeen={(notifications && notifications[key] ? notifications[key].isSeen || false : false)}
+            url={(notifications && notifications[key] ? notifications[key].url || '' : '')}
             notifierUserId={notifierUserId}
             closeNotify={onRequestClose}
           />
@@ -116,6 +116,8 @@ export class NotifyComponent extends Component {
      All caught up! </div>
      )
     const items = this.notifyItemList()
+    console.log("items = ");
+    console.log(items)
     return (
       <Popper
         placement='bottom-start'

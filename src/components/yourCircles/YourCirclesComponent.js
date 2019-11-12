@@ -21,7 +21,8 @@ export class YourCirclesComponent extends Component {
   circleList = () => {
     let { circles,uid } = this.props
     let parsedCircles = []
-    circles = circles.toJS()
+    console.log(circles)
+    circles = circles
     if (circles) {
       Object.keys(circles).map((key, index) => {
         parsedCircles.push(<CircleComponent key={key} circle={circles[key]} id={key} uid={uid} />)
@@ -32,6 +33,8 @@ export class YourCirclesComponent extends Component {
 
   render () {
     let circleItems = this.circleList()
+    console.log("In YourCirclesComponent, circleList = ")
+    console.log(circleItems)
     return (
 
       <div style={{

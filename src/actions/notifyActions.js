@@ -84,10 +84,12 @@ export const dbSeenNotification = (id) => {
     let uid = getState().authorize.get('uid')
     let notify = getState().notify.get('userNotifies')[id]
 
+    console.log(getState().notify)
+
     let updatedNotification = {
-      description: notify.get('description'),
+      description: notify.description,
       url: notify.url,
-      notifierUserId: notify.get('notifierUserId'),
+      notifierUserId: notify.notifierUserId,
       notifyRecieverUserId: uid,
       isSeen: true
     }

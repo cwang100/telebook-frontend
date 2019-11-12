@@ -75,7 +75,7 @@ export class NotifyItemComponent extends Component {
                           goTo(`/${notifierUserId}`)
                         }}
                     >
-                        //<UserAvatar fullName={fullName} fileName={avatar} />
+                        {/* <UserAvatar fullName={fullName} fileName={avatar} /> */}
                     </NavLink>
               <ListItemText primary={<NavLink to={url} onClick={this.handleSeenNotify}>
                         <div className='user-name'>
