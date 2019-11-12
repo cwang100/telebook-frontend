@@ -66,26 +66,6 @@ const styles = (theme) => ({
  */
 export class NotifyComponent extends Component {
 
-  static propTypes = {
-    /**
-     * It will be true if the notification is open
-     */
-    open: PropTypes.bool,
-    /**
-     * Pass anchor element
-     */
-    anchorEl: PropTypes.any,
-    /**
-     * Fire to close notificaion
-     */
-    onRequestClose: PropTypes.func,
-    /**
-     * If user's seen notification box or not (true/false)
-     */
-    isSeen: PropTypes.bool
-
-  }
-
   /**
    * Component constructor
    * @param  {object} props is an object properties of component
@@ -157,30 +137,17 @@ export class NotifyComponent extends Component {
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
 
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   return {
-    notifications: state.notify.userNotifies,
-    info: state.user.info
+    notifications: state.notify.get('userNotifies'),
+    info: state.user.get('info')
   }
 }
 
-// - Connect component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NotifyComponent))

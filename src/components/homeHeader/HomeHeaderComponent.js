@@ -20,7 +20,7 @@ import { Manager, Target, Popper } from 'react-popper'
 import { withStyles } from 'material-ui/styles'
 import config from '../../config'
 
-// import Notify from '../notify'
+import Notify from '../notify'
 
 // - Import actions
 import * as globalActions from '../../actions/globalActions'
@@ -168,7 +168,7 @@ export class HomeHeaderComponent extends Component {
                     </IconButton>
                   </Tooltip>)}
               </Target>
-              {/* <Notify open={this.state.openNotifyMenu} anchorEl={this.state.anchorEl} onRequestClose={this.handleCloseNotify} /> */}
+              {<Notify open={this.state.openNotifyMenu} anchorEl={this.state.anchorEl} onRequestClose={this.handleCloseNotify} />}
             </Manager>
 
 {/*            <UserAvatarComponent

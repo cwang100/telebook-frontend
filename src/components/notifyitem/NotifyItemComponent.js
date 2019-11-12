@@ -10,7 +10,7 @@ import { withStyles } from 'material-ui/styles'
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
 
 // - Import app components
-import UserAvatar from '../../assets/avatar.png'
+//import UserAvatar from '../../assets/avatar.png'
 
 // - Import API
 
@@ -35,50 +35,9 @@ const styles = (theme) => ({
  * Create component class
  */
 export class NotifyItemComponent extends Component {
-
-  static propTypes = {
-        /**
-         * Notification description
-         */
-    description: PropTypes.string,
-        /**
-         * Which user relates to the notification item
-         */
-    fullName: PropTypes.string,
-        /**
-         * Avatar of the user who relate to the notification item
-         */
-    avatar: PropTypes.string,
-        /**
-         * Notification identifier
-         */
-    id: PropTypes.string,
-        /**
-         * If user's seen the notification or not (true/false)
-         */
-    isSeen: PropTypes.bool,
-        /**
-         * Which address notification refers
-         */
-    url: PropTypes.string,
-        /**
-         * The notifier user identifier
-         */
-    notifierUserId: PropTypes.string,
-        /**
-         * Close notification popover
-         */
-    closeNotify: PropTypes.func
-  }
-
-    /**
-     * Component constructor
-     * @param  {object} props is an object properties of component
-     */
   constructor (props) {
     super(props)
 
-        // Defaul state
     this.state = {
     }
 
@@ -116,7 +75,7 @@ export class NotifyItemComponent extends Component {
                           goTo(`/${notifierUserId}`)
                         }}
                     >
-                        <UserAvatar fullName={fullName} fileName={avatar} />
+                        //<UserAvatar fullName={fullName} fileName={avatar} />
                     </NavLink>
               <ListItemText primary={<NavLink to={url} onClick={this.handleSeenNotify}>
                         <div className='user-name'>
@@ -137,12 +96,6 @@ export class NotifyItemComponent extends Component {
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     goTo: (url) => dispatch(push(url)),
@@ -151,17 +104,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   return {
 
   }
 }
 
-// - Connect component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NotifyItemComponent))

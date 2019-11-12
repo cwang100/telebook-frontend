@@ -42,7 +42,10 @@ export const dbGetNotifications = () => {
       return notificationService.getNotifications(uid,
         (notifications) => {
           Object.keys(notifications).forEach((key => {
-            if (!getState().user.get('info').get(notifications[key].notifierUserId)) {
+            let user = getState().user
+            let info = user ? user.get('info') : undefined
+            let id = info ? info.get(notifications[key].notifierUserId) : undefined
+            if (!id) {
               dispatch(userActions.dbGetUserInfoByUserId(notifications[key].notifierUserId,''))
             }
           }))
