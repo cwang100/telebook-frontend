@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import EventListener, { withOptions } from 'react-event-listener'
-import keycode from 'keycode'
 
 import * as authorizeActions from '../../actions/authorizeActions'
 import * as globalActions from '../../actions/globalActions'
@@ -167,18 +166,6 @@ export class SidebarComponent extends Component {
     }
   }
 
-  /**
-   * Handle keyup event for window to close sidebar
-   * @param  {event} evt is the event is passed by winodw key event
-   */
-  handleKeyUp = (event) => {
-    if (this.state.overlayOpen) {
-      if (this.state.open && keycode(event) === 'esc') {
-        this.open(false,'keyup')
-      }
-    }
-  }
-
   componentWillMount () {
     this.props.open(this.open)
   }
@@ -212,7 +199,6 @@ export class SidebarComponent extends Component {
         <EventListener
           target='window'
           onResize={this.handleResize}
-          onKeyUp={this.handleKeyUp}
         />
         {this.getChildren()}
 

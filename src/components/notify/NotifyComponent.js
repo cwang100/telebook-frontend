@@ -12,7 +12,7 @@ import Paper from 'material-ui/Paper'
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
 
 // - Import app components
-import NotifyItem from '../notifyitem'
+import NotifyItem from '../notifyItem'
 // - Import API
 
 // - Import actions

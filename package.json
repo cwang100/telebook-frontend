@@ -20,9 +20,7 @@
     "react-redux": "7.0.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "react-router-redux": "latest",
     "react-scripts": "3.2.0",
-    "reducers": "latest",
     "redux": "4.0.1",
     "redux-thunk": "^2.3.0"
   },
