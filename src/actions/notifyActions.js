@@ -60,7 +60,7 @@ export const dbDeleteNotification = (id) => {
   return (dispatch, getState) => {
 
     // Get current user id
-    let uid: string = getState().authorize.get('uid')
+    let uid = getState().authorize.get('uid')
 
     return notificationService.deleteNotification(id,uid).then(() => {
       dispatch(deleteNotify(id))
@@ -81,7 +81,7 @@ export const dbSeenNotification = (id) => {
     let uid = getState().authorize.get('uid')
     let notify = getState().notify.get('userNotifies')[id]
 
-    let updatedNotification: Notification = {
+    let updatedNotification = {
       description: notify.get('description'),
       url: notify.url,
       notifierUserId: notify.get('notifierUserId'),

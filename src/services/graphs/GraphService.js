@@ -7,7 +7,8 @@ export class GraphService {
   addGraph(graph, collection) {
       return new Promise((resolve,reject) => {
         let graphRef = db.collection(`graphs:${collection}`).doc()
-        graphRef.set({...graph, nodeId: graphRef.id})
+        graph['nodeId'] = graphRef.id;
+        graphRef.set({...graph})
         .then(() => {
           resolve(graphRef.id)
         })

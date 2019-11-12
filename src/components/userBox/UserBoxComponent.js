@@ -25,6 +25,7 @@ import Dialog, {
 import SvgAdd from 'material-ui-icons/Add'
 import IconButton from 'material-ui/IconButton'
 import { grey } from 'material-ui/colors'
+import DefaultAvator from '../../assets/avator.png'
 
 import * as circleActions from '../../actions/circleActions'
 
@@ -279,6 +280,7 @@ export class UserBoxComponent extends Component {
             <div>
               {this.props.user.fullName}
             </div>
+            <img src={DefaultAvator} width='150' height='150'/>
           </div>
           <div style={this.styles.followButton}>
             <Button
@@ -376,11 +378,14 @@ const mapStateToProps = (state, ownProps) => {
   const uid = authorize.get('uid')
   const request = server.get('request')
 
-  const circles = circle ? (circle.get('circleList').toJS() || {}) : {}
+  // const circles = circle ? (circle.get('circleList').toJS() || {}) : {}
+  const circles = {}
   const userBelongCircles = circle.get('userTies') ? (circle.get('userTies')[ownProps.userId] ? circle.get('userTies')[ownProps.userId].circleIdList : []) : []
   const isFollowed = userBelongCircles.length > 0
-  const followingCircleId = circles ? Object.keys(circles)
-    .filter((circleId) => circles[circleId].isSystem && circles[circleId].name === `Following`)[0] : ''
+  // const followingCircleId = circles ? Object.keys(circles)
+  //   .filter((circleId) => circles[circleId].isSystem && circles[circleId].name === `Following`)[0] : ''
+  const followingCircleId = ''
+  console.log("followingCircleId = " + followingCircleId)
   const followRequest = request ? request[ServerRequestType.CircleFollowUser + ownProps.userId] : null
   const addToCircleRequest = request ? request[ServerRequestType.CircleAddToCircle + ownProps.userId] : null
   const deleteFollowingUserRequest = request ? request[ServerRequestType.CircleDeleteFollowingUser + ownProps.userId] : null
