@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 
 // - Import reducers
 import { authorizeReducer } from './authorizeReducer'
-import { circleReducer } from './circleReducer'
+import { followReducer } from './followReducer'
 import { globalReducer } from './globalReducer'
 import { notificationReducer } from './notificationReducer'
 import { postReducer } from './postReducer'
@@ -12,7 +12,7 @@ import { connectRouter } from 'connected-react-router'
 
 export const rootReducer = (history) => combineReducers({
     post: postReducer,
-    circle: circleReducer,
+    follow: followReducer,
     server: serverReducer,
     authorize: authorizeReducer,
     router: connectRouter(history),

@@ -1,42 +1,31 @@
 import { HomeRouter } from '../../routes'
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
+import { withRouter, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
-import config from '../../config'
 import classNames from 'classnames'
 
 import { withStyles } from 'material-ui/styles'
 import Drawer from 'material-ui/Drawer'
-import Menu from 'material-ui/Menu'
 import { MenuList, MenuItem } from 'material-ui/Menu'
 import { ListItemIcon, ListItemText } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
-import SvgArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import SvgHome from '@material-ui/icons/Home'
-import SvgFeedback from '@material-ui/icons/Feedback'
 import SvgSettings from '@material-ui/icons/Settings'
 import SvgAccountCircle from '@material-ui/icons/AccountCircle'
 import SvgPeople from '@material-ui/icons/People'
-import List from 'material-ui/List'
-import Typography from 'material-ui/Typography'
-import IconButton from 'material-ui/IconButton'
 import Hidden from 'material-ui/Hidden'
-import MenuIcon from '@material-ui/icons/Menu'
 
 import Sidebar from '../sidebar'
 import HomeHeader from '../homeHeader'
 import SidebarContent from '../sidebarContent'
 import SidebarMain from '../sidebarMain'
-import Profile from '../profile'
-import People from '../people'
 
-import * as authorizeActions from '../../actions/authorizeActions'
 import * as postActions from '../../actions/postActions'
 import * as userActions from '../../actions/userActions'
 import * as globalActions from '../../actions/globalActions'
-import * as circleActions from '../../actions/circleActions'
+import * as followActions from '../../actions/followActions'
 import * as notifyActions from '../../actions/notifyActions'
 
 const drawerWidth = 220
@@ -154,11 +143,10 @@ export class HomeComponent extends Component {
 
   render() {
     const HR = HomeRouter
-    const { loaded, authed, loadDataStream, mergedPosts, hasMorePosts, showSendFeedback, classes, theme } = this.props
+    const { loaded, loadDataStream, mergedPosts, hasMorePosts, classes, theme } = this.props
     const { drawerOpen } = this.state
     const drawer = (
       <>
-
       <NavLink to='/'>
         <MenuItem style={{ color: 'rgb(117, 117, 117)' }}>
           <ListItemIcon>
@@ -192,7 +180,7 @@ export class HomeComponent extends Component {
           <ListItemText inset primary={'Settings'} />
         </MenuItem>
       </NavLink>
-      </>
+    </>
     )
 
     const anchor = theme.direction === 'rtl' ? 'right' : 'left'
@@ -260,15 +248,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(postActions.dbGetPosts())
       dispatch(userActions.dbGetUserInfo())
       dispatch(notifyActions.dbGetNotifications())
-      dispatch(circleActions.dbGetCircles())
-      dispatch(circleActions.dbGetUserTies())
-      dispatch(circleActions.dbGetFollowers())
+      dispatch(followActions.dbGetFollowingUsers())
     },
     clearData: () => {
       dispatch(postActions.clearAllData())
       dispatch(userActions.clearAllData())
       dispatch(notifyActions.clearAllNotifications())
-      dispatch(circleActions.clearAllCircles())
+      dispatch(followActions.deleteFollowingUser())
       dispatch(globalActions.clearTemp())
     },
     defaultDataDisable: () => {
@@ -283,18 +269,21 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { authorize, global, user, post, notify, circle } = state
+  const { authorize, global, user, post, notify, follow } = state
   const uid = authorize.get('uid')
   let mergedPosts = {}
-  const circles = circle ? (circle.get('circleList') || {}) : {}
-  const followingUsers = circle ? circle.get('userTies') || {} : {}
-  const posts = post.get('userPosts') ? post.get('userPosts')[uid] : {}
+  const followingUsers = follow ? follow.get('followList') || {} : {}
+  const userPosts = post.get('userPosts')
+  const posts = userPosts ? userPosts.get(uid) ? userPosts.get(uid).toJS() : {} : {}
   const stream = post.get('stream') || {}
   const hasMorePosts = stream.hasMoreData
-  Object.keys(followingUsers).forEach((userId) => {
-    let newPosts = post.get('userPosts') ? post.get('userPosts')[uid] : {}
-    _.merge(mergedPosts, newPosts)
-  })
+  if (userPosts && followingUsers) {
+    Object.keys(followingUsers).forEach((userId) => {
+      let newPosts = userPosts.get(userId) ? userPosts.get(userId).toJS() : {}
+
+      _.merge(mergedPosts, newPosts)
+    })
+  }
   _.merge(mergedPosts, posts)
   return {
     authed: authorize.get('authed'),
@@ -303,7 +292,7 @@ const mapStateToProps = (state, ownProps) => {
     mergedPosts,
     global,
     hasMorePosts,
-    loaded: user.get('loaded') && notify.get('loaded') && circle.get('loaded')
+    loaded: user.get('loaded') && notify.get('loaded') && !follow.get('followingLoadingStatus')
   }
 }
 

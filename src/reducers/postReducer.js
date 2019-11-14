@@ -9,8 +9,8 @@ import { PostActionType } from '../constants/postActionType'
 
 const updatePost = (state, payload) => {
   const post = payload.post
-  const updatePostOwnerId = post.get('ownerUserId')
-  const updatePostId = post.get('id')
+  const updatePostOwnerId = post.ownerUserId
+  const updatePostId = post.id
   return state
       .setIn(['userPosts', updatePostOwnerId, updatePostId], Map(post))
 }
@@ -60,7 +60,7 @@ export let postReducer = (state = Map({stream:{hasMoreData: false}}), action) =>
 
     case PostActionType.ADD_LIST_POST:
       return state
-        .mergeDeepIn(['userPosts'], payload.userPosts)
+        .mergeDeepIn(['userPosts'], fromJS(payload.userPosts))
         .set('loaded', true)
 
     case PostActionType.HAS_MORE_DATA_STREAM:
@@ -97,6 +97,5 @@ export let postReducer = (state = Map({stream:{hasMoreData: false}}), action) =>
 
     default:
       return state
-
   }
 }

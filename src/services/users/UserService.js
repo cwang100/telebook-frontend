@@ -83,11 +83,8 @@ export class UserService {
           let userProvider = snapshot.data() || {}
           resolve(userProvider)
         } else {
-          throw new SocialError(`firestore/getUserProviderData/notExist `, `document of userProviderRef is not exist `)
+          resolve({})
         }
-      })
-      .catch((error) => {
-        reject(new SocialError(error.code, 'firestore/getUserProviderData ' + error.message))
       })
     })
   }

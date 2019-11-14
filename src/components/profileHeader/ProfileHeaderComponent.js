@@ -1,35 +1,21 @@
-// - Import react components
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import config from '../../config'
 
-// - Material UI
 import { grey } from 'material-ui/colors'
 import IconButton from 'material-ui/IconButton'
 import MoreVertIcon from 'material-ui-icons/MoreVert'
-import { MenuList, MenuItem } from 'material-ui/Menu'
+import { MenuItem } from 'material-ui/Menu'
 import Button from 'material-ui/Button'
-import RaisedButton from 'material-ui/Button'
 import EventListener, { withOptions } from 'react-event-listener'
 import EditProfile from '../editProfile'
-
+import DefaultAvator from '../../assets/avator.png'
 // - Import API
 
 // - Import actions
 import * as globalActions from '../../actions/globalActions'
 import * as userActions from '../../actions/userActions'
 
-/**
- * Create component class
- */
 export class ProfileHeaderComponent extends Component {
-
-
-    /**
-     * Component constructor
-     * @param  {object} props is an object properties of component
-     */
   constructor (props) {
     super(props)
 
@@ -41,17 +27,12 @@ export class ProfileHeaderComponent extends Component {
       isSmall: false
 
     }
-
-        // Binding functions to `this`
-
   }
     /**
      * Handle resize event for window to change sidebar status
      * @param  {event} evt is the event is passed by winodw resize event
      */
   handleResize = () => {
-
-        // Set initial state
     let width = window.innerWidth
 
     if (width > 900) {
@@ -132,12 +113,12 @@ export class ProfileHeaderComponent extends Component {
                         onResize={this.handleResize}
                     />
                     <div className='left'>
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <img src={DefaultAvator} width='150' height='150'/>
+                      </div>
                         <div className='info'>
                             <div className='fullName'>
                                 {this.props.fullName}
-                            </div>
-                            <div className='tagLine'>
-                               {this.props.tagLine}
                             </div>
                         </div>
                     </div>

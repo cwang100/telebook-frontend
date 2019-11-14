@@ -1,42 +1,19 @@
 // - Import react components
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 
-import { Card, CardActions, CardHeader, CardMedia, CardContent } from 'material-ui'
-import List, {
-  ListItem,
-  ListItemAvatar,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText
-} from 'material-ui/List'
-import Paper from 'material-ui/Paper'
+import { Card, CardHeader, CardContent } from 'material-ui'
 import Dialog, {
   DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
+  DialogContent
 } from 'material-ui/Dialog'
 import Button from 'material-ui/Button'
-import RaisedButton from 'material-ui/Button'
 import { grey } from 'material-ui/colors'
-import IconButton from 'material-ui/IconButton'
 import TextField from 'material-ui/TextField'
-import Tooltip from 'material-ui/Tooltip'
-import { MenuList, MenuItem } from 'material-ui/Menu'
-import SvgRemoveImage from '@material-ui/icons/RemoveCircle'
-import SvgCamera from '@material-ui/icons/PhotoCamera'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { withStyles } from 'material-ui/styles'
-import { Manager, Target, Popper } from 'react-popper'
-import Grow from 'material-ui/transitions/Grow'
-import ClickAwayListener from 'material-ui/utils/ClickAwayListener'
-import classNames from 'classnames'
-
 
 import * as postActions from '../../actions/postActions'
-// import { Post } from 'core/domain/posts'
+
 import Grid from 'material-ui/Grid/Grid'
 
 const styles = (theme) => ({
@@ -102,7 +79,6 @@ export class PostWriteComponent extends Component{
     const {postText } = this.state
 
     const {
-      id,
       ownerDisplayName,
       edit,
       onRequestClose,
@@ -164,9 +140,7 @@ export class PostWriteComponent extends Component{
   }
 
   render() {
-
     const { classes } = this.props
-    const { menuOpen } = this.state
 
     let author = (
       <div className={classes.author}>
@@ -184,14 +158,6 @@ export class PostWriteComponent extends Component{
         }}>{'Post'}</span>
       </div>
     )
-
-    const styles = {
-      dialog: {
-        width: '100%',
-        maxWidth: '900px',
-        borderRadius: '4px'
-      }
-    }
 
     return (
       <div style={this.props.style}>

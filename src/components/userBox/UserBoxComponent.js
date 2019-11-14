@@ -25,8 +25,9 @@ import Dialog, {
 import SvgAdd from 'material-ui-icons/Add'
 import IconButton from 'material-ui/IconButton'
 import { grey } from 'material-ui/colors'
+import DefaultAvator from '../../assets/avator.png'
 
-import * as circleActions from '../../actions/circleActions'
+import * as followActions from '../../actions/followActions'
 
 import { ServerRequestType } from '../../constants/serverRequestType'
 import { ServerRequestStatusType } from '../../actions/serverRequestStatusType'
@@ -82,186 +83,26 @@ export class UserBoxComponent extends Component {
 
   constructor (props) {
     super(props)
-    const { userBelongCircles, circles, userId } = this.props
-    // Defaul state
+    const { circles, userId } = this.props
     this.state = {
-      /**
-       * The value of circle input
-       */
-      circleName: ``,
-      disabledCreateCircle: true,
-      /**
-       * The button of add user in a circle is disabled {true} or not {false}
-       */
-      disabledAddToCircle: true,
-      /**
-       * Whether current user changed the selected circles for referer user
-       */
-      disabledDoneCircles: true
-    }
-    this.selectedCircles = userBelongCircles.slice()
-    this.handleChangeName = this.handleChangeName.bind(this)
-    this.onCreateCircle = this.onCreateCircle.bind(this)
-    this.handleDoneAddCircle = this.handleDoneAddCircle.bind(this)
-    this.circleList = this.circleList.bind(this)
-
-  }
-
-  /**
-   * Handle follow user
-   */
-  handleDoneAddCircle = () => {
-    const { userId, user, addUserToCircle, selectedCircles, deleteFollowingUser } = this.props
-    const { avatar, fullName } = user
-    const { disabledDoneCircles } = this.state
-    if (!disabledDoneCircles) {
-      if (selectedCircles.length > 0) {
-        addUserToCircle(selectedCircles, { avatar, userId, fullName })
-      } else {
-        deleteFollowingUser(userId)
-      }
     }
   }
 
-  /**
-   * Handle follow user
-   */
   onFollowUser = (event) => {
     event.preventDefault()
-    const { isFollowed, followUser, followingCircleId, userId, user, followRequest } = this.props
+    const { isFollowed, followUser, userId, user, followRequest } = this.props
 
     if (followRequest && followRequest.status === ServerRequestStatusType.Sent) {
       return
     }
-    const { avatar, fullName } = user
+
     if (!isFollowed) {
-      followUser(followingCircleId, { avatar, userId, fullName })
-    } else {
-      this.onRequestOpenAddCircle()
+      followUser(user)
     }
-  }
-
-  /**
-   * Handle request close for add circle box
-   */
-  onRequestCloseAddCircle = () => {
-    const { setSelectedCircles, userId, userBelongCircles, closeSelectCircles } = this.props
-    setSelectedCircles(userId, userBelongCircles)
-    closeSelectCircles(userId)
-    this.setState({
-      circleName: ``,
-      disabledCreateCircle: true,
-      disabledAddToCircle: true,
-      disabledDoneCircles: true
-    })
-  }
-
-  /**
-   * Handle request open for add circle box
-   */
-  onRequestOpenAddCircle = () => {
-    const { openSelectCircles, userId } = this.props
-    openSelectCircles(userId)
-  }
-
-  /**
-   * Create a new circle
-   */
-  onCreateCircle = () => {
-    const { circleName } = this.state
-    if (circleName && circleName.trim() !== '') {
-      this.props.createCircle(this.state.circleName)
-      this.setState({
-        circleName: '',
-        disabledCreateCircle: true
-      })
-    }
-  }
-
-  /**
-   * Handle change group name input to the state
-   */
-  handleChangeName = (event) => {
-    this.setState({
-      circleName: event.target.value,
-      disabledCreateCircle: (event.target.value === undefined || event.target.value.trim() === '')
-
-    })
-  }
-
-  handleSelectCircle = (event, isInputChecked, circleId) => {
-    const { userBelongCircles, circles, setSelectedCircles, selectedCircles, userId } = this.props
-    let newSelectedCircles = selectedCircles.slice()
-    if (isInputChecked) {
-
-      newSelectedCircles = [
-        ...selectedCircles,
-        circleId
-      ]
-
-    } else {
-      const circleIndex = selectedCircles.indexOf(circleId)
-      newSelectedCircles.splice(circleIndex, 1)
-    }
-
-    setSelectedCircles(userId, newSelectedCircles)
-    this.setState({
-      disabledDoneCircles: !this.selectedCircleChange(newSelectedCircles)
-    })
-  }
-
-  /**
-   * Create a circle list of user which belong to
-   */
-  circleList = () => {
-    let { circles, userId, userBelongCircles, selectedCircles, classes } = this.props
-
-    if (circles) {
-
-      const parsedDate = Object.keys(circles).map((circleId, index) => {
-        let isBelong = selectedCircles ? selectedCircles.indexOf(circleId) > -1 : false
-
-        // Create checkbox for selected/unselected circle
-        return (
-          <ListItem key={`${circleId}-${userId}`} dense className={classes.listItem}>
-            <ListItemText className={classes.circleName} primary={circles[circleId].name} />
-            <ListItemSecondaryAction>
-              <Checkbox
-                onChange={(event, isInputChecked) => this.handleSelectCircle(event, isInputChecked, circleId)}
-                checked={isBelong}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>)
-      })
-
-      return parsedDate
-    }
-  }
-
-  /**
-   * Check if the the selected circles changed
-   */
-  selectedCircleChange = (selectedCircles) => {
-    let isChanged = false
-    const { userBelongCircles, circles } = this.props
-
-    if (selectedCircles.length === userBelongCircles.length) {
-      for (let circleIndex = 0; circleIndex < selectedCircles.length; circleIndex++) {
-        const selectedCircleId = selectedCircles[circleIndex]
-        if (!(userBelongCircles.indexOf(selectedCircleId) > -1)) {
-          isChanged = true
-          break
-        }
-      }
-    } else {
-      isChanged = true
-    }
-    return isChanged
   }
 
   render () {
-    const { disabledDoneCircles } = this.state
-    const { isFollowed, followRequest, userId, isSelecteCirclesOpen, addToCircleRequest, deleteFollowingUserRequest, classes } = this.props
+    const { isFollowed, followRequest, userId, classes } = this.props
 
     return (
       <Paper key={userId} elevation={1} className={classNames('grid-cell', classes.paper)}>
@@ -279,6 +120,7 @@ export class UserBoxComponent extends Component {
             <div>
               {this.props.user.fullName}
             </div>
+            <img src={DefaultAvator} width='150' height='150'/>
           </div>
           <div style={this.styles.followButton}>
             <Button
@@ -286,121 +128,41 @@ export class UserBoxComponent extends Component {
               onClick={this.onFollowUser}
               disabled={
                 (followRequest ? followRequest.status === ServerRequestStatusType.Sent : false) ||
-                (deleteFollowingUserRequest ? deleteFollowingUserRequest.status === ServerRequestStatusType.Sent : false)
+                (isFollowed ? true : false)
               }
             >
-              {!isFollowed ? ('Follow')
-                : (this.props.belongCirclesCount > 1 ? ('userBox.numberOfCircleButton', {circlesCount: this.props.belongCirclesCount}) : ((this.props.firstBelongCircle) ? this.props.firstBelongCircle.name : ('Follow')))}
+              {!isFollowed ? ('Follow') : ('Followed')}
             </Button>
           </div>
         </div>
-        <Dialog
-        PaperProps={{className: classes.fullPageXs}}
-          key={this.props.userId || 0}
-          open={isSelecteCirclesOpen === true}
-          onClose={this.onRequestCloseAddCircle}
-        >
-          <DialogContent className={classes.dialogContent}>
-            <List>
-              {this.circleList()}
-              <div className={classes.space}></div>
-              <Divider />
-              <ListItem key={`'circleName'-${userId}`} dense className={classes.listItem}>
-                <ListItemText primary={
-                  <TextField
-                  autoFocus
-                    placeholder={('groupNamePlaceholder')}
-                    onChange={this.handleChangeName}
-                    value={this.state.circleName}
-                  />
-                } />
-                <ListItemSecondaryAction>
-                  <IconButton onClick={this.onCreateCircle} disabled={this.state.disabledCreateCircle}>
-                    <Tooltip title={('createCircleTooltip')}>
-                      <SvgAdd />
-                    </Tooltip>
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              color='primary'
-              disableFocusRipple={true}
-              disableRipple={true}
-              onClick={this.onRequestCloseAddCircle}
-              style={{ color: grey[800] }}
-            >
-              {'Cancel'}
-        </Button>
-            <Button
-              color='primary'
-              disableFocusRipple={true}
-              disableRipple={true}
-              disabled={disabledDoneCircles || (addToCircleRequest ? addToCircleRequest.status === ServerRequestStatusType.Sent : false)}
-              onClick={this.handleDoneAddCircle}
-            >
-              {'Done'}
-        </Button>
-          </DialogActions>
-        </Dialog>
       </Paper>
     )
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    createCircle: (name) => dispatch(circleActions.dbAddCircle(name)),
-    addUserToCircle: (circleIds, user) => dispatch(circleActions.dbUpdateUserInCircles(circleIds, user)),
-    followUser: (circleId, userFollowing) => dispatch(circleActions.dbFollowUser(circleId, userFollowing)),
-    deleteFollowingUser: (followingId) => dispatch(circleActions.dbDeleteFollowingUser(followingId)),
-    setSelectedCircles: (userId, circleList) => dispatch(circleActions.setSelectedCircles(userId, circleList)),
-    removeSelectedCircles: (userId, circleList) => dispatch(circleActions.removeSelectedCircles(userId)),
-    openSelectCircles: (userId) => dispatch(circleActions.openSelectCircleBox(userId)),
-    closeSelectCircles: (userId) => dispatch(circleActions.closeSelectCircleBox(userId)),
+    followUser: (userFollowing) => dispatch(followActions.dbFollowUser(userFollowing)),
     goTo: (url) => dispatch(push(url))
-
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { circle, authorize, server } = state
+  const { follow, authorize, server } = state
   const uid = authorize.get('uid')
   const request = server.get('request')
+  const userId = ownProps.userId
 
-  const circles = circle ? (circle.get('circleList').toJS() || {}) : {}
-  const userBelongCircles = circle.get('userTies') ? (circle.get('userTies')[ownProps.userId] ? circle.get('userTies')[ownProps.userId].circleIdList : []) : []
-  const isFollowed = userBelongCircles.length > 0
-  const followingCircleId = circles ? Object.keys(circles)
-    .filter((circleId) => circles[circleId].isSystem && circles[circleId].name === `Following`)[0] : ''
+  const isFollowed = follow.get('followList')[userId] != undefined
+
   const followRequest = request ? request[ServerRequestType.CircleFollowUser + ownProps.userId] : null
-  const addToCircleRequest = request ? request[ServerRequestType.CircleAddToCircle + ownProps.userId] : null
-  const deleteFollowingUserRequest = request ? request[ServerRequestType.CircleDeleteFollowingUser + ownProps.userId] : null
-  const selectedCircles = circle.get('selectedCircles') ? circle.get('selectedCircles')[ownProps.userId] : []
-  const isSelecteCirclesOpen = circle.get('openSelecteCircles') ? circle.get('openSelecteCircles')[ownProps.userId] : []
-
+  
   return {
-    isSelecteCirclesOpen,
     isFollowed,
-    selectedCircles,
-    circles,
-    followingCircleId,
-    userBelongCircles,
     followRequest,
-    belongCirclesCount: userBelongCircles.length || 0,
-    firstBelongCircle: userBelongCircles ? (circles ? circles[userBelongCircles[0]] : {}) : {},
     avatar: state.user.get('info') && state.user.get('info')[ownProps.userId] ? state.user.get('info')[ownProps.userId].avatar || '' : '',
     fullName: state.user.get('info') && state.user.get('info').get(ownProps.userId) ? state.user.get('info').get(ownProps.userId).fullName || '' : ''
   }
 }
 
-// - Connect component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UserBoxComponent))

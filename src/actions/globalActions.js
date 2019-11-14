@@ -3,7 +3,6 @@ import { GlobalActionType } from '../constants/globalActionType'
 // - Import actions
 import * as serverActions from './serverActions'
 
-import { Feed, SocialError } from '../class/common'
 import { ServerRequestModel } from '../class/server'
 import { ServerRequestStatusType } from './serverRequestStatusType'
 
@@ -41,7 +40,6 @@ export let dbSendFeed = (newFeed) => {
 // - Show notification of request
 export const showNotificationRequest = () => {
   return (dispatch, getState) => {
-    const state = getState()
     return dispatch(showMessage('Sent Request'))
   }
 }
@@ -49,7 +47,6 @@ export const showNotificationRequest = () => {
 // - Show notification of success
 export const showNotificationSuccess = () => {
   return (dispatch, getState) => {
-    const state = getState()
     return dispatch(showMessage('Successful!'))
   }
 }
@@ -254,7 +251,7 @@ export const loadDataGuest = () => {
  * Create send feedback serevr request model
  */
 const createFeedbackRequest = (userId) => {
-  const requestId = 'CommonSendFeedback' + ':' + userId
+  const requestId = 'CommonSendFeedback:' + userId
   return new ServerRequestModel(
     'CommonSendFeedback',
     requestId,

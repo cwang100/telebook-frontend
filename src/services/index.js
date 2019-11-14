@@ -1,5 +1,5 @@
 import { AuthorizeService } from './authorize'
-import { CircleService, UserTieService } from './circles'
+import { FollowService } from './follow'
 import { CommonService } from './common'
 import { NotificationService } from './notifications'
 import { PostService } from './posts'
@@ -7,8 +7,7 @@ import { UserService } from './users'
 
 export {
   AuthorizeService,
-  CircleService,
-  UserTieService,
+  FollowService,
   CommonService,
   NotificationService,
   PostService,

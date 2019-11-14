@@ -100,16 +100,7 @@ export class StreamComponent extends Component {
       let postBack = { divided: false, oddPostList: [], evenPostList: [] }
       let parsedPosts = []
       Object.keys(posts).forEach((postId) => {
-        if (tag) {
-          let regex = new RegExp('#' + tag, 'g')
-          let postMatch = posts[postId].body.match(regex)
-          if (postMatch !== null) {
-            parsedPosts.push({ ...posts[postId] })
-          }
-        } else {
-          parsedPosts.push({ ...posts[postId] })
-
-        }
+        parsedPosts.push({ ...posts[postId] })
       })
       const sortedPosts = parsedPosts
       if (sortedPosts.length > 6) {
@@ -119,7 +110,6 @@ export class StreamComponent extends Component {
         postBack.divided = false
       }
       sortedPosts.forEach((post, index) => {
-
         let newPost = (
           <div key={`${post.id}-stream-div`}>
 
@@ -217,5 +207,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-// - Connect component to redux store
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(StreamComponent))

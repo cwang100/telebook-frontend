@@ -1,8 +1,6 @@
 // - Import react components
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import Paper from 'material-ui/Paper'
 import InfiniteScroll from 'react-infinite-scroller'
 
 import UserBoxList from '../userBoxList'
@@ -43,13 +41,10 @@ export class FindPeopleComponent extends Component {
                 <div className='tracks'>
 
                 {this.props.peopleInfo && Object.keys(this.props.peopleInfo).length !== 0 ? (<div>
-                <div className='profile__title'>
-                    {('people.suggestionsForYouLabel')}
-                </div>
                 <UserBoxList users={this.props.peopleInfo}/>
                 <div style={{ height: '24px' }}></div>
                 </div>) : (<div className='g__title-center'>
-                {('people.nothingToShowLabel')}
+                {('Nothing to show here.')}
                 </div>)}
                 </div>
               </InfiniteScroll>

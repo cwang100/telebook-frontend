@@ -1,7 +1,6 @@
 
 import { push } from 'connected-react-router'
 import { User } from '../class/users'
-import { OAuthType, LoginUser } from '../class/authorize'
 import { AuthorizeActionType } from '../constants/authorizeActionType'
 
 import * as globalActions from './globalActions'

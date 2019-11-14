@@ -1,39 +1,10 @@
 // - Import react components
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { grey } from 'material-ui/colors'
 import SvgClose from 'material-ui-icons/Close'
 import Button from 'material-ui/Button'
 import Divider from 'material-ui/Divider'
 
-/**
- * Create component class
- */
 export default class DialogTitleComponent extends Component {
-
-  static propTypes = {
-    /**
-     * The label of right button
-     */
-    buttonLabel: PropTypes.string,
-    /**
-     * If it's true button will be disabled
-     */
-    disabledButton: PropTypes.bool,
-    /**
-     * Call the funtion the time is clicked on right button
-     */
-    onClickButton: PropTypes.func,
-    /**
-     * The function will be called the time is clicked on close
-     */
-    onRequestClose: PropTypes.func.isRequired,
-    /**
-     * The title of dialog box
-     */
-    title: PropTypes.string
-  }
-
   styles = {
     contain: {
       display: 'flex',
@@ -47,25 +18,6 @@ export default class DialogTitleComponent extends Component {
     }
   }
 
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
-  constructor (props) {
-    super(props)
-
-    // Defaul state
-    this.state = {
-    }
-
-    // Binding functions to `this`
-
-  }
-
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render () {
 
     const { buttonLabel, disabledButton, onClickButton, onRequestClose, title } = this.props

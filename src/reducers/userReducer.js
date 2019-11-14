@@ -1,16 +1,6 @@
-// - Import action types
 import { UserActionType } from '../constants/userActionType'
 import { Map, fromJS } from 'immutable'
 
-// // - Import domain
-// import { User, Profile } from 'src/core/domain/users'
-
-// import { UserState } from './UserState'
-// import { IUserAction } from './IUserAction'
-
-/**
- * User reducer
- */
 export let userReducer = (state = Map(), action) => {
   const { payload } = action
   switch (action.type) {

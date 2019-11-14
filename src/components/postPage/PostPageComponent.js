@@ -1,7 +1,6 @@
 // - Import react components
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 
 // - Import app components
 import Stream from '../stream'
@@ -13,15 +12,6 @@ import * as userActions from '../../actions/userActions'
  * Create component class
  */
 export class PostPageComponent extends Component {
-
-  static propTypes = {
-
-  }
-
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
   constructor (props) {
     super(props)
 
@@ -38,24 +28,14 @@ export class PostPageComponent extends Component {
     this.props.loadUserInfo()
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render () {
     const St = Stream
     return (
-          <St posts={this.props.posts} displayWriting={false} />
+      <St posts={this.props.posts} displayWriting={false} />
     )
   }
 }
 
-  /**
-   * Map dispatch to props
-   * @param  {func} dispatch is the function to dispatch action to reducers
-   * @param  {object} ownProps is the props belong to component
-   * @return {object}          props of component
-   */
 const mapDispatchToProps = (dispatch,ownProps) => {
   const {userId,postId} = ownProps.match.params
   return{
@@ -64,12 +44,6 @@ const mapDispatchToProps = (dispatch,ownProps) => {
   }
 }
 
-  /**
-   * Map state to props
-   * @param  {object} state is the obeject from redux store
-   * @param  {object} ownProps is the props belong to component
-   * @return {object}          props of component
-   */
 const mapStateToProps = (state,ownProps) => {
   const {userId,postId} = ownProps.match.params
   return{
@@ -79,5 +53,4 @@ const mapStateToProps = (state,ownProps) => {
   }
 }
 
-  // - Connect component to redux store
 export default connect(mapStateToProps,mapDispatchToProps)(PostPageComponent)

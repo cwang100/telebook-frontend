@@ -1,7 +1,4 @@
-import { Notification } from '../class/notifications'
-import { SocialError } from '../class/common'
 
-// - Import action types
 import { NotificationActionType } from '../constants/notificationActionType'
 
 // - Import actions
@@ -42,7 +39,10 @@ export const dbGetNotifications = () => {
       return notificationService.getNotifications(uid,
         (notifications) => {
           Object.keys(notifications).forEach((key => {
-            if (!getState().user.get('info').get(notifications[key].notifierUserId)) {
+            let user = getState().user
+            let info = user ? user.get('info') : undefined
+            let id = info ? info.get(notifications[key].notifierUserId) : undefined
+            if (!id) {
               dispatch(userActions.dbGetUserInfoByUserId(notifications[key].notifierUserId,''))
             }
           }))
@@ -60,7 +60,7 @@ export const dbDeleteNotification = (id) => {
   return (dispatch, getState) => {
 
     // Get current user id
-    let uid: string = getState().authorize.get('uid')
+    let uid = getState().authorize.get('uid')
 
     return notificationService.deleteNotification(id,uid).then(() => {
       dispatch(deleteNotify(id))
@@ -81,10 +81,12 @@ export const dbSeenNotification = (id) => {
     let uid = getState().authorize.get('uid')
     let notify = getState().notify.get('userNotifies')[id]
 
-    let updatedNotification: Notification = {
-      description: notify.get('description'),
+    console.log(getState().notify)
+
+    let updatedNotification = {
+      description: notify.description,
       url: notify.url,
-      notifierUserId: notify.get('notifierUserId'),
+      notifierUserId: notify.notifierUserId,
       notifyRecieverUserId: uid,
       isSeen: true
     }
