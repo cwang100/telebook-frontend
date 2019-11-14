@@ -45,27 +45,28 @@ export class ProfileComponent extends Component {
         border: '2px solid rgb(255, 255, 255)'
       }
     }
-    const {loadPosts, hasMorePosts, translate} = this.props
+    const {loadPosts, hasMorePosts, name} = this.props
     const St = StreamComponent
     return (
       <div style={styles.profile}>
         <div style={styles.header}>
-            <ProfileHeader tagLine={this.props.tagLine} avatar={this.props.avatar} isAuthedUser={this.props.isAuthedUser} banner={this.props.banner} fullName={this.props.name} followerCount={0} userId={this.props.userId}/>
-        <St
-          posts={this.props.posts}
-          loadStream={loadPosts}
-          hasMorePosts={hasMorePosts}
-          displayWriting={false} />
+          <ProfileHeader tagLine={this.props.tagLine} avatar={this.props.avatar} isAuthedUser={this.props.isAuthedUser} banner={this.props.banner} fullName={this.props.name} followerCount={0} userId={this.props.userId}/>
         </div>
         {this.props.posts && Object.keys(this.props.posts).length !== 0
-        ? (<div style={styles.content}>
+        ? (
+        <div style={styles.content}>
           <div className='profile__title'>
-            {('profile.headPostsLabel', {userName: this.props.name})}
-               </div>
-          <div style={{ height: '24px' }}></div>
-        </div>)
+            {'Posts from ' + name}
+          </div>
+          <St
+            posts={this.props.posts}
+            loadStream={loadPosts}
+            hasMorePosts={hasMorePosts}
+            displayWriting={false} />
+        </div>
+        )
         : (<div className='profile__title'>
-                {('profile.nothingSharedLabel')}
+                {('Nothing has been shared from this user yet.')}
                </div>)
         }
 
@@ -79,7 +80,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     loadPosts: () => dispatch(postActions.dbGetPostsByUserId(userId)),
     loadUserInfo: () => dispatch(userActions.dbGetUserInfoByUserId(userId, 'header'))
-
   }
 }
 
@@ -88,17 +88,15 @@ const mapStateToProps = (state, ownProps) => {
   const uid = state.authorize.get('uid')
   const profile = state.post.get('profile') || {}
   const hasMorePosts = profile.hasMoreData
-  const posts = state.post.get('userPosts') ? state.post.get('userPosts')[userId] : {}
+  const userPosts = state.post.get('userPosts')
+  const posts = userPosts.get(userId) ? userPosts.get(userId).toJS() : {}
   return {
     avatar: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].avatar || '' : '',
-    name: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].fullName || '' : '',
-    banner: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].banner || '' : '',
-    tagLine: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].tagLine || '' : '',
+    name: state.user.get('info') && state.user.get('info').get(userId) ? state.user.get('info').get(userId).fullName || '' : '',
     isAuthedUser: userId === uid,
     userId,
     posts,
     hasMorePosts
-
   }
 }
 

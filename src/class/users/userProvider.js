@@ -1,6 +1,5 @@
 export class UserProvider {
-
-  	constructor (
+  constructor (
 		userId,
 		email,
 		fullName,

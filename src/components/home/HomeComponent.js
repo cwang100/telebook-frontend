@@ -36,7 +36,7 @@ import * as authorizeActions from '../../actions/authorizeActions'
 import * as postActions from '../../actions/postActions'
 import * as userActions from '../../actions/userActions'
 import * as globalActions from '../../actions/globalActions'
-import * as circleActions from '../../actions/circleActions'
+import * as followActions from '../../actions/followActions'
 import * as notifyActions from '../../actions/notifyActions'
 
 const drawerWidth = 220
@@ -260,15 +260,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(postActions.dbGetPosts())
       dispatch(userActions.dbGetUserInfo())
       dispatch(notifyActions.dbGetNotifications())
-      dispatch(circleActions.dbGetCircles())
-      dispatch(circleActions.dbGetUserTies())
-      dispatch(circleActions.dbGetFollowers())
+      dispatch(followActions.dbGetFollowingUsers())
     },
     clearData: () => {
       dispatch(postActions.clearAllData())
       dispatch(userActions.clearAllData())
       dispatch(notifyActions.clearAllNotifications())
-      dispatch(circleActions.clearAllCircles())
+      dispatch(followActions.deleteFollowingUser())
       dispatch(globalActions.clearTemp())
     },
     defaultDataDisable: () => {
@@ -283,11 +281,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { authorize, global, user, post, notify, circle } = state
+  const { authorize, global, user, post, notify, follow } = state
   const uid = authorize.get('uid')
   let mergedPosts = {}
-  const circles = circle ? (circle.get('circleList') || {}) : {}
-  const followingUsers = circle ? circle.get('userTies') || {} : {}
+  const followingUsers = follow ? follow.get('followList') || {} : {}
   const posts = post.get('userPosts') ? post.get('userPosts')[uid] : {}
   const stream = post.get('stream') || {}
   const hasMorePosts = stream.hasMoreData
@@ -303,7 +300,7 @@ const mapStateToProps = (state, ownProps) => {
     mergedPosts,
     global,
     hasMorePosts,
-    loaded: user.get('loaded') && notify.get('loaded') && circle.get('loaded')
+    loaded: user.get('loaded') && notify.get('loaded') && !follow.get('followingLoadingStatus')
   }
 }
 

@@ -116,8 +116,6 @@ export class NotifyComponent extends Component {
      All caught up! </div>
      )
     const items = this.notifyItemList()
-    console.log("items = ");
-    console.log(items)
     return (
       <Popper
         placement='bottom-start'

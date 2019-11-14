@@ -5,11 +5,6 @@ import UserBox from '../userBox'
 export class UserBoxListComponent extends Component {
   constructor (props) {
     super(props)
-
-    this.state = {
-
-    }
-
   }
 
   userList = () => {
@@ -25,17 +20,10 @@ export class UserBoxListComponent extends Component {
   }
 
   render () {
-
-    const styles = {
-
-    }
-
     return (
-
-                <div className='grid grid__1of4 grid__space-around'>
-                  {this.userList()}
-                </div>
-
+      <div className='grid grid__1of4 grid__space-around'>
+        {this.userList()}
+      </div>
     )
   }
 }

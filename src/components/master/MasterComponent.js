@@ -16,20 +16,11 @@ import {
   postActions,
   userActions,
   globalActions,
-  circleActions,
   notifyActions
 } from '../../actions'
 
-/* ------------------------------------ */
-
-// - Create Master component class
 export class MasterComponent extends Component {
-
   static isPrivate = true
-
-  // var _serviceProvider
-  // var _authourizeService
-  // Constructor
   constructor (props) {
     super(props)
 
@@ -41,18 +32,14 @@ export class MasterComponent extends Component {
       isVerified: false
     }
 
-    // Binding functions to `this`
     this.handleLoading = this.handleLoading.bind(this)
     this.handleMessage = this.handleMessage.bind(this)
-
   }
 
-  // Handle click on message
   handleMessage = (evt) => {
     this.props.closeMessage()
   }
 
-  // Handle loading
   handleLoading = (status) => {
     this.setState({
       loading: status,
@@ -61,7 +48,6 @@ export class MasterComponent extends Component {
   }
 
   componentDidMount () {
-
     this._authourizeService.onAuthStateChanged((isVerified, user) => {
       const {
         global,
@@ -98,23 +84,12 @@ export class MasterComponent extends Component {
     })
   }
 
-  /**
-   * Render app DOM component
-   *
-   * @returns
-   *
-   * @memberof Master
-   */
   render () {
-
     const { progress, global, loaded, guest, uid, hideMessage } = this.props
     const { loading, isVerified } = this.state
 
     return (
       <div id='master'>
-{/*        <div className='master__progress' style={{ display: (progress.visible ? 'block' : 'none') }}>
-          <LinearProgress variant='determinate' value={progress.percent} />
-        </div>*/}
         <div className='master__loading animate-fading2' style={{ display: (global.get('showTopLoading') ? 'flex' : 'none') }}>
           <div className='title'>Loading ... </div>
         </div>
@@ -138,7 +113,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(postActions.clearAllData())
       dispatch(userActions.clearAllData())
       dispatch(notifyActions.clearAllNotifications())
-      dispatch(circleActions.clearAllCircles())
       dispatch(globalActions.clearTemp())
     },
     login: (userId, isVerified) => {
@@ -167,7 +141,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 const mapStateToProps = (state) => {
-  const { authorize, global, user, post, notify, circle } = state
+  const { authorize, global, user, post, notify } = state
 
   return {
     guest: authorize.get('guest'),

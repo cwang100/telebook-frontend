@@ -1,8 +1,5 @@
-import { Profile } from '../../class/users'
+import { firebaseAuth, db } from '../../fireStoreClient'
 
-import { firebaseRef, firebaseAuth, db } from '../../fireStoreClient'
-
-import { User, UserProvider } from '../../class/users'
 import { LoginUser, RegisterUserResult } from '../../class/authorize'
 import { SocialError } from '../../class/common'
 
@@ -135,14 +132,7 @@ export class AuthorizeService {
         this.storeUserInformation(uid,email,displayName,photoURL).then(resolve)
         resolve(new LoginUser(user.uid,true,providerId,displayName,email,photoURL))
 
-      }).catch(function (error) {
-        let errorCode = error.code
-        let errorMessage = error.message
-        let email = error.email
-        let credential = error.credential
-
       })
-
     })
   }
 
@@ -166,12 +156,7 @@ export class AuthorizeService {
     })
   }
 
-  /**
-   * Store user provider information
-   *
-   * @private
-   * @memberof AuthorizeService
-   */
+
   storeUserProviderData(
     userId,
     email,

@@ -13,7 +13,7 @@ import Button from 'material-ui/Button'
 import RaisedButton from 'material-ui/Button'
 import EventListener, { withOptions } from 'react-event-listener'
 import EditProfile from '../editProfile'
-
+import DefaultAvator from '../../assets/avator.png'
 // - Import API
 
 // - Import actions
@@ -132,12 +132,12 @@ export class ProfileHeaderComponent extends Component {
                         onResize={this.handleResize}
                     />
                     <div className='left'>
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <img src={DefaultAvator} width='150' height='150'/>
+                      </div>
                         <div className='info'>
                             <div className='fullName'>
                                 {this.props.fullName}
-                            </div>
-                            <div className='tagLine'>
-                               {this.props.tagLine}
                             </div>
                         </div>
                     </div>

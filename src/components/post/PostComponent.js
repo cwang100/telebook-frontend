@@ -136,7 +136,6 @@ export class PostComponent extends Component {
   }
 
   openPostMenu = (event) => {
-    console.log(event.currentTarget)
     this.setState({
       postMenuAnchorEl: event.currentTarget,
       isPostMenuOpen: true
@@ -190,16 +189,8 @@ export class PostComponent extends Component {
             <Grow in={isPostMenuOpen} >
               <Paper>
                 <MenuList role='menu'>
-                  <MenuItem onClick={this.handleOpenPostWrite} > {('post.edit')} </MenuItem>
-                  <MenuItem onClick={this.handleDelete} > {('post.delete')} </MenuItem>
-                  <MenuItem
-                    onClick={() => this.props.toggleDisableComments(!post.disableComments)} >
-                    {post.disableComments ? ('post.enableComments') : ('post.disableComments')}
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => this.props.toggleSharingComments(!post.disableSharing)} >
-                    {post.disableSharing ? ('post.enableSharing') : ('post.disableSharing')}
-                  </MenuItem>
+                  <MenuItem onClick={this.handleOpenPostWrite} > {('Edit')} </MenuItem>
+                  <MenuItem onClick={this.handleDelete} > {('Delete')} </MenuItem>
                 </MenuList>
               </Paper>
             </Grow>
@@ -214,11 +205,13 @@ export class PostComponent extends Component {
       <Card>
         <CardHeader
           title={<NavLink to={`/${ownerUserId}`}>{ownerDisplayName}</NavLink>}
-          subheader={moment.unix(creationDate).fromNow() + ' | ' + ('post.public')}
+          subheader={moment.unix(creationDate).fromNow() + ' | ' + ('Public')}
           action={isPostOwner ? rightIconMenu : ''}
         >
         </CardHeader>
-       
+        <CardContent className={classes.postBody}>
+          {body}
+        </CardContent>
         <PostWrite
           open={this.state.openPostWrite}
           onRequestClose={this.handleClosePostWrite}
@@ -243,13 +236,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const mapStateToProps = (state, ownProps) => {
   const { post, authorize } = state
-  const uid= authorize.get('uid')
-  const postModel = post.get('userPosts')[ownProps.post.ownerUserId][ownProps.post.id]
-  const postOwner = (post.get('userPosts')[uid] ? Object.keys(post.get('userPosts')[uid]).filter((key) => { return ownProps.post.id === key }).length : 0)
+  const uid = authorize.get('uid')
+  const postOwner = ownProps.post.ownerUserId === uid  
   return {
     avatar: state.user.get('info') && state.user.get('info')[ownProps.post.ownerUserId] ? state.user.info[ownProps.post.ownerUserId].avatar || '' : '',
     fullName: state.user.get('info') && state.user.get('info')[ownProps.post.ownerUserId] ? state.user.get('info')[ownProps.post.ownerUserId].fullName || '' : '',
-    isPostOwner: postOwner > 0
+    isPostOwner: postOwner
   }
 }
 

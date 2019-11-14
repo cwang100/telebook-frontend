@@ -9,8 +9,8 @@ import { PostActionType } from '../constants/postActionType'
 
 const updatePost = (state, payload) => {
   const post = payload.post
-  const updatePostOwnerId = post.get('ownerUserId')
-  const updatePostId = post.get('id')
+  const updatePostOwnerId = post.ownerUserId
+  const updatePostId = post.id
   return state
       .setIn(['userPosts', updatePostOwnerId, updatePostId], Map(post))
 }

@@ -53,11 +53,11 @@ export const dbUpdatePost = (updatedPost, callBack) => {
       dispatch(globalActions.hideTopLoading())
 
     })
-      .catch((error) => {
-        dispatch(globalActions.showMessage(error.message))
-        dispatch(globalActions.hideTopLoading())
+      // .catch((error) => {
+      //   dispatch(globalActions.showMessage(error.message))
+      //   dispatch(globalActions.hideTopLoading())
 
-      })
+      // })
   }
 
 }
