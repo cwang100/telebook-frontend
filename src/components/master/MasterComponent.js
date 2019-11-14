@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch, NavLink, withRouter, Redirect } from 'react-router-dom'
-import { push } from 'connected-react-router'
+import { withRouter } from 'react-router-dom'
 import Snackbar from 'material-ui/Snackbar'
-import { LinearProgress } from 'material-ui/Progress'
 import { AuthorizeService as authorizeService } from '../../services'
-// - Import components
 
-import MasterLoadingComponent from './MasterLoadingComponent'
 import MasterRouter from '../../routes/MasterRouter'
 
 // // - Import actions
@@ -54,15 +50,11 @@ export class MasterComponent extends Component {
         clearData,
         loadDataGuest,
         defaultDataDisable,
-        defaultDataEnable,
         login,
-        logout,
-        showMasterLoading,
-        hideMasterLoading
+        logout
       } = this.props
       if (user) {
         login(user.uid,isVerified)
-        hideMasterLoading()
         this.setState({
           loading: false,
           isVerified: true
@@ -70,7 +62,6 @@ export class MasterComponent extends Component {
 
       } else {
         logout()
-        hideMasterLoading()
         this.setState({
           loading: false,
           isVerified: false
@@ -85,8 +76,8 @@ export class MasterComponent extends Component {
   }
 
   render () {
-    const { progress, global, loaded, guest, uid, hideMessage } = this.props
-    const { loading, isVerified } = this.state
+    const { global, uid, hideMessage } = this.props
+    const { loading } = this.state
 
     return (
       <div id='master'>
@@ -133,15 +124,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     loadDataGuest: () => {
       dispatch(globalActions.loadDataGuest())
     },
-    showMasterLoading: () => dispatch(globalActions.showMasterLoading()),
-    hideMasterLoading: () => dispatch(globalActions.hideMasterLoading()),
     hideMessage: () => dispatch(globalActions.hideMessage())
   }
 
 }
 
 const mapStateToProps = (state) => {
-  const { authorize, global, user, post, notify } = state
+  const { authorize, global } = state
 
   return {
     guest: authorize.get('guest'),

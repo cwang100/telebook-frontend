@@ -1,38 +1,27 @@
 import { HomeRouter } from '../../routes'
 import React, { Component } from 'react'
 import _ from 'lodash'
-import { Route, Switch, withRouter, Redirect, NavLink } from 'react-router-dom'
+import { withRouter, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
-import config from '../../config'
 import classNames from 'classnames'
 
 import { withStyles } from 'material-ui/styles'
 import Drawer from 'material-ui/Drawer'
-import Menu from 'material-ui/Menu'
 import { MenuList, MenuItem } from 'material-ui/Menu'
 import { ListItemIcon, ListItemText } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
-import SvgArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import SvgHome from '@material-ui/icons/Home'
-import SvgFeedback from '@material-ui/icons/Feedback'
 import SvgSettings from '@material-ui/icons/Settings'
 import SvgAccountCircle from '@material-ui/icons/AccountCircle'
 import SvgPeople from '@material-ui/icons/People'
-import List from 'material-ui/List'
-import Typography from 'material-ui/Typography'
-import IconButton from 'material-ui/IconButton'
 import Hidden from 'material-ui/Hidden'
-import MenuIcon from '@material-ui/icons/Menu'
 
 import Sidebar from '../sidebar'
 import HomeHeader from '../homeHeader'
 import SidebarContent from '../sidebarContent'
 import SidebarMain from '../sidebarMain'
-import Profile from '../profile'
-import People from '../people'
 
-import * as authorizeActions from '../../actions/authorizeActions'
 import * as postActions from '../../actions/postActions'
 import * as userActions from '../../actions/userActions'
 import * as globalActions from '../../actions/globalActions'
@@ -154,11 +143,10 @@ export class HomeComponent extends Component {
 
   render() {
     const HR = HomeRouter
-    const { loaded, authed, loadDataStream, mergedPosts, hasMorePosts, showSendFeedback, classes, theme } = this.props
+    const { loaded, loadDataStream, mergedPosts, hasMorePosts, classes, theme } = this.props
     const { drawerOpen } = this.state
     const drawer = (
       <>
-
       <NavLink to='/'>
         <MenuItem style={{ color: 'rgb(117, 117, 117)' }}>
           <ListItemIcon>
@@ -192,7 +180,7 @@ export class HomeComponent extends Component {
           <ListItemText inset primary={'Settings'} />
         </MenuItem>
       </NavLink>
-      </>
+    </>
     )
 
     const anchor = theme.direction === 'rtl' ? 'right' : 'left'

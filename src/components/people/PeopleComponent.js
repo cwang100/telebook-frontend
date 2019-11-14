@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import Tabs, { Tab } from 'material-ui/Tabs'
-import { grey, cyan } from 'material-ui/colors'
+import { grey } from 'material-ui/colors'
 import { push } from 'connected-react-router'
 import AppBar from 'material-ui/AppBar'
 import Typography from 'material-ui/Typography'
@@ -31,7 +31,7 @@ export class PeopleComponent extends Component {
   }
 
   handleChangeTab = (event, value) => {
-    const {followLoaded, goTo, setHeaderTitle} = this.props
+    const { goTo, setHeaderTitle} = this.props
     this.setState({ tabIndex: value })
     switch (value) {
       case 0:
@@ -81,7 +81,7 @@ export class PeopleComponent extends Component {
       }
     }
 
-    const {followLoaded, goTo, setHeaderTitle, translate} = this.props
+    const {followLoaded} = this.props
     const {tabIndex} = this.state
     return (
       <div style={styles.people}>

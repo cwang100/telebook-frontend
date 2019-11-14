@@ -1,11 +1,9 @@
 // - Import external components
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { NavLink, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { push } from 'connected-react-router'
 import Paper from 'material-ui/Paper'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/Button'
 import Button from 'material-ui/Button'
 import config from '../../config'
 import { withStyles } from 'material-ui/styles'
@@ -56,10 +54,6 @@ export class EmailVerificationComponent extends Component {
       margin: 'auto'
     }
 
-  }
-
-  constructor(props) {
-    super(props)
   }
 
   render() {

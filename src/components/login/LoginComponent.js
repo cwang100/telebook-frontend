@@ -5,15 +5,12 @@ import { NavLink, withRouter } from 'react-router-dom'
 import { push } from 'connected-react-router'
 import Paper from 'material-ui/Paper'
 import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/Button'
 import Button from 'material-ui/Button'
 import IconButton from 'material-ui/IconButton'
 import Divider from 'material-ui/Divider'
-// import ActionAndroid from 'material-ui-icons/Android'
 import { withStyles } from 'material-ui/styles'
 import config from '../../config'
 
-// - Import actions
 import * as authorizeActions from '../../actions/authorizeActions'
 import { OAuthType } from '../../class/authorize'
 import Grid from 'material-ui/Grid/Grid'
@@ -139,10 +136,7 @@ export class LoginComponent extends Component {
 
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
+
   render() {
     const { classes, loginWithOAuth } = this.props
 

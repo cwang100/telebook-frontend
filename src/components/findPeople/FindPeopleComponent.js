@@ -1,8 +1,6 @@
 // - Import react components
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import Paper from 'material-ui/Paper'
 import InfiniteScroll from 'react-infinite-scroller'
 
 import UserBoxList from '../userBoxList'

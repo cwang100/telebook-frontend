@@ -3,27 +3,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { push } from 'connected-react-router'
-import PropTypes from 'prop-types'
 import moment from 'moment/moment'
 // - Material UI
-import { Card, CardActions, CardHeader, CardMedia, CardContent } from 'material-ui'
-import Typography from 'material-ui/Typography'
-import SvgShare from '@material-ui/icons/Share'
-import SvgComment from '@material-ui/icons/Comment'
-import SvgFavorite from '@material-ui/icons/Favorite'
-import SvgFavoriteBorder from '@material-ui/icons/FavoriteBorder'
-import Checkbox from 'material-ui/Checkbox'
-import Button from 'material-ui/Button'
-import Divider from 'material-ui/Divider'
-import { grey } from 'material-ui/colors'
+import { Card, CardHeader, CardContent } from 'material-ui'
 import Paper from 'material-ui/Paper'
-import Menu from 'material-ui/Menu'
 import { MenuList, MenuItem } from 'material-ui/Menu'
-import TextField from 'material-ui/TextField'
-import Dialog from 'material-ui/Dialog'
 import IconButton from 'material-ui/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import { ListItemIcon, ListItemText } from 'material-ui/List'
 import { withStyles } from 'material-ui/styles'
 import { Manager, Target, Popper } from 'react-popper'
 import Grow from 'material-ui/transitions/Grow'
@@ -166,8 +152,8 @@ export class PostComponent extends Component {
    * @return {react element} return the DOM which rendered by component
    */
   render () {
-    const { post, setHomeTitle, goTo, fullName, isPostOwner, commentList, avatar, classes } = this.props
-    const { postMenuAnchorEl, isPostMenuOpen } = this.state
+    const { post, fullName, isPostOwner, avatar, classes } = this.props
+    const { isPostMenuOpen } = this.state
     const rightIconMenu = (
       <Manager>
         <Target>
@@ -204,8 +190,8 @@ export class PostComponent extends Component {
     return (
       <Card>
         <CardHeader
-          title={<NavLink to={`/${ownerUserId}`}>{ownerDisplayName}</NavLink>}
-          subheader={moment.unix(creationDate).fromNow() + ' | ' + ('Public')}
+          title={<NavLink to={`/${ownerUserId}`}>{fullName}</NavLink>}
+          subheader={moment.unix(creationDate).fromNow() + ' | Public'}
           action={isPostOwner ? rightIconMenu : ''}
         >
         </CardHeader>
@@ -226,7 +212,6 @@ export class PostComponent extends Component {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  const { post } = ownProps
   return {
     delete: (id) => dispatch(postActions.dbDeletePost(id)),
     goTo: (url) => dispatch(push(url)),
@@ -235,12 +220,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { post, authorize } = state
+  const { authorize } = state
   const uid = authorize.get('uid')
   const postOwner = ownProps.post.ownerUserId === uid  
   return {
     avatar: state.user.get('info') && state.user.get('info')[ownProps.post.ownerUserId] ? state.user.info[ownProps.post.ownerUserId].avatar || '' : '',
-    fullName: state.user.get('info') && state.user.get('info')[ownProps.post.ownerUserId] ? state.user.get('info')[ownProps.post.ownerUserId].fullName || '' : '',
+    fullName: state.user.get('info') && state.user.get('info').get(ownProps.post.ownerUserId) ? state.user.get('info').get(ownProps.post.ownerUserId).fullName || '' : '',
     isPostOwner: postOwner
   }
 }

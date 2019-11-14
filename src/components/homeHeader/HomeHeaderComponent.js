@@ -1,29 +1,24 @@
 // - Import react components
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 
 import SvgDehaze from '@material-ui/icons/Dehaze'
-import { grey, blue } from 'material-ui/colors'
+import { blue } from 'material-ui/colors'
 import Toolbar from 'material-ui/Toolbar'
 import IconButton from 'material-ui/IconButton'
-import Popover from 'material-ui/Popover'
 import AppBar from 'material-ui/AppBar'
-import Menu, { MenuList, MenuItem } from 'material-ui/Menu'
-import Paper from 'material-ui/Paper'
+import Menu, { MenuItem } from 'material-ui/Menu'
 import Hidden from 'material-ui/Hidden'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import Tooltip from 'material-ui/Tooltip'
 import Typography from 'material-ui/Typography'
-import { Manager, Target, Popper } from 'react-popper'
+import { Manager, Target } from 'react-popper'
 import { withStyles } from 'material-ui/styles'
 import config from '../../config'
 
 import Notify from '../notify'
 
-// - Import actions
-import * as globalActions from '../../actions/globalActions'
 import { authorizeActions } from '../../actions'
 
 const styles = {
@@ -129,7 +124,7 @@ export class HomeHeaderComponent extends Component {
   }
 
   render () {
-    const { classes , translate, theme} = this.props
+    const {theme} = this.props
     const anchor = theme.direction === 'rtl' ? 'right' : 'left'
     return (
 

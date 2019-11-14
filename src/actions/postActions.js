@@ -1,7 +1,3 @@
-import { Post } from '../class/posts'
-import { SocialError } from '../class/common'
-
-// - Import utility components
 import moment from 'moment/moment'
 
 // - Import action types

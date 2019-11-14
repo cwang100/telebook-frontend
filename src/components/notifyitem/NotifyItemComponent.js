@@ -1,13 +1,11 @@
 // - Import react components
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { push } from 'connected-react-router'
 import SvgClose from 'material-ui-icons/Close'
-import { grey } from 'material-ui/colors'
 import { withStyles } from 'material-ui/styles'
-import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
+import { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
 
 // - Import app components
 //import UserAvatar from '../../assets/avatar.png'
@@ -62,7 +60,7 @@ export class NotifyItemComponent extends Component {
      * @return {react element} return the DOM which rendered by component
      */
   render () {
-    let { description, fullName, avatar, isSeen, id, goTo,closeNotify, notifierUserId, url, deleteNotiy, classes } = this.props
+    let { description, fullName, isSeen, id, goTo,closeNotify, notifierUserId, url, deleteNotiy, classes } = this.props
 
     return (
 

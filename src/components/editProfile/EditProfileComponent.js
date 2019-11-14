@@ -1,7 +1,6 @@
 // - Import react components
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import moment from 'moment/moment'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
@@ -13,19 +12,13 @@ import MomentLocaleUtils, {
 import { grey } from 'material-ui/colors'
 import IconButton from 'material-ui/IconButton'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
-import SvgCamera from '@material-ui/icons/PhotoCamera'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
-import Menu, { MenuList, MenuItem } from 'material-ui/Menu'
+import { MenuItem } from 'material-ui/Menu'
 import Button from 'material-ui/Button'
-import RaisedButton from 'material-ui/Button'
-import EventListener, { withOptions } from 'react-event-listener'
+import EventListener from 'react-event-listener'
 import Dialog, {
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle
 } from 'material-ui/Dialog'
-import Divider from 'material-ui/Divider'
 import Paper from 'material-ui/Paper'
 import TextField from 'material-ui/TextField'
 import Input, { InputLabel } from 'material-ui/Input'
@@ -36,7 +29,6 @@ import AppInput from '../appInput'
 
 // - Import actions
 import * as userActions from '../../actions/userActions'
-import * as globalActions from '../../actions/globalActions'
 
 const styles = (theme) => ({
   dialogTitle: {
@@ -274,7 +266,6 @@ export class EditProfileComponent extends Component {
     return (
 
       <div>
-        {/* Edit profile dialog */}
         <Dialog
           PaperProps={{ className: classes.fullPageXs }}
           key='Edit-Profile'
@@ -283,7 +274,6 @@ export class EditProfileComponent extends Component {
           maxWidth='sm'
         >
           <DialogContent className={classes.dialogContentRoot}>
-            {/* Banner */}
             <div className='profile__edit'>
               <EventListener
                 target='window'

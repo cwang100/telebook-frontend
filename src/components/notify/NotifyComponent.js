@@ -1,22 +1,14 @@
-// - Import react components
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
-import { Manager, Target, Popper } from 'react-popper'
+import { Popper } from 'react-popper'
 import ClickAwayListener from 'material-ui/utils/ClickAwayListener'
 import Grow from 'material-ui/transitions/Grow'
 import { withStyles } from 'material-ui/styles'
-import Typography from 'material-ui/Typography'
 import Paper from 'material-ui/Paper'
-import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
+import List from 'material-ui/List'
 
-// - Import app components
 import NotifyItem from '../notifyItem'
-// - Import API
-
-// - Import actions
-import * as userActions from '../../actions/userActions'
 
 const styles = (theme) => ({
   root: {
@@ -110,7 +102,7 @@ export class NotifyComponent extends Component {
    * @return {react element} return the DOM which rendered by component
    */
   render () {
-    let { open, anchorEl, onRequestClose, classes } = this.props
+    let { open, onRequestClose, classes } = this.props
     const noNotify = ( 
     <div className={classes.noNotify}>
      All caught up! </div>

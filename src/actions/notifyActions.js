@@ -1,7 +1,4 @@
-import { Notification } from '../class/notifications'
-import { SocialError } from '../class/common'
 
-// - Import action types
 import { NotificationActionType } from '../constants/notificationActionType'
 
 // - Import actions

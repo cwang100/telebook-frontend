@@ -1,15 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Dialog from 'material-ui/Dialog'
-import Button from 'material-ui/Button'
-import RaisedButton from 'material-ui/Button'
-
 import ProfileHeader from '../profileHeader'
 import StreamComponent from '../stream'
 
 import * as postActions from '../../actions/postActions'
 import * as userActions from '../../actions/userActions'
-import * as globalActions from '../../actions/globalActions'
 
 export class ProfileComponent extends Component {
 

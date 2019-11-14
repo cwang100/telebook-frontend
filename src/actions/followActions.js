@@ -1,11 +1,6 @@
-import * as moment from 'moment/moment'
-
 import { FollowActionType } from '../constants/followActionType'
 
-import * as globalActions from './globalActions'
-import * as userActions from './userActions'
 import * as notifyActions from './notifyActions'
-import * as serverActions from './serverActions'
 
 import { FollowService, UserService } from '../services'
 
