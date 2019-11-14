@@ -60,7 +60,7 @@ export let postReducer = (state = Map({stream:{hasMoreData: false}}), action) =>
 
     case PostActionType.ADD_LIST_POST:
       return state
-        .mergeDeepIn(['userPosts'], payload.userPosts)
+        .mergeDeepIn(['userPosts'], fromJS(payload.userPosts))
         .set('loaded', true)
 
     case PostActionType.HAS_MORE_DATA_STREAM:
@@ -97,6 +97,5 @@ export let postReducer = (state = Map({stream:{hasMoreData: false}}), action) =>
 
     default:
       return state
-
   }
 }

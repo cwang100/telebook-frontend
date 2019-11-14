@@ -1,7 +1,10 @@
 import { firebaseRef, firebaseAuth, db } from '../../fireStoreClient'
 
+import { FollowService } from '../follow'
 import { SocialError } from '../../class/common'
 import { Post } from '../../class/posts'
+
+const followService = new FollowService()
 
 export class PostService {
   addPost(post) {
@@ -41,9 +44,9 @@ export class PostService {
       batch.commit().then(() => {
         resolve()
       })
-        .catch((error) => {
-          reject(new SocialError(error.code, error.message))
-        })
+      .catch((error) => {
+        reject(new SocialError(error.code, error.message))
+      })
     })
   }
 
@@ -51,42 +54,31 @@ export class PostService {
       return new Promise((resolve, reject) => {
         let postList = []
 
-        db.collection('graphs:users').where('leftNode', '==', currentUserId)
-          .get().then((tieUsers) => {
-            if (!(tieUsers.size > 0)) {
-              this.getPostsByUserId(currentUserId,lastPostId, page, limit).then((result) => {
-                resolve(result)
-              })
-            }
-
-            let userCounter = 0
-            const userIdList = []
-            tieUsers.forEach((item) => {
-              const userId = item.data().rightNode
-              if (!userIdList.includes(userId)) {
-                this.getPostsByUserId(userId).then((posts) => {
-                  userCounter++
-                  postList = [
-                    ...postList,
-                    ...posts.posts
-                  ]
-                  if (userCounter === tieUsers.size) {
-                    this.getPostsByUserId(currentUserId).then((result) => {
-                      postList = [
-                        ...postList,
-                        ...result.posts
-                      ]
-
-                      resolve(this.pagingPosts(postList, lastPostId, limit))
-                    })
-                  }
-                })
-              }
+        followService.getAllFollowers(currentUserId).then((users) => {
+          if (users.length == 0) {
+            this.getPostsByUserId(currentUserId, lastPostId, page, limit).then((result) => {
+              resolve(result)
             })
-          })
-          .catch((error) => {
-            reject(new SocialError(error.code, error.message))
-          })
+          } else {
+            const promiseList = []
+            users.forEach((userId) => {
+              promiseList.push(this.getPostsByUserId(userId))
+            })
+
+            Promise.all(promiseList).then((resolved) => {
+              resolved.forEach((result) => {
+                postList = postList.concat(result.posts)
+              })
+              this.getPostsByUserId(currentUserId).then((result) => {
+                postList = postList.concat(result.posts)
+                resolve(this.pagingPosts(postList, lastPostId, limit))
+              })
+            })
+          }
+        })
+          // .catch((error) => {
+          //   reject(new SocialError(error.code, error.message))
+          // })
       })
     }
 

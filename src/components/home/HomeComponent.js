@@ -285,13 +285,17 @@ const mapStateToProps = (state, ownProps) => {
   const uid = authorize.get('uid')
   let mergedPosts = {}
   const followingUsers = follow ? follow.get('followList') || {} : {}
-  const posts = post.get('userPosts') ? post.get('userPosts')[uid] : {}
+  const userPosts = post.get('userPosts')
+  const posts = userPosts ? userPosts.get(uid) ? userPosts.get(uid).toJS() : {} : {}
   const stream = post.get('stream') || {}
   const hasMorePosts = stream.hasMoreData
-  Object.keys(followingUsers).forEach((userId) => {
-    let newPosts = post.get('userPosts') ? post.get('userPosts')[uid] : {}
-    _.merge(mergedPosts, newPosts)
-  })
+  if (userPosts && followingUsers) {
+    Object.keys(followingUsers).forEach((userId) => {
+      let newPosts = userPosts.get(userId) ? userPosts.get(userId).toJS() : {}
+
+      _.merge(mergedPosts, newPosts)
+    })
+  }
   _.merge(mergedPosts, posts)
   return {
     authed: authorize.get('authed'),

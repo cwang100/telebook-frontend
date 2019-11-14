@@ -53,11 +53,10 @@ export const dbUpdatePost = (updatedPost, callBack) => {
       dispatch(globalActions.hideTopLoading())
 
     })
-      // .catch((error) => {
-      //   dispatch(globalActions.showMessage(error.message))
-      //   dispatch(globalActions.hideTopLoading())
-
-      // })
+    .catch((error) => {
+      dispatch(globalActions.showMessage(error.message))
+      dispatch(globalActions.hideTopLoading())
+    })
   }
 
 }
@@ -79,10 +78,10 @@ export const dbDeletePost = (id) => {
       dispatch(globalActions.hideTopLoading())
 
     })
-      .catch((error) => {
-        dispatch(globalActions.showMessage(error.message))
-        dispatch(globalActions.hideTopLoading())
-      })
+    .catch((error) => {
+      dispatch(globalActions.showMessage(error.message))
+      dispatch(globalActions.hideTopLoading())
+    })
   }
 
 }
@@ -107,7 +106,7 @@ export const dbGetPosts = (page = 0, limit = 10) => {
         // Store last post Id
         dispatch(lastPostStream(result.newLastPostId))
 
-        let parsedData: { [userId: string]: {[postId: string]: Post} } = {}
+        let parsedData = {}
         result.posts.forEach((post) => {
           const postId = Object.keys(post)[0]
           const postData = post[postId]
@@ -124,10 +123,9 @@ export const dbGetPosts = (page = 0, limit = 10) => {
         })
         dispatch(addPosts(parsedData))
       })
-        .catch((error) => {
-          dispatch(globalActions.showMessage(error.message))
-        })
-
+      // .catch((error) => {
+      //   dispatch(globalActions.showMessage(error.message))
+      // })
     }
   }
 }
@@ -154,7 +152,7 @@ export const dbGetPostsByUserId = (userId, page = 0, limit = 10) => {
         // Store last post Id
         dispatch(lastPostProfile(userId, result.newLastPostId))
 
-        let parsedData: { [userId: string]: {[postId: string]: Post} } = {}
+        let parsedData = {}
         result.posts.forEach((post) => {
           const postId = Object.keys(post)[0]
           const postData = post[postId]
