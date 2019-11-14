@@ -174,7 +174,8 @@ export class SignupComponent extends Component {
       email: emailInput,
       password: passwordInput,
       fullName: fullNameInput,
-      publicKey: publicKey
+      publicKey: publicKey,
+      privateKey: privateKey
     })
   }
 

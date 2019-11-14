@@ -26,7 +26,13 @@ export const signup = (user) => {
     type: AuthorizeActionType.SIGNUP,
     payload: { ...user }
   }
+}
 
+export const addPrivateKey = (privateKey) => {
+  return {
+    type: AuthorizeActionType.ADD_PRIVATE_KEY,
+    payload: { privateKey }
+  }
 }
 
 export const updatePassword = () => {

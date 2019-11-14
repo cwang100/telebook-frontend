@@ -22,7 +22,7 @@ export let authorizeReducer = (state = Map(), action) => {
         .set('guest', true)
         .set('isVerified', false)
     case AuthorizeActionType.SIGNUP:
-      return state.set('uid', payload.userId)
+      return state.set('uid', payload.userId).set('privateKey', payload.privateKey)
     case AuthorizeActionType.UPDATE_PASSWORD:
       return state
       .set('updatePassword', payload.updatePassword)

@@ -196,7 +196,7 @@ export class LoginComponent extends Component {
                     className={classes.textField}
                     onChange={this.handleInputChange}
                     helperText={this.state.privateKeyInputError}
-                    error={this.state.privateKeyInput.trim() !== ''}
+                    error={this.state.privateKeyInputError.trim() !== ''}
                     name='privateKeyInput'
                     label={'RSA Private Key'}
                     type='password'
