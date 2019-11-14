@@ -12,7 +12,6 @@ import { withStyles } from 'material-ui/styles'
 import config from '../../config'
 
 import * as authorizeActions from '../../actions/authorizeActions'
-import { OAuthType } from '../../class/authorize'
 import Grid from 'material-ui/Grid/Grid'
 
 const styles = (theme) => ({
@@ -42,7 +41,6 @@ const styles = (theme) => ({
   }
 })
 
-// - Create Login component class
 export class LoginComponent extends Component {
 
   styles = {
@@ -69,7 +67,9 @@ export class LoginComponent extends Component {
       emailInputError: '',
       passwordInput: '',
       passwordInputError: '',
-      confirmInputError: ''
+      confirmInputError: '',
+      privateKeyInput: '',
+      privateKeyInputError: ''
     }
 
     // Binding function to `this`
@@ -102,6 +102,11 @@ export class LoginComponent extends Component {
         })
 
         break
+      case 'privateKeyInput':
+        this.setState({
+          privateKeyInputError: ''
+        })
+        break
       default:
 
     }
@@ -124,13 +129,20 @@ export class LoginComponent extends Component {
         passwordInputError: ('Password required')
       })
       error = true
+    }
 
+    if (this.state.privateKeyInput === '') {
+      this.setState({
+        privateKeyInputError: ('Private Key is required')
+      })
+      error = true
     }
 
     if (!error) {
       this.props.login(
         this.state.emailInput,
-        this.state.passwordInput
+        this.state.passwordInput,
+        this.state.privateKeyInput
       )
     }
 
@@ -138,22 +150,7 @@ export class LoginComponent extends Component {
 
 
   render() {
-    const { classes, loginWithOAuth } = this.props
-
-    const OAuthLogin = (
-      <div style={this.styles.singinOptions}>
-        <IconButton
-          onClick={() => loginWithOAuth(OAuthType.FACEBOOK)}
-        ><div className='icon-fb icon'></div></IconButton>
-        <IconButton
-          onClick={() => loginWithOAuth(OAuthType.GOOGLE)}
-        > <div className='icon-google icon'></div> </IconButton>
-        <IconButton
-          onClick={() => loginWithOAuth(OAuthType.GITHUB)}
-        > <div className='icon-github icon'></div> </IconButton>
-  
-      </div>
-    )
+    const { classes } = this.props
 
     return (
       <Grid container spacing={24}>
@@ -172,7 +169,6 @@ export class LoginComponent extends Component {
 
                     <h2 className='zoomOutLCorner animated g__paper-title'>{('Log In')}</h2>
                   </div>
-                  {config.settings.enabledOAuthLogin ? OAuthLogin : ''}
                 
                   <Divider style={this.styles.divider} />
                   <TextField
@@ -182,7 +178,7 @@ export class LoginComponent extends Component {
                     helperText={this.state.emailInputError}
                     error={this.state.emailInputError.trim() !== ''}
                     name='emailInput'
-                    label={('E-mail')}
+                    label={'E-mail'}
                     type='email'
                     tabIndex={1}
                   /><br />
@@ -192,11 +188,20 @@ export class LoginComponent extends Component {
                     helperText={this.state.passwordInputError}
                     error={this.state.passwordInputError.trim() !== ''}
                     name='passwordInput'
-                    label={('Password')}
+                    label={'Password'}
                     type='password'
                     tabIndex={2}
                   /><br />
-                  <br />
+                  <TextField
+                    className={classes.textField}
+                    onChange={this.handleInputChange}
+                    helperText={this.state.privateKeyInputError}
+                    error={this.state.privateKeyInput.trim() !== ''}
+                    name='privateKeyInput'
+                    label={'RSA Private Key'}
+                    type='password'
+                    tabIndex={2}
+                  /><br />
                   <br />
                   <div className='login__button-box'>
                     <div>
@@ -225,10 +230,9 @@ export class LoginComponent extends Component {
  */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    login: (email, password) => {
-      dispatch(authorizeActions.dbLogin(email, password))
+    login: (email, password, privateKey) => {
+      dispatch(authorizeActions.dbLogin(email, password, privateKey))
     },
-    loginWithOAuth: (type) => dispatch(authorizeActions.dbLoginWithOAuth(type)),
     signupPage: () => {
       dispatch(push('/signup'))
     }

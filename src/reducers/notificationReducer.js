@@ -3,20 +3,8 @@ import moment from 'moment/moment'
 import _ from 'lodash'
 import { Map } from 'immutable'
 
-// - Import domain
-// import { Notification } from 'src/core/domain/notifications'
-
-// - Import action types
 import { NotificationActionType } from '../constants/notificationActionType'
 
-// import { NotificationState } from './NotificationState'
-// import { INotificationAction } from './INotificationAction'
-
-/**
- * Notify actions
- * @param {object} state
- * @param {object} action
- */
 export let notificationReducer = (state = Map({loaded: false}), action) => {
   let { payload } = action
   switch (action.type) {

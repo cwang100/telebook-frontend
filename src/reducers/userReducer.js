@@ -19,7 +19,7 @@ export let userReducer = (state = Map(), action) => {
 
     case UserActionType.UPDATE_USER_INFO:
       return state
-        .mergeIn(['info', payload.uid], payload.info)
+        .mergeIn(['info', payload.uid], fromJS(payload.info))
 
     case UserActionType.CLEAR_ALL_DATA_USER:
       return Map()

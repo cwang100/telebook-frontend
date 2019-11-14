@@ -190,7 +190,7 @@ export class PostComponent extends Component {
     return (
       <Card>
         <CardHeader
-          title={<NavLink to={`/${ownerUserId}`}>{fullName}</NavLink>}
+          title={<NavLink to={`/${ownerUserId}`}>{ownerDisplayName}</NavLink>}
           subheader={moment.unix(creationDate).fromNow() + ' | Public'}
           action={isPostOwner ? rightIconMenu : ''}
         >

@@ -41,7 +41,8 @@ export class AuthorizeService {
                 .createUserWithEmailAndPassword(user.email, user.password)
                 .then((signupResult) => {
                   const {uid, email} = signupResult.user
-                  this.storeUserInformation(uid,email,user.fullName,'').then(resolve)
+
+                  this.storeUserInformation(uid,email,user.fullName,'', user.publicKey).then(resolve)
                 })
                 .catch((error) => reject(new SocialError(error.code, error.message)))
     })
@@ -104,40 +105,7 @@ export class AuthorizeService {
     })
   }
 
-  loginWithOAuth(type) {
-    return new Promise((resolve,reject) => {
-
-      let provider
-
-      switch (type) {
-        case OAuthType.GITHUB:
-          provider = new firebaseAuth.GithubAuthProvider()
-          break
-        case OAuthType.FACEBOOK:
-          provider = new firebaseAuth.FacebookAuthProvider()
-          break
-        case OAuthType.GOOGLE:
-          provider = new firebaseAuth.GoogleAuthProvider()
-          break
-        default:
-          throw new SocialError('authorizeService/loginWithOAuth','None of OAuth type is matched!')
-      }
-      firebaseAuth().signInWithPopup(provider).then((result) => {
-        let token = result.credential.accessToken
-        const {user} = result
-        const {credential} = result
-        const {uid, displayName, email, photoURL} = user
-        const {accessToken, providerId} = credential
-        this.storeUserProviderData(uid,email,displayName,photoURL,providerId,accessToken)
-        this.storeUserInformation(uid,email,displayName,photoURL).then(resolve)
-        resolve(new LoginUser(user.uid,true,providerId,displayName,email,photoURL))
-
-      })
-    })
-  }
-
-
-  storeUserInformation(userId, email, fullName, avatar) {
+  storeUserInformation(userId, email, fullName, avatar, publicKey) {
     return new Promise((resolve,reject) => {
       db.doc(`userInfo/${userId}`).set(
         {
@@ -146,7 +114,8 @@ export class AuthorizeService {
           avatar,
           fullName,
           creationDate: moment().unix(),
-          email
+          email,
+          publicKey
         }
       )
       .then(() => {

@@ -36,11 +36,6 @@ export class StreamComponent extends Component {
     super(props)
 
     this.state = {
-      /**
-       * It's true if we want to have two column of posts
-       */
-      divided: false,
-
       openPostWrite: false,
       /**
        * The title of home header
@@ -83,7 +78,6 @@ export class StreamComponent extends Component {
   }
 
   postLoad = () => {
-
     let { posts, match } = this.props
     let { tag } = match.params
     if (posts === undefined || !(Object.keys(posts).length > 0)) {
@@ -96,38 +90,30 @@ export class StreamComponent extends Component {
 
       )
     } else {
-
-      let postBack = { divided: false, oddPostList: [], evenPostList: [] }
+      let postBack = { postList: [] }
       let parsedPosts = []
       Object.keys(posts).forEach((postId) => {
         parsedPosts.push({ ...posts[postId] })
       })
-      const sortedPosts = parsedPosts
-      if (sortedPosts.length > 6) {
-        postBack.divided = true
 
-      } else {
-        postBack.divided = false
-      }
+      let sortedPosts = parsedPosts.sort((a, b) => {
+        return b.creationDate - a.creationDate
+      })
+
       sortedPosts.forEach((post, index) => {
         let newPost = (
           <div key={`${post.id}-stream-div`}>
 
-            {index > 1 || (!postBack.divided && index > 0) ? <div style={{ height: '16px' }}></div> : ''}
+            {index > 0 ? <div style={{ height: '16px' }}></div> : ''}
             <PostComponent key={`${post.id}-stream-div-post`} post={post} />
 
           </div>
         )
 
-        if ((index % 2) === 1 && postBack.divided) {
-          postBack.oddPostList.push(newPost)
-        } else {
-          postBack.evenPostList.push(newPost)
-        }
+        postBack.postList.push(newPost)
       })
       return postBack
     }
-
   }
 
   scrollLoad = (page) => {
@@ -155,7 +141,7 @@ export class StreamComponent extends Component {
       >
         <div className='grid grid__gutters grid__1of2 grid__space-around animate-top'>
           <div className='grid-cell animate-top' style={{ maxWidth: '530px', minWidth: '280px' }}>
-            {displayWriting && !tag
+            {displayWriting 
               ? (<PostWriteComponent open={this.state.openPostWrite} onRequestClose={this.handleClosePostWrite} edit={false} >
                 <Paper elevation={2}>
 
@@ -171,18 +157,9 @@ export class StreamComponent extends Component {
               </PostWriteComponent>)
               : ''}
 
-            {postList.evenPostList}
+            {postList.postList}
             <div style={{ height: '16px' }}></div>
           </div>
-          {postList.divided
-            ? (<div className='grid-cell animate-top' style={{ maxWidth: '530px', minWidth: '280px' }}>
-              <div className='blog__right-list'>
-                {postList.oddPostList}
-                <div style={{ height: '16px' }}></div>
-              </div>
-            </div>)
-            : ''}
-
         </div>
 
       </InfiniteScroll>

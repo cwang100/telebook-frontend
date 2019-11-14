@@ -166,7 +166,7 @@ export class PostWriteComponent extends Component{
           BackdropProps={{ className: classes.backdrop }}
           PaperProps={{className: classes.fullPageXs}}
           key={this.props.id || 0}
-          open={this.props.open}
+          open={this.props.open || false}
           onClose={this.props.onRequestClose}
         >
           <DialogContent
@@ -246,7 +246,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     ownerAvatar: state.user.get('info') && state.user.get('info')[state.authorize.get('uid')] ? state.user.get('info')[state.authorize.get('uid')].avatar : '',
-    ownerDisplayName: state.user.get('info') && state.user.get('info')[state.authorize.get('uid')] ? state.user.get('info')[state.authorize.get('uid')].fullName : ''
+    ownerDisplayName: state.user.get('info') && state.user.get('info').get(state.authorize.get('uid')) ? state.user.get('info').get(state.authorize.get('uid')).fullName : ''
   }
 }
 
