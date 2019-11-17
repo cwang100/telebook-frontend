@@ -12,7 +12,7 @@ export class AuthorizeService {
       firebaseAuth()
                 .signInWithEmailAndPassword(email, password)
                 .then((result) => {
-                  resolve(new LoginUser(result.uid, result.emailVerified))
+                  resolve(result.user)
                 })
                 .catch((error) => {
                   reject(new SocialError(error.code, error.message))

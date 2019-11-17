@@ -46,13 +46,6 @@ const styles = (theme) => ({
   dialogRoot: {
     paddingTop: 0
   },
-  popperOpen: {
-    zIndex: 10
-  },
-  popperClose: {
-    pointerEvents: 'none',
-    zIndex: 0
-  },
   author: {
     fontSize: 30,
     paddingRight: 70
@@ -85,7 +78,7 @@ export class PostWriteComponent extends Component{
       post,
       update,
       postModel
-      } = this.props
+    } = this.props
     if (postText.trim() === '') {
       this.setState({
         disabledPost: false
@@ -224,12 +217,6 @@ export class PostWriteComponent extends Component{
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     post: (post, callBack) => dispatch(postActions.dbAddPost(post, callBack)),
@@ -237,12 +224,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   return {
     ownerAvatar: state.user.get('info') && state.user.get('info')[state.authorize.get('uid')] ? state.user.get('info')[state.authorize.get('uid')].avatar : '',
@@ -250,5 +231,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-// - Connect component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PostWriteComponent))

@@ -21,12 +21,14 @@ import Sidebar from '../sidebar'
 import HomeHeader from '../homeHeader'
 import SidebarContent from '../sidebarContent'
 import SidebarMain from '../sidebarMain'
+import AddPrivateKey from '../addPrivateKey'
 
 import * as postActions from '../../actions/postActions'
 import * as userActions from '../../actions/userActions'
 import * as globalActions from '../../actions/globalActions'
 import * as followActions from '../../actions/followActions'
 import * as notifyActions from '../../actions/notifyActions'
+import * as messageActions from '../../actions/messageActions'
 
 const drawerWidth = 220
 const styles = (theme) => ({
@@ -184,10 +186,13 @@ export class HomeComponent extends Component {
     )
 
     const anchor = theme.direction === 'rtl' ? 'right' : 'left'
-
+    if (!loaded) {
+      return <div/>
+    }
     return (
       <div className={classes.root}>
         <div className={classes.appFrame}> 
+        <AddPrivateKey/>
         <HomeHeader onToggleDrawer={this.handleDrawerToggle} drawerStatus={this.state.drawerOpen} />
           <Hidden mdUp>
             <Drawer
@@ -240,7 +245,6 @@ export class HomeComponent extends Component {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-
   return {
     loadDataStream:
       (page, limit) => dispatch(postActions.dbGetPosts(page, limit)),
@@ -249,6 +253,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(userActions.dbGetUserInfo())
       dispatch(notifyActions.dbGetNotifications())
       dispatch(followActions.dbGetFollowingUsers())
+      dispatch(messageActions.dbGetMessage())
     },
     clearData: () => {
       dispatch(postActions.clearAllData())

@@ -106,8 +106,8 @@ export class SignupComponent extends Component {
   generateKeys = () => {
     if (this.state.publicKey == '' && this.state.privateKey == '') {
       const key = new NodeRSA( { b: 512 } )
-      const privateKey = key.exportKey()
-      const publicKey = key.exportKey('public')
+      const privateKey = key.exportKey('pkcs8-private-pem')
+      const publicKey = key.exportKey('pkcs8-public-pem')
       this.setState({privateKey})
       this.setState({publicKey})
     }
