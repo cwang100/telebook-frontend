@@ -11,8 +11,10 @@ import Button from 'material-ui/Button'
 import { grey } from 'material-ui/colors'
 import TextField from 'material-ui/TextField'
 import { withStyles } from 'material-ui/styles'
+import NodeRSA from 'node-rsa'
 
 import * as messageActions from '../../actions/messageActions'
+import * as globalActions from '../../actions/globalActions'
 
 import Grid from 'material-ui/Grid/Grid'
 
@@ -33,13 +35,40 @@ const styles = (theme) => ({
   },
   dialogRoot: {
     paddingTop: 0
-  }
+  },
+  fromMessage: {
+    borderRadius: "5px",
+    padding: "2px",
+    boxShadow: "0px 0px 3px #B2B2B2",
+    backgroundColor: "#F2F2F2"
+  },
+  toMessage: {
+    borderRadius: "5px",
+    padding: "2px",
+    boxShadow: "0px 0px 3px #8ec38a",
+    backgroundColor: "#8ceba3"
+  },
+  messageBox: {
+    display: "flex",
+    margin: "5px 0"
+  },
+  messageBoxRight: {
+    justifyContent: "flex-end"
+  },
+  messageInput: {
+    border: "solid",
+    borderColor: "#9e9e9e",
+    borderRadius: 4,
+    marginTop: 10,
+    borderWidth: 1,
+    boxShadow: "inset 1px 2px 4px rgba(148, 148, 148, 0.32)"
+  },
 })
 
 export class MessageComponent extends Component{
   constructor(props) {
     super(props)
-    
+
     this.state = {
       disabled: true,
       text: ''
@@ -51,9 +80,9 @@ export class MessageComponent extends Component{
 
   handleSubmit = () => {
     const { text } = this.state
-    const {addMessage, publicKey} = this.props
+    const {addMessage, publicKey, ownPublic} = this.props
 
-    addMessage(text, publicKey)   
+    addMessage(text, publicKey, ownPublic)   
   }
 
 
@@ -72,8 +101,51 @@ export class MessageComponent extends Component{
     }
   }
 
-  render() {
+  decode = (encrypted) => {
+    const key = new NodeRSA()
+    const { privateKey, showError } = this.props
+    try {
+      key.importKey(privateKey, 'pkcs8-private-pem');
+      const decrypted = key.decrypt(encrypted, 'utf8');
+      return decrypted
+    } catch(err) {
+      showError(err.message)
+    }
+  }
+
+  fromMessage = (message) => {
     const { classes } = this.props
+    const newMessage = this.decode(message)
+    return <div className={classes.messageBox}><div className={classes.fromMessage}>{newMessage}</div></div>
+  }
+
+  toMessage = (message) => {
+    const { classes } = this.props
+    // if (message.length > 30) {
+    //   return <div className={classes.messageBox + " " + classes.messageBoxRight}><div className={classes.toMessage}>{'encrypted'}</div></div>
+    // } else {
+      const newMessage = this.decode(message)
+      return <div className={classes.messageBox + " " + classes.messageBoxRight}><div className={classes.toMessage}>{newMessage}</div></div>
+    //}
+  }
+
+  processMessages = (messages) => {
+    let result = []
+    const { uid } = this.props
+    Object.keys(messages).forEach((key) => {
+      let message = messages[key]
+      if (message.fromUser == uid) {
+        result.push(this.fromMessage(message.content))
+      } else {
+        result.push(this.toMessage(message.content))
+      }
+    })
+    return result
+  }
+
+  render() {
+    const { classes, messages } = this.props
+
 
     return (
       <div style={this.props.style}>
@@ -96,15 +168,20 @@ export class MessageComponent extends Component{
               </CardHeader>
               <CardContent>
                 <Grid item xs={12}>
+                <div>
+                  {this.processMessages(messages)}
+                </div>
+
                 <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, overflow: 'hidden' }}>
-                  <div style={{ position: 'relative', flexDirection: 'column', display: 'flex', flexGrow: 1, overflow: 'hidden', overflowY: 'auto', maxHeight: '300px' }}>
+                  <div className={classes.messageInput} style={{ position: 'relative', flexDirection: 'column', display: 'flex', flexGrow: 1, overflow: 'hidden', overflowY: 'auto', maxHeight: '300px' }}>
                     <TextField
                       autoFocus
+                      disableUnderline={true}
                       value={this.state.text}
                       onChange={this.handleOnChange}
                       placeholder={'message'}
                       multiline
-                      rows={7}
+                      rows={5}
                       style={{ fontWeight: 400, fontSize: '14px', margin: '0 16px', flexShrink: 0, width: 'initial', flexGrow: 1 }}
                     />
                   </div>
@@ -140,18 +217,24 @@ export class MessageComponent extends Component{
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    addMessage: (message, publicKey) => dispatch(messageActions.dbAddMessage(ownProps.uid, message, publicKey))
+    addMessage: (message, publicKey, ownPublic) => dispatch(messageActions.dbAddMessage(ownProps.uid, message, publicKey, ownPublic)),
+    showError: (message) => dispatch(globalActions.showMessage(message))
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   const { authorize, user, message } = state
   const ownUid = authorize.get('uid')
+  const ownPublic = state.user.getIn(['info', ownUid, 'publicKey'])
   const publicKey = state.user.getIn(['info', ownProps.uid, 'publicKey'])
+  const messages = message.getIn(['message', ownProps.uid])
   return {
     privateKey: authorize.get('privateKey'),
     publicKey: publicKey,
-    messages: message.getIn(['message', ownProps.uid])
+    ownPublic: ownPublic,
+    ownUid: ownUid,
+    messages: messages? messages.toJS() : {},
+
   }
 }
 

@@ -8,15 +8,20 @@ import { MessageService } from '../services'
 
 let messageService = new MessageService()
 
-export const dbAddMessage = (userId2, message, publicKey) => {
+export const dbAddMessage = (userId2, message, publicKey, selfPublicKey) => {
   const key = new NodeRSA()
   key.importKey(publicKey, 'pkcs8-public-pem');
   const encryptedMessage = key.encrypt(message, 'base64');
+
+  const key2 = new NodeRSA()
+  key2.importKey(selfPublicKey, 'pkcs8-public-pem');
+  const selfEncrypted = key2.encrypt(message, 'base64');
   return (dispatch, getState) => {
     let uid = getState().authorize.get('uid')
-    return messageService.addMessage(uid, userId2, encryptedMessage)
-      .then(() => {
-        dispatch(addMessage({fromUser:uid, toUser: userId2, content: message}))
+    return messageService.addMessage(uid, userId2, encryptedMessage, selfEncrypted)
+      .then((result) => {
+        let id = result[0].id
+        dispatch(addMessage({id: id, fromUser:uid, toUser: userId2, content: message}))
       })
   }
 }
@@ -30,14 +35,21 @@ export const dbGetMessage = () => {
           let parsedMessages = {}
 
           Object.keys(messages).forEach((key => {
+            const msg = messages[key]
+            const targetUser = msg.fromUser == uid ? msg.toUser : msg.fromUser
+
             let user = getState().user
             let info = user ? user.get('info') : undefined
-            let id = info ? info.get(messages[key].fromUser) : undefined
+            let id = info ? info.get(targetUser) : undefined
             if (!id) {
-              dispatch(userActions.dbGetUserInfoByUserId(messages[key].fromUser,''))
+              dispatch(userActions.dbGetUserInfoByUserId(targetUser,''))
             }
-            const msg = messages[key]
-            parsedMessages[msg.fromUser] = msg
+
+            if (parsedMessages[targetUser] == undefined) {
+              parsedMessages[targetUser] = [msg]
+            } else {
+              parsedMessages[targetUser].push(msg)
+            }
           }))
           dispatch(receiveMessage(parsedMessages))
         })

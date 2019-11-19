@@ -2,14 +2,14 @@ import * as moment from 'moment/moment'
 import { firebaseRef, firebaseAuth, db } from '../../fireStoreClient'
 
 export class MessageService {
-  addMessage(userId1, userId2, encryptedMessage) {
+  addMessage(userId1, userId2, encryptedMessage, selfEncrypted) {
     return new Promise((resolve,reject) => {
       let promises = []
       promises.push(db.doc(`users/${userId1}`).collection(`messages`)
       .add({
         fromUser: userId1,
         toUser: userId2,
-        content: encryptedMessage,
+        content: selfEncrypted,
         timestamp: moment().unix()
       }))
 
