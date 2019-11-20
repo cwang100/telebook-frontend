@@ -9,10 +9,10 @@ import { AuthorizeService } from '../services'
 
 let authorizeService = new AuthorizeService()
 
-export const login = (uid, isVerified) => {
+export const login = (uid, isVerified, privateKey) => {
   return {
     type: AuthorizeActionType.LOGIN,
-    payload: { authed: true, isVerified, uid }
+    payload: { authed: true, isVerified, uid, privateKey }
   }
 }
 
@@ -26,19 +26,25 @@ export const signup = (user) => {
     type: AuthorizeActionType.SIGNUP,
     payload: { ...user }
   }
+}
 
+export const addPrivateKey = (privateKey) => {
+  return {
+    type: AuthorizeActionType.ADD_PRIVATE_KEY,
+    payload: { privateKey }
+  }
 }
 
 export const updatePassword = () => {
   return { type: AuthorizeActionType.UPDATE_PASSWORD }
 }
 
-export const dbLogin = (email, password) => {
+export const dbLogin = (email, password, privateKey) => {
   return (dispatch, getState) => {
     dispatch(globalActions.showNotificationRequest())
     return authorizeService.login(email, password).then((result) => {
       dispatch(globalActions.showNotificationSuccess())
-      dispatch(login(result.uid, result.emailVerified))
+      dispatch(login(result.uid, result.emailVerified, privateKey))
       dispatch(push('/'))
     }, (error) => dispatch(globalActions.showMessage(error.code)))
   }
@@ -72,12 +78,8 @@ export const dbSendEmailVerfication = () => {
 export const dbSignup = (user) => {
   return (dispatch, getState) => {
     dispatch(globalActions.showNotificationRequest())
-    let newUser = new User()
-    newUser.email = user.email
-    newUser.password = user.password
-    newUser.fullName = user.fullName
 
-    return authorizeService.registerUser(newUser).then((result) => {
+    return authorizeService.registerUser(user).then((result) => {
       dispatch(signup({
         userId: result.uid,
         ...user

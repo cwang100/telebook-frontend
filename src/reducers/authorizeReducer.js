@@ -1,18 +1,10 @@
-// - Import react components
 import { Reducer, Action } from 'redux'
 
-// - Import action types
+
 import { AuthorizeActionType } from '../constants/authorizeActionType'
 
-// import { IAuthorizeAction } from './IAuthorizeAction'
-// import { AuthorizeState } from './AuthorizeState'
 import { Map } from 'immutable'
 
-/**
- *  Authorize reducer
- * @param {object} state
- * @param {object} action
- */
 export let authorizeReducer = (state = Map(), action) => {
   const { payload } = action
   switch (action.type) {
@@ -22,7 +14,7 @@ export let authorizeReducer = (state = Map(), action) => {
         .set('authed', true)
         .set('guest', false)
         .set('isVerified', payload.isVerified)
-
+        .set('privateKey', payload.privateKey)
     case AuthorizeActionType.LOGOUT:
       return state
         .set('uid', 0)
@@ -30,14 +22,15 @@ export let authorizeReducer = (state = Map(), action) => {
         .set('guest', true)
         .set('isVerified', false)
     case AuthorizeActionType.SIGNUP:
-      return state
-      .set('uid', payload.userId)
+      return state.set('uid', payload.userId).set('privateKey', payload.privateKey)
     case AuthorizeActionType.UPDATE_PASSWORD:
       return state
       .set('updatePassword', payload.updatePassword)
+    case AuthorizeActionType.ADD_PRIVATE_KEY:
+      localStorage.setItem('privateKey', payload.privateKey);
+      return state
+      .set('privateKey', payload.privateKey)
     default:
       return state
-
   }
-
 }

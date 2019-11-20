@@ -46,13 +46,6 @@ const styles = (theme) => ({
   dialogRoot: {
     paddingTop: 0
   },
-  popperOpen: {
-    zIndex: 10
-  },
-  popperClose: {
-    pointerEvents: 'none',
-    zIndex: 0
-  },
   author: {
     fontSize: 30,
     paddingRight: 70
@@ -85,7 +78,7 @@ export class PostWriteComponent extends Component{
       post,
       update,
       postModel
-      } = this.props
+    } = this.props
     if (postText.trim() === '') {
       this.setState({
         disabledPost: false
@@ -166,7 +159,7 @@ export class PostWriteComponent extends Component{
           BackdropProps={{ className: classes.backdrop }}
           PaperProps={{className: classes.fullPageXs}}
           key={this.props.id || 0}
-          open={this.props.open}
+          open={this.props.open || false}
           onClose={this.props.onRequestClose}
         >
           <DialogContent
@@ -224,12 +217,6 @@ export class PostWriteComponent extends Component{
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     post: (post, callBack) => dispatch(postActions.dbAddPost(post, callBack)),
@@ -237,18 +224,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
   return {
     ownerAvatar: state.user.get('info') && state.user.get('info')[state.authorize.get('uid')] ? state.user.get('info')[state.authorize.get('uid')].avatar : '',
-    ownerDisplayName: state.user.get('info') && state.user.get('info')[state.authorize.get('uid')] ? state.user.get('info')[state.authorize.get('uid')].fullName : ''
+    ownerDisplayName: state.user.get('info') && state.user.get('info').get(state.authorize.get('uid')) ? state.user.get('info').get(state.authorize.get('uid')).fullName : ''
   }
 }
 
-// - Connect component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PostWriteComponent))

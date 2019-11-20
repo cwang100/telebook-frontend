@@ -26,6 +26,7 @@ import SvgAdd from 'material-ui-icons/Add'
 import IconButton from 'material-ui/IconButton'
 import { grey } from 'material-ui/colors'
 import DefaultAvator from '../../assets/avator.png'
+import MessageComponent from '../message'
 
 import * as followActions from '../../actions/followActions'
 
@@ -70,7 +71,13 @@ export class UserBoxComponent extends Component {
   styles = {
     followButton: {
       position: 'absolute',
-      bottom: '30px',
+      bottom: '40px',
+      left: 0,
+      right: 0
+    },
+    chatButton: {
+      position: 'absolute',
+      bottom: '20px',
       left: 0,
       right: 0
     },
@@ -85,6 +92,7 @@ export class UserBoxComponent extends Component {
     super(props)
     const { circles, userId } = this.props
     this.state = {
+      chat: false
     }
   }
 
@@ -99,6 +107,14 @@ export class UserBoxComponent extends Component {
     if (!isFollowed) {
       followUser(user)
     }
+  }
+
+  openChat = () => {
+    this.setState({chat: true})
+  }
+
+  closeChat = () => {
+    this.setState({chat: false})
   }
 
   render () {
@@ -134,7 +150,19 @@ export class UserBoxComponent extends Component {
               {!isFollowed ? ('Follow') : ('Followed')}
             </Button>
           </div>
+          <div style={this.styles.chatButton}>
+            <Button
+              color='primary'
+              onClick={this.openChat}
+              disabled={
+                (isFollowed ? false : true)
+              }
+            >
+              {('Chat')}
+            </Button>
+          </div>
         </div>
+        <MessageComponent uid={userId} open={this.state.chat} close={this.closeChat}/>
       </Paper>
     )
   }

@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
 
-// - Import reducers
 import { authorizeReducer } from './authorizeReducer'
 import { followReducer } from './followReducer'
 import { globalReducer } from './globalReducer'
+import { messageReducer } from './messageReducer'
 import { notificationReducer } from './notificationReducer'
 import { postReducer } from './postReducer'
 import { userReducer } from './userReducer'
@@ -17,6 +17,7 @@ export const rootReducer = (history) => combineReducers({
     authorize: authorizeReducer,
     router: connectRouter(history),
     user: userReducer,
+    message: messageReducer,
     notify: notificationReducer,
     global: globalReducer
   })

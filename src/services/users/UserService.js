@@ -24,7 +24,7 @@ export class UserService {
         }
 
       })
-        .catch((error) => reject(new SocialError(error.code, 'firestore/getUserProfile :' + error.message)))
+      .catch((error) => reject(new SocialError(error.code, 'firestore/getUserProfile :' + error.message)))
     })
   }
 

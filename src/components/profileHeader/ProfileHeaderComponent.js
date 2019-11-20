@@ -18,20 +18,11 @@ import * as userActions from '../../actions/userActions'
 export class ProfileHeaderComponent extends Component {
   constructor (props) {
     super(props)
-
-        /**
-         * Defaul state
-         */
     this.state = {
-
       isSmall: false
-
     }
   }
-    /**
-     * Handle resize event for window to change sidebar status
-     * @param  {event} evt is the event is passed by winodw resize event
-     */
+
   handleResize = () => {
     let width = window.innerWidth
 
@@ -45,6 +36,10 @@ export class ProfileHeaderComponent extends Component {
         isSmall: true
       })
     }
+  }
+
+  removePirvateKey = () => {
+    localStorage.setItem('privateKey', '')
   }
 
   componentDidMount () {
@@ -128,6 +123,7 @@ export class ProfileHeaderComponent extends Component {
                         {'Edit Profile'}
                         </Button>
                         </div>) : ''}
+                        {isAuthedUser? <Button variant='raised' onClick={this.removePirvateKey}>Remove Local Key</Button>:''}
                     </div>
                 </div>
                 {isAuthedUser && editProfileOpen ? (<EditProfile
@@ -140,24 +136,12 @@ export class ProfileHeaderComponent extends Component {
   }
 }
 
-/**
- * Map dispatch to props
- * @param  {func} dispatch is the function to dispatch action to reducers
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     openEditor: () => dispatch(userActions.openEditProfile())
   }
 }
 
-/**
- * Map state to props
- * @param  {object} state is the obeject from redux store
- * @param  {object} ownProps is the props belong to component
- * @return {object}          props of component
- */
 const mapStateToProps = (state, ownProps) => {
 
   return {

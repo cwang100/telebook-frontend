@@ -3,12 +3,19 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 import { NavLink, withRouter } from 'react-router-dom'
+import Dialog, {
+  DialogActions,
+  DialogContent
+} from 'material-ui/Dialog'
 import Paper from 'material-ui/Paper'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/Button'
 import Button from 'material-ui/Button'
+import { red } from 'material-ui/colors'
 import { withStyles } from 'material-ui/styles'
 import config from '../../config'
+
+import NodeRSA from 'node-rsa'
 
 import * as authorizeActions from '../../actions/authorizeActions'
 import * as globalActions from '../../actions/globalActions'
@@ -46,7 +53,10 @@ export class SignupComponent extends Component {
       passwordInput: '',
       passwordInputError: '',
       confirmInput: '',
-      confirmInputError: ''
+      confirmInputError: '',
+      privateKey: '',
+      publicKey: '',
+      openKey: false
     }
 
     this.handleForm = this.handleForm.bind(this)
@@ -93,9 +103,18 @@ export class SignupComponent extends Component {
     }
   }
 
+  generateKeys = () => {
+    if (this.state.publicKey == '' && this.state.privateKey == '') {
+      const key = new NodeRSA( { b: 512 } )
+      const privateKey = key.exportKey('pkcs8-private-pem')
+      const publicKey = key.exportKey('pkcs8-public-pem')
+      this.setState({privateKey})
+      this.setState({publicKey})
+    }
+  }
+
   handleForm = () => {
     const { fullNameInput, emailInput, passwordInput, confirmInput } = this.state
-    const { register, translate } = this.props
 
     let error = false
 
@@ -118,6 +137,13 @@ export class SignupComponent extends Component {
       error = true
 
     }
+    if (passwordInput.length < 6) {
+      this.setState({
+        passwordInputError: 'Password too short'
+      })
+      error = true
+
+    }
     if (confirmInput === '') {
       this.setState({
         confirmInputError: 'Please confirm password'
@@ -130,21 +156,32 @@ export class SignupComponent extends Component {
         confirmInputError: 'Confirm password does not match password'
       })
       error = true
-
     }
+
     if (!error) {
-      register({
-        email: emailInput,
-        password: passwordInput,
-        fullName: fullNameInput
-      })
-    }
+      this.generateKeys()
 
+      this.setState({openKey: true})
+    }
+  }
+
+  handleCloseDialog = () => {
+    this.setState({openKey: false})
+    const { fullNameInput, emailInput, passwordInput, publicKey, privateKey } = this.state
+    const { register } = this.props
+
+    register({
+      email: emailInput,
+      password: passwordInput,
+      fullName: fullNameInput,
+      publicKey: publicKey,
+      privateKey: privateKey
+    })
   }
 
   render() {
 
-    const { classes, translate } = this.props
+    const { classes } = this.props
 
     return (
 
@@ -207,16 +244,35 @@ export class SignupComponent extends Component {
                   </div>
                   <div>
                     <Button variant='raised' color='primary' onClick={this.handleForm}>{'Create Account'}</Button>
-
                   </div>
                 </div>
-
               </div>
             </Paper>
           </div>
         </Grid>
+        <Dialog
+          PaperProps={{ className: classes.fullPageXs }}
+          key='PrivateKey'
+          open={this.state.openKey}
+          onClose={this.handleCloseDialog}
+        >
+          <DialogContent className={classes.dialogContentRoot}>
+            <h1>{'Warning: please keep your private key at a safe place!'}</h1>
+            {this.state.privateKey}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              color='primary'
+              disableFocusRipple={true}
+              disableRipple={true}
+              onClick={this.handleCloseDialog}
+              style={{ color: red[800] }}
+            >
+              {'Confirm'}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
-
     )
   }
 }

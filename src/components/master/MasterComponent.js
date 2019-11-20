@@ -54,7 +54,7 @@ export class MasterComponent extends Component {
         logout
       } = this.props
       if (user) {
-        login(user.uid,isVerified)
+        login(user.uid,isVerified, undefined)
         this.setState({
           loading: false,
           isVerified: true
@@ -106,8 +106,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(notifyActions.clearAllNotifications())
       dispatch(globalActions.clearTemp())
     },
-    login: (userId, isVerified) => {
-      dispatch(authorizeActions.login(userId, isVerified))
+    login: (userId, isVerified, privateKey) => {
+      dispatch(authorizeActions.login(userId, isVerified, privateKey))
     },
     logout: () => {
       dispatch(authorizeActions.logout())
