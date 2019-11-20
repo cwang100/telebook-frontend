@@ -1,4 +1,3 @@
-
 import { UserService } from '../services'
 
 import * as globalActions from './globalActions'
@@ -30,9 +29,6 @@ export const dbGetUserInfo = () => {
   }
 }
 
-/**
- *  Get user info from database
- */
 export const dbGetUserInfoByUserId = (uid, callerKey) => {
   return (dispatch, getState) => {
     if (uid) {
@@ -73,10 +69,7 @@ export const dbGetUserInfoByUserId = (uid, callerKey) => {
     }
   }
 }
-/**
- * Updata user information
- * @param {object} newInfo
- */
+
 export const dbUpdateUserInfo = (newProfile) => {
   return (dispatch, getState) => {
     console.trace('newProfile', newProfile)
@@ -101,13 +94,11 @@ export const dbUpdateUserInfo = (newProfile) => {
       dispatch(updateUserInfo(uid, updatedProfile))
       dispatch(closeEditProfile())
     })
-    .catch((error: SocialError) => dispatch(globalActions.showMessage(error.message)))
+    .catch((error) => dispatch(globalActions.showMessage(error.message)))
 
   }
-
 }
 
-// - Get people info from database
 export const dbGetPeopleInfo = (page, limit) => {
   return (dispatch, getState) => {
     const state = getState()
@@ -140,7 +131,7 @@ export const dbGetPeopleInfo = (page, limit) => {
         })
         dispatch(addPeopleInfo(parsedData))
       })
-        .catch((error: SocialError) => dispatch(globalActions.showMessage(error.message)))
+        .catch((error) => dispatch(globalActions.showMessage(error.message)))
 
     }
   }
@@ -191,14 +182,12 @@ export const hasMoreDataPeople = () => {
   return {
     type: UserActionType.HAS_MORE_DATA_PEOPLE
   }
-
 }
 
 export const notMoreDataPeople = () => {
   return {
     type: UserActionType.NOT_MORE_DATA_PEOPLE
   }
-
 }
 
 export const requestPagePeople = (page: number) => {
@@ -206,7 +195,6 @@ export const requestPagePeople = (page: number) => {
     type: UserActionType.REQUEST_PAGE_PEOPLE,
     payload: { page}
   }
-
 }
 
 export const lastUserPeople = (lastUserId: string) => {

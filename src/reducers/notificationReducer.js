@@ -1,4 +1,3 @@
-// - Import react components
 import moment from 'moment/moment'
 import _ from 'lodash'
 import { Map } from 'immutable'
@@ -9,10 +8,8 @@ export let notificationReducer = (state = Map({loaded: false}), action) => {
   let { payload } = action
   switch (action.type) {
 
-    /* _____________ CRUD _____________ */
     case NotificationActionType.ADD_NOTIFY:
       return state
-
     case NotificationActionType.ADD_NOTIFY_LIST:
     return state
     .set('userNotifies', payload)

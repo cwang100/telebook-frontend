@@ -26,22 +26,6 @@ const styles = (theme) => ({
     width: 27,
     marginLeft: 5
   },
-  vote: {
-    display: 'flex',
-    flex: 1
-  },
-  voteCounter: {
-    color: 'rgb(134, 129, 129)',
-    fontSize: 10,
-    fontWeight: 400,
-    padding: 2
-  },
-  commentCounter: {
-    color: 'rgb(134, 129, 129)',
-    fontSize: 10,
-    fontWeight: 400,
-    padding: 4
-  },
   popperOpen: {
     zIndex: 10
   },
@@ -71,7 +55,6 @@ const styles = (theme) => ({
   }
 })
 
-// - Create component class
 export class PostComponent extends Component {
 
   styles = {
@@ -87,9 +70,6 @@ export class PostComponent extends Component {
     super(props)
     const { post } = props
     this.state = {
-      /**
-       * Post text
-       */
       text: post.body ? post.body : '',
       readMoreState: false,
       
@@ -136,10 +116,6 @@ export class PostComponent extends Component {
   }
 
 
-  /**
-   * Handle read more event
-   * @param  {event} evt  is the event passed by click on read more
-   */
   handleReadMore (event) {
     this.setState({
       readMoreState: !this.state.readMoreState
@@ -147,10 +123,6 @@ export class PostComponent extends Component {
     })
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render () {
     const { post, fullName, isPostOwner, avatar, classes } = this.props
     const { isPostMenuOpen } = this.state
@@ -186,7 +158,6 @@ export class PostComponent extends Component {
     )
 
     const { ownerUserId, ownerDisplayName, creationDate, body } = post
-    // Define variables
     return (
       <Card>
         <CardHeader
@@ -230,5 +201,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-// - Connect component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(PostComponent))

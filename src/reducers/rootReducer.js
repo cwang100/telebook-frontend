@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 
-// - Import reducers
 import { authorizeReducer } from './authorizeReducer'
 import { followReducer } from './followReducer'
 import { globalReducer } from './globalReducer'

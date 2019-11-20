@@ -21,7 +21,7 @@ import Grid from 'material-ui/Grid/Grid'
 const styles = (theme) => ({
   fullPageXs: {
     width: "600px",
-    height: "300px",
+    height: "auto",
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       height: '100%',
@@ -121,12 +121,8 @@ export class MessageComponent extends Component{
 
   toMessage = (message) => {
     const { classes } = this.props
-    // if (message.length > 30) {
-    //   return <div className={classes.messageBox + " " + classes.messageBoxRight}><div className={classes.toMessage}>{'encrypted'}</div></div>
-    // } else {
       const newMessage = this.decode(message)
       return <div className={classes.messageBox + " " + classes.messageBoxRight}><div className={classes.toMessage}>{newMessage}</div></div>
-    //}
   }
 
   processMessages = (messages) => {
@@ -176,7 +172,7 @@ export class MessageComponent extends Component{
                   <div className={classes.messageInput} style={{ position: 'relative', flexDirection: 'column', display: 'flex', flexGrow: 1, overflow: 'hidden', overflowY: 'auto', maxHeight: '300px' }}>
                     <TextField
                       autoFocus
-                      disableUnderline={true}
+                      underlineStyle={{display: 'none'}}
                       value={this.state.text}
                       onChange={this.handleOnChange}
                       placeholder={'message'}

@@ -1,4 +1,3 @@
-// - Import react components
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
@@ -7,12 +6,6 @@ import SvgClose from 'material-ui-icons/Close'
 import { withStyles } from 'material-ui/styles'
 import { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
 
-// - Import app components
-//import UserAvatar from '../../assets/avatar.png'
-
-// - Import API
-
-// - Import actions
 import * as notifyActions from '../../actions/notifyActions'
 
 const styles = (theme) => ({
@@ -29,9 +22,6 @@ const styles = (theme) => ({
   }
 })
 
-/**
- * Create component class
- */
 export class NotifyItemComponent extends Component {
   constructor (props) {
     super(props)
@@ -39,7 +29,6 @@ export class NotifyItemComponent extends Component {
     this.state = {
     }
 
-        // Binding functions to `this`
     this.handleSeenNotify = this.handleSeenNotify.bind(this)
   }
 
@@ -55,26 +44,12 @@ export class NotifyItemComponent extends Component {
     }
   }
 
-    /**
-     * Reneder component DOM
-     * @return {react element} return the DOM which rendered by component
-     */
   render () {
     let { description, fullName, isSeen, id, goTo,closeNotify, notifierUserId, url, deleteNotiy, classes } = this.props
 
     return (
 
         <ListItem key={notifierUserId} dense button className={classes.listItem} style={isSeen ? { opacity: 0.6 } : {}}>
-              <NavLink
-                        to={`/${notifierUserId}`}
-                        onClick={(evt) => {
-                          evt.preventDefault()
-                          closeNotify()
-                          goTo(`/${notifierUserId}`)
-                        }}
-                    >
-                        {/* <UserAvatar fullName={fullName} fileName={avatar} /> */}
-                    </NavLink>
               <ListItemText primary={<NavLink to={url} onClick={this.handleSeenNotify}>
                         <div className='user-name'>
                             {fullName}

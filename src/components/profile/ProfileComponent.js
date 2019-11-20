@@ -83,8 +83,7 @@ const mapStateToProps = (state, ownProps) => {
   const uid = state.authorize.get('uid')
   const profile = state.post.get('profile') || {}
   const hasMorePosts = profile.hasMoreData
-  const userPosts = state.post.get('userPosts')
-  const posts = userPosts.get(userId) ? userPosts.get(userId).toJS() : {}
+  const posts = state.post.getIn(['userPosts',userId]) ? state.post.getIn(['userPosts',userId]).toJS() : {}
   return {
     avatar: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].avatar || '' : '',
     name: state.user.get('info') && state.user.get('info').get(userId) ? state.user.get('info').get(userId).fullName || '' : '',

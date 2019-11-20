@@ -1,4 +1,3 @@
-// - Import react components
 import _ from 'lodash'
 
 import { ServerActionType } from '../constants/serverActionType'
@@ -12,7 +11,6 @@ export let serverReducer = (state = Map(), action) => {
   const request = (payload ? payload.request : {})
   switch (action.type) {
 
-    /* _____________ CRUD _____________ */
     case ServerActionType.ADD_REQUEST:
       return state
         .setIn(['request', request.id], request)

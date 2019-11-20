@@ -1,10 +1,9 @@
-// - Import react components
+
 import moment from 'moment/moment'
 import _ from 'lodash'
 import { Reducer, Action } from 'redux'
 import { Map, fromJS } from 'immutable'
 
-// - Import action types
 import { PostActionType } from '../constants/postActionType'
 
 const updatePost = (state, payload) => {
@@ -15,27 +14,6 @@ const updatePost = (state, payload) => {
       .setIn(['userPosts', updatePostOwnerId, updatePostId], Map(post))
 }
 
-const updatePostComments = (state, payload) => {
-  const post = payload.post
-  const updatePostOwnerId = post.get('ownerUserId')
-  const updatePostId = post.get('id')
-  return state
-      .setIn(['userPosts', updatePostOwnerId, updatePostId, 'comments'], post.get('comments'))
-}
-
-const updatePostVotes = (state, payload) => {
-  const post = payload.post
-  const updatePostOwnerId = post.get('ownerUserId')
-  const updatePostId = post.get('id')
-  return state
-      .setIn(['userPosts', updatePostOwnerId, updatePostId, 'votes'],  post.get('votes'))
-}
-
-/**
- * Post reducer
- * @param {object} state
- * @param {object} action
- */
 export let postReducer = (state = Map({stream:{hasMoreData: false}}), action) => {
   const { payload } = action
   switch (action.type) {
@@ -50,9 +28,8 @@ export let postReducer = (state = Map({stream:{hasMoreData: false}}), action) =>
       return state
         .setIn(['userPosts', payload.uid, payload.post.id], fromJS({...payload.post}))
 
-    case PostActionType.UPDATE_POST: return updatePost(state, payload)
-    case PostActionType.UPDATE_POST_COMMENTS: return updatePostComments(state, payload)
-    case PostActionType.UPDATE_POST_VOTES: return updatePostVotes(state, payload)
+    case PostActionType.UPDATE_POST: 
+      return updatePost(state, payload)
 
     case PostActionType.DELETE_POST:
       return state

@@ -53,26 +53,8 @@ const styles = (theme) => ({
   }
 })
 
-/**
- * Create component class
- */
+
 export class NotifyComponent extends Component {
-
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
-  constructor (props) {
-    super(props)
-
-    // Defaul state
-    this.state = {
-    }
-
-    // Binding functions to `this`
-
-  }
-
   notifyItemList = () => {
     let { notifications, info, onRequestClose } = this.props
     let parsedDOM = []
@@ -97,10 +79,6 @@ export class NotifyComponent extends Component {
     return parsedDOM
   }
 
-  /**
-   * Reneder component DOM
-   * @return {react element} return the DOM which rendered by component
-   */
   render () {
     let { open, onRequestClose, classes } = this.props
     const noNotify = ( 
@@ -118,10 +96,8 @@ export class NotifyComponent extends Component {
         <ClickAwayListener onClickAway={onRequestClose}>
           <Grow in={open} >
           <Paper className={classNames(classes.root, { [classes.overflowHidden]: !open })} elevation={4} >
-
-                {items.length > 0 ? <List className={classes.list} >{items}</List> : noNotify}
-
-              </Paper>
+            {items.length > 0 ? <List className={classes.list} >{items}</List> : noNotify}
+          </Paper>
           </Grow>
         </ClickAwayListener>
       </Popper>
@@ -130,9 +106,7 @@ export class NotifyComponent extends Component {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-
-  }
+  return {}
 }
 
 const mapStateToProps = (state, ownProps) => {

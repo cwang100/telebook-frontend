@@ -27,6 +27,7 @@ export let authorizeReducer = (state = Map(), action) => {
       return state
       .set('updatePassword', payload.updatePassword)
     case AuthorizeActionType.ADD_PRIVATE_KEY:
+      localStorage.setItem('privateKey', payload.privateKey);
       return state
       .set('privateKey', payload.privateKey)
     default:

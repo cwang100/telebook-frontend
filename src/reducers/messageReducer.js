@@ -12,10 +12,8 @@ export let messageReducer = (state = Map({loaded: false}), action) => {
       return state
 
     case MessageActionType.RECEIVE:
-      const mergedMap = fromJS(payload).mergeDeep(state.get('message'))
-      return state.set('message', mergedMap).set('loaded', true)
+      return state.set('message', fromJS(payload)).set('loaded', true)
     default:
       return state
-
   }
 }

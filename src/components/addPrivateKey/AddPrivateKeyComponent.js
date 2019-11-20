@@ -40,10 +40,16 @@ export class AddPrivateKeyComponent extends Component{
   constructor(props) {
     super(props)
     let open = false
+    const prevPrivateKey = localStorage.getItem('privateKey') || ''
     const privateKey = props.privateKey
     if (!privateKey || privateKey.length === 0 || privateKey.trim() === '') {
       open = true
     }
+    if (prevPrivateKey != '') {
+      props.addPrivateKey(prevPrivateKey)
+      open = false
+    }
+
     this.state = {
       disabled: true,
       open: open,

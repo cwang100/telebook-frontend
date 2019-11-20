@@ -38,15 +38,7 @@ export const globalReducer = (state = Map({progress:{visible: true}}), action) =
     case GlobalActionType.SET_HEADER_TITLE:
       return state
         .set('headerTitle', action.payload)
-
-    case GlobalActionType.SHOW_SEND_FEEDBACK:
-      return state
-        .set('sendFeedbackStatus', true)
-
-    case GlobalActionType.HIDE_SEND_FEEDBACK:
-      return state
-        .set('sendFeedbackStatus', false)
-
+        
     case GlobalActionType.HIDE_TOP_LOADING:
       const queueTopLoading = Number(state.get('topLoadingQueue')) > 0 ? (Number(state.get('topLoadingQueue')) - 1) : 0
       return state

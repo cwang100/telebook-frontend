@@ -34,7 +34,7 @@ export const dbGetMessage = () => {
         (messages) => {
           let parsedMessages = {}
 
-          Object.keys(messages).forEach((key => {
+          Object.keys(messages).forEach(key => {
             const msg = messages[key]
             const targetUser = msg.fromUser == uid ? msg.toUser : msg.fromUser
 
@@ -50,7 +50,12 @@ export const dbGetMessage = () => {
             } else {
               parsedMessages[targetUser].push(msg)
             }
-          }))
+          })
+          Object.keys(parsedMessages).forEach(key => {
+            let old_arr = parsedMessages[key]
+            let new_arr = old_arr.reverse()
+            parsedMessages[key] = new_arr
+          })
           dispatch(receiveMessage(parsedMessages))
         })
     }

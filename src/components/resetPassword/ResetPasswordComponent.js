@@ -63,7 +63,7 @@ export class ResetPasswordComponent extends Component {
     let error = false
     if (this.state.emailInput === '') {
       this.setState({
-        emailInputError: ('resetPassword.emailRequiredError')
+        emailInputError: ('Email Required')
       })
 
       return
