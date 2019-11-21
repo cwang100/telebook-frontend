@@ -10,18 +10,7 @@ export const dbGetUserInfo = () => {
     let uid = getState().authorize.get('uid')
     if (uid) {
       return userService.getUserProfile(uid).then((userProfile) => {
-        dispatch(addUserInfo(uid, {
-          avatar: userProfile.avatar,
-          email: userProfile.email,
-          fullName: userProfile.fullName,
-          banner: userProfile.banner,
-          tagLine: userProfile.tagLine,
-          creationDate: userProfile.creationDate,
-          birthday: userProfile.birthday,
-          companyName: userProfile.companyName,
-          webUrl: userProfile.webUrl,
-          twitterId: userProfile.twitterId,
-        }))
+        dispatch(addUserInfo(uid, userProfile))
       })
       .catch((error) => dispatch(globalActions.showMessage(error.message)))
 
@@ -41,18 +30,7 @@ export const dbGetUserInfoByUserId = (uid, callerKey) => {
       dispatch(globalActions.temp({caller: `dbGetUserInfoByUserId-${uid}`}))
       return userService.getUserProfile(uid).then((userProfile) => {
 
-        dispatch(addUserInfo(uid, {
-          avatar: userProfile.avatar,
-          email: userProfile.email,
-          fullName: userProfile.fullName,
-          banner: userProfile.banner,
-          tagLine: userProfile.tagLine,
-          creationDate: userProfile.creationDate,
-          birthday: userProfile.birthday,
-          companyName: userProfile.companyName,
-          webUrl: userProfile.webUrl,
-          twitterId: userProfile.twitterId,
-        }))
+        dispatch(addUserInfo(uid, userProfile))
 
         switch (callerKey) {
           case 'header':

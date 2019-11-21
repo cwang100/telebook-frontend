@@ -11,7 +11,8 @@ export let followReducer = (state = Map(), action) => {
     case FollowActionType.ADD_FOLLOWING_USER:
       const user = payload.user
       let followList = state.get('followList') || {}
-      followList[user.userId] = user
+      const id = user.id || user.userId || user.uid
+      followList[id] = user
       return state.set('followList', followList)
     case FollowActionType.GET_FOLLOWING_USERS:
       const userList = payload.userList || []

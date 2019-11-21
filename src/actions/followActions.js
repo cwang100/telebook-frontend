@@ -1,6 +1,7 @@
 import { FollowActionType } from '../constants/followActionType'
 
 import * as notifyActions from './notifyActions'
+import * as userActions from './userActions'
 
 import { FollowService, UserService } from '../services'
 
@@ -17,7 +18,7 @@ export const dbFollowUser = (userFollowing) => {
     dispatch(showFollowingUserLoading())
     return followService.addFollow(uid, secondId).then((result) => {
       dispatch(addFollowingUser(userFollowing))
-
+      dispatch(userActions.dbGetPeopleInfo(0, 10))
       dispatch(notifyActions.dbAddNotification(
         {
           description: `${user.fullName} follow you.`,

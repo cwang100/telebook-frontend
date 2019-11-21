@@ -254,6 +254,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(notifyActions.dbGetNotifications())
       dispatch(followActions.dbGetFollowingUsers())
       dispatch(messageActions.dbGetMessage())
+      dispatch(userActions.dbGetPeopleInfo(0, 10))
     },
     clearData: () => {
       dispatch(postActions.clearAllData())
