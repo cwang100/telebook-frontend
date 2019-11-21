@@ -22,7 +22,7 @@ export class HomeRouter extends Component {
             <PrivateRoute path='/' component={(
               <div>
                 <St
-                  homeTitle={'Telebook'}
+                  homeTitle={'Home'}
                   posts={data.mergedPosts}
                   loadStream={data.loadDataStream}
                   hasMorePosts={data.hasMorePosts}

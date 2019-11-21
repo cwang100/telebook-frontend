@@ -40,14 +40,9 @@ export class HomeHeaderComponent extends Component {
 
   }
 
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
   constructor(props) {
     super(props)
 
-    // Default state
     this.state = {
       openAvatarMenu: false,
       showTitle: true,
@@ -65,7 +60,6 @@ export class HomeHeaderComponent extends Component {
     })
   }
 
-  // On click toggle sidebar
   onToggleSidebar = () => {
    const {onToggleDrawer} = this.props
    onToggleDrawer()
@@ -73,7 +67,6 @@ export class HomeHeaderComponent extends Component {
 
 
   handleNotifyTouchTap = (event) => {
-    // This prevents ghost click.
     event.preventDefault()
 
     this.setState({
@@ -82,22 +75,11 @@ export class HomeHeaderComponent extends Component {
     })
   }
 
-  /**
-   * Handle touch on user avatar for popover
-   *
-   *
-   * @memberof HomeHeader
-   */
   handleAvatarTouchTap = (event) => {
     this.setState({
       openAvatarMenu: true,
       anchorEl: event.currentTarget
     })
-  }
-
-
-  handleLogout = () => {
-    this.props.logout()
   }
 
   handleRequestClose = () => {
@@ -108,19 +90,14 @@ export class HomeHeaderComponent extends Component {
   }
 
   handleResize = (event) => {
-    const {drawerStatus} = this.props
-    // Set initial state
-    let width = window.innerWidth
+    // const {drawerStatus} = this.props
+    // let width = window.innerWidth
 
-    if (width >= 600 && !drawerStatus) {
-      this.onToggleSidebar()
-    } else if (width < 600) {
+    // if (width >= 600 && !drawerStatus) {
+    //   this.onToggleSidebar()
+    // } else if (width < 600) {
 
-    }
-  }
-
-  componentDidMount () {
-    this.handleResize(null)
+    // }
   }
 
   render () {
@@ -165,49 +142,18 @@ export class HomeHeaderComponent extends Component {
               </Target>
               {<Notify open={this.state.openNotifyMenu} anchorEl={this.state.anchorEl} onRequestClose={this.handleCloseNotify} />}
             </Manager>
-
-{/*            <UserAvatarComponent
-              onClick={this.handleAvatarTouchTap}
-              fullName={this.props.fullName}
-              fileName={this.props.avatar}
-              size={32}
-              style={this.styles.avatarStyle}
-            />*/}
-
-            <Menu
-              open={this.state.openAvatarMenu}
-              anchorEl={this.state.anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-              onClose={this.handleRequestClose}>
-              <MenuItem style={{ backgroundColor: 'white', color: blue[500], fontSize: '14px' }} > {'My Account'} </MenuItem>
-              <MenuItem style={{ fontSize: '14px' }} onClick={this.handleLogout.bind(this)} > {'Log Out'} </MenuItem>
-
-            </Menu>
           </div>
-
         </Toolbar>
       </AppBar >
     )
   }
 }
 
-// - Map dispatch to props
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    logout: () => dispatch(authorizeActions.dbLogout())
-  }
+  return {}
 }
 
-// - Map state to props
 const mapStateToProps = (state, ownProps) => {
-
   let notifyCount = state.notify.get('userNotifies')
     ? Object
       .keys(state.notify.get('userNotifies'))
@@ -221,5 +167,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-// - Connect component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(HomeHeaderComponent))
