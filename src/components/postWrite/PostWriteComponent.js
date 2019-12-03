@@ -225,9 +225,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const info = state.user.get('info')
+  const uid = state.authorize.get('uid')
   return {
     ownerAvatar: state.user.get('info') && state.user.get('info')[state.authorize.get('uid')] ? state.user.get('info')[state.authorize.get('uid')].avatar : '',
-    ownerDisplayName: state.user.get('info') && state.user.get('info').get(state.authorize.get('uid')) ? state.user.get('info').get(state.authorize.get('uid')).fullName : ''
+    ownerDisplayName: info && info.getIn([uid, 'fullName']) 
   }
 }
 

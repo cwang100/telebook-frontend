@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { push } from 'connected-react-router'
 import moment from 'moment/moment'
 // - Material UI
-import { Card, CardHeader, CardContent } from 'material-ui'
+import { Card, CardHeader, CardContent, Typography } from 'material-ui'
 import Paper from 'material-ui/Paper'
 import { MenuList, MenuItem } from 'material-ui/Menu'
 import IconButton from 'material-ui/IconButton'
@@ -52,6 +52,15 @@ const styles = (theme) => ({
       margin: 0,
       overflowY: 'auto'
     }
+  },
+  cardTitle: {
+    fontSize: 20
+  },
+  card: {
+    boxShadow: '0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2)',
+    transition: 'box-shadow 83ms',
+    margin: '16px 0',
+    padding: '12px'
   }
 })
 
@@ -159,8 +168,8 @@ export class PostComponent extends Component {
 
     const { ownerUserId, ownerDisplayName, creationDate, body } = post
     return (
-      <Card>
-        <CardHeader
+      <Card className={classes.card}>
+        <CardHeader className={classes.cardTitle}
           title={<NavLink to={`/${ownerUserId}`}>{ownerDisplayName}</NavLink>}
           subheader={moment.unix(creationDate).fromNow() + ' | Public'}
           action={isPostOwner ? rightIconMenu : ''}

@@ -1,6 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import UserBox from '../userBox'
+import { withStyles } from 'material-ui/styles'
+
+const styles = (theme) => ({
+  track: { 
+    display: "flex"
+  },
+  gridLayout: {
+    display: "flex !important"
+  }
+})
+
 
 export class UserBoxListComponent extends Component {
   constructor (props) {
@@ -20,8 +31,9 @@ export class UserBoxListComponent extends Component {
   }
 
   render () {
+    const {classes} = this.props
     return (
-      <div className='grid grid__1of4 grid__space-around'>
+      <div className={'grid grid__1of4 grid__space-around' + " " + classes.gridLayout}>
         {this.userList()}
       </div>
     )
@@ -41,4 +53,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserBoxListComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UserBoxListComponent))

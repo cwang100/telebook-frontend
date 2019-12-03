@@ -7,6 +7,13 @@ import UserBoxList from '../userBoxList'
 import LoadMoreProgressComponent from '../loadMoreProgress'
 
 import * as userActions from '../../actions/userActions'
+import { withStyles } from 'material-ui/styles'
+
+const styles = (theme) => ({
+  track: { 
+
+  }
+})
 
 export class FindPeopleComponent extends Component {
   constructor (props) {
@@ -27,18 +34,12 @@ export class FindPeopleComponent extends Component {
 
   render () {
     const {hasMorePeople} = this.props
-
+    const { classes } = this.props
     return (
             <div>
-              <InfiniteScroll
-                pageStart={0}
-                loadMore={this.scrollLoad}
-                hasMore={hasMorePeople}
-                useWindow={true}
-                loader={<LoadMoreProgressComponent key='find-people-load-more-progress' />}
-                >
+              <div>
 
-                <div className='tracks'>
+                <div className={classes.track}>
 
                 {this.props.peopleInfo && Object.keys(this.props.peopleInfo).length !== 0 ? (<div>
                 <UserBoxList users={this.props.peopleInfo}/>
@@ -47,7 +48,7 @@ export class FindPeopleComponent extends Component {
                 {('Nothing to show here.')}
                 </div>)}
                 </div>
-              </InfiniteScroll>
+              </div>
             </div>
     )
   }
@@ -68,4 +69,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FindPeopleComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(FindPeopleComponent))
