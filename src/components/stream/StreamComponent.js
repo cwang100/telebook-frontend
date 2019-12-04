@@ -8,6 +8,8 @@ import { grey, teal } from 'material-ui/colors'
 import SvgCamera from '@material-ui/icons/PhotoCamera'
 import Paper from 'material-ui/Paper'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
+import Fab from '@material-ui/core/Fab'
+import AddIcon from '@material-ui/icons/Add';
 import InfiniteScroll from 'react-infinite-scroller'
 
 import PostComponent from '../post'
@@ -143,16 +145,18 @@ export class StreamComponent extends Component {
           <div className='grid-cell animate-top' style={{ maxWidth: '530px', minWidth: '280px' }}>
             {displayWriting 
               ? (<PostWriteComponent open={this.state.openPostWrite} onRequestClose={this.handleClosePostWrite} edit={false} >
-                <Paper elevation={2}>
+            <Fab
+              variant="extended"
+              size="small"
+              style={{background: '#fff'}}
+              aria-label="add"
 
-                  <ListItem button
-                    style={this.styles.postWtireItem}
-                    onClick={this.handleOpenPostWrite}
-                  >
-                    <ListItemText inset primary={<span style={this.styles.postWritePrimaryText}> {'new post'}</span>} />
-                  </ListItem>
+              onClick={this.handleOpenPostWrite}
+            >
+              <AddIcon />
+              New Post
+            </Fab>
 
-                </Paper>
                 <div style={{ height: '16px' }}></div>
               </PostWriteComponent>)
               : ''}

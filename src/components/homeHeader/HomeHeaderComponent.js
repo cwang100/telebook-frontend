@@ -21,24 +21,31 @@ import Notify from '../notify'
 
 import { authorizeActions } from '../../actions'
 
+import logo from '../../assets/logo.jpg'
+
 const styles = {
   root: {
     backgroundColor: '#a5792a'
   },
   flex: {
     flex: 1
-  }
+  },
+  avatarStyle: {
+      margin: 5,
+      cursor: 'pointer'
+    },
+    notificationCount: {
+      'font-size': '10px',
+      'border-radius': '50%',
+      background: 'red',
+      width: '14px',
+      height: '14px',
+      'line-height': '14px',
+      color: 'white'
+    }
 }
 
 export class HomeHeaderComponent extends Component {
-
-  styles = {
-    avatarStyle: {
-      margin: 5,
-      cursor: 'pointer'
-    }
-
-  }
 
   constructor(props) {
     super(props)
@@ -105,38 +112,35 @@ export class HomeHeaderComponent extends Component {
     const anchor = theme.direction === 'rtl' ? 'right' : 'left'
     return (
 
-      <AppBar position='fixed' color='secondary'>
+      <AppBar position='fixed' color='secondary' style={{ background: '#fff' }}>
         <Toolbar>
           {/* Left side */}
 
           <IconButton onClick={this.onToggleSidebar} >
-            <SvgDehaze color='primary' style={{ cursor: 'pointer' }} />
+            <SvgDehaze color='primary' style={{ cursor: 'pointer', color: 'rgb(86, 105, 174)' }} />
           </IconButton>
           {/* Header title */}
-          <Typography variant='title' color='primary' style={{ marginLeft: '15px' }} >
-            {config.settings.appName}
-          </Typography>
-          <div className='homeHeader__title-root'>
-          <Hidden smDown>
-           <div className={classNames({'homeHeader__title-left': anchor === 'left', 'homeHeader__title-right': anchor === 'right' })}>{this.props.title}</div> 
-           </Hidden>
+          <img src={logo} height="32px"/>
+          <div style={{margin:'auto',  color: 'rgb(86, 105, 174)'}} className='homeHeader__title-root'>
+           <div style={{'font-weight': '800'}} className={classNames({'homeHeader__title-left': anchor === 'left', 'homeHeader__title-right': anchor === 'right' })}>{this.props.title}</div> 
           </div>
 
           {/* Notification */}
-          <div className='homeHeader__right'>
+          <div style={{'width':'180px'}} className='homeHeader__right'>
             <Manager>
               <Target>
                 {this.props.notifyCount > 0 ? (
                   <Tooltip title={'Notifications'}>
                     <IconButton onClick={this.handleNotifyTouchTap}>
-                      <div className='homeHeader__notify'>
+                      <NotificationsIcon style={{position:'relative', color: '#555' }} />
+                      <div className='homeHeader__notify' style={styles.notificationCount}>
                         <div className='title'>{this.props.notifyCount}</div>
                       </div>
                     </IconButton>
                   </Tooltip>)
                   : (<Tooltip title={'Notifications'}>
                     <IconButton onClick={this.handleNotifyTouchTap}>
-                      <NotificationsIcon style={{ color: 'rgba(255, 255, 255, 0.87)' }} />
+                      <NotificationsIcon style={{ color: '#555' }} />
                     </IconButton>
                   </Tooltip>)}
               </Target>

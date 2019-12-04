@@ -150,7 +150,7 @@ export class AddPrivateKeyComponent extends Component{
               onClick={this.handleSubmit}
               disabled={this.state.disabled}
             >
-              {'post'}
+              {'confirm'}
             </Button>
           </DialogActions>
         </Dialog>

@@ -63,9 +63,7 @@ export class ProfileComponent extends Component {
         {this.props.posts && Object.keys(this.props.posts).length !== 0
         ? (
         <div style={styles.content}>
-          <div className={classes.profileTitle}>
-            {'Posts from ' + name}
-          </div>
+
           <St
             posts={this.props.posts}
             loadStream={loadPosts}

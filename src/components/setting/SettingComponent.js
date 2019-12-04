@@ -12,6 +12,7 @@ import config from '../../config'
 
 import {authorizeActions} from '../../actions'
 import { Grid } from 'material-ui'
+import logo from '../../assets/logo.jpg'
 
 const styles = (theme) => ({
   textField: {
@@ -116,8 +117,10 @@ export class SettingComponent extends Component {
       <Grid container spacing={24}>
         <Grid item xs={12} className={classes.contain}>
 
-        <h1 className='g__app-name'>{config.settings.appName}</h1>
-
+        <div style={{background:'#fff', height: '60px', 'marginBottom': '10px'}}>
+          <img src={logo} height="40px" />
+        </div>
+ 
         <div className='animate-bottom'>
           <Paper className={classes.paper} elevation={1} >
             <div style={{ padding: '48px 40px 36px' }}>

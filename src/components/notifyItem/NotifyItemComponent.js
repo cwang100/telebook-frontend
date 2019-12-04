@@ -18,7 +18,7 @@ const styles = (theme) => ({
   closeIcon: {width: 12, height: 12},
   listItem: {
     backgroundColor: 'white',
-    marginBottom: '6px'
+    marginBottom: '6px',
   }
 })
 

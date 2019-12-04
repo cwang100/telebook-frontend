@@ -8,7 +8,12 @@ const styles = (theme) => ({
     display: "flex"
   },
   gridLayout: {
-    display: "flex !important"
+    display: "flex !important",
+    'flex-wrap': 'wrap',
+    'justify-content': 'center',
+  },
+  user: {
+    marginRight: 'auto'
   }
 })
 
@@ -20,11 +25,11 @@ export class UserBoxListComponent extends Component {
 
   userList = () => {
     let { users, uid } = this.props
-
+    const {classes} = this.props
     if (users) {
       return Object.keys(users).map((key, index) => {
         if (uid !== key) {
-          return <UserBox key={key} userId={key} user={users[key]}/>
+          return <UserBox className={classes.user} key={key} userId={key} user={users[key]}/>
         }
       })
     }

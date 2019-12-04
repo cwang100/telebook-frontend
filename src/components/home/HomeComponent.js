@@ -128,6 +128,7 @@ export class HomeComponent extends Component {
   }
 
   componentWillMount() {
+  	this.state.drawerOpen = true;
     const { global, clearData, loadData, authed, defaultDataEnable, isVerified, goTo } = this.props
     if (!authed) {
       goTo('/login')
@@ -194,29 +195,9 @@ export class HomeComponent extends Component {
         <div className={classes.appFrame}> 
         <AddPrivateKey/>
         <HomeHeader onToggleDrawer={this.handleDrawerToggle} drawerStatus={this.state.drawerOpen} />
-          <Hidden mdUp>
+
             <Drawer
-              variant='temporary'
-              open={this.state.drawerOpen}
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-              onClose={this.handleDrawerToggle}
-              ModalProps={{
-                keepMounted: true,
-              }}
-            >
-              <div>
-                <div className={classes.drawerHeader} />
-                <MenuList style={{ color: 'rgb(117, 117, 117)', width: '210px' }}>
-                  <Divider />
-                  {drawer}
-                </MenuList>
-              </div>
-            </Drawer>
-          </Hidden>
-          <Hidden smDown implementation='js'>
-            <Drawer
+
               variant='persistent'
               open={this.state.drawerOpen}
               classes={{
@@ -229,7 +210,7 @@ export class HomeComponent extends Component {
                 </MenuList>
               </div>
             </Drawer>
-          </Hidden>
+
           <main
             className={classNames(classes.content, classes[`content-${anchor}`], {
               [classes.contentShift]: drawerOpen,

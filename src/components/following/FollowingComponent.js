@@ -8,9 +8,6 @@ export class FollowingComponent extends Component {
     return (
       <div>
         {(this.props.followers && Object.keys(this.props.followers).length !== 0) ? (<div>
-          <div className='profile__title'>
-            {('Following')}
-          </div>
           <UserBoxList users={this.props.followers} />
           <div style={{ height: '24px' }}></div>
           </div>)

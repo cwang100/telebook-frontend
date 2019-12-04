@@ -14,6 +14,8 @@ import config from '../../config'
 import * as authorizeActions from '../../actions/authorizeActions'
 import Grid from 'material-ui/Grid/Grid'
 
+import logo from '../../assets/logo.jpg'
+
 const styles = (theme) => ({
   textField: {
     minWidth: 280,
@@ -156,7 +158,9 @@ export class LoginComponent extends Component {
       <Grid container spacing={24}>
         <Grid item xs={12} className={classes.contain}>
 
-          <h1 className='g__app-name'>{config.settings.appName}</h1>
+        <div style={{background:'#fff', height: '60px', 'marginBottom': '10px'}}>
+          <img src={logo} height="40px" />
+        </div>
 
           <div className='animate-bottom'>
             <Paper className={classes.paper} elevation={1} >
