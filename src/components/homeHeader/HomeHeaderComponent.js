@@ -21,33 +21,35 @@ import Notify from '../notify'
 
 import { authorizeActions } from '../../actions'
 
+import logo from '../../assets/logo.jpg'
+
 const styles = {
   root: {
     backgroundColor: '#a5792a'
   },
   flex: {
     flex: 1
-  }
+  },
+  avatarStyle: {
+      margin: 5,
+      cursor: 'pointer'
+    },
+    notificationCount: {
+      'font-size': '10px',
+      'border-radius': '50%',
+      background: 'red',
+      width: '14px',
+      height: '14px',
+      'line-height': '14px',
+      color: 'white'
+    }
 }
 
 export class HomeHeaderComponent extends Component {
 
-  styles = {
-    avatarStyle: {
-      margin: 5,
-      cursor: 'pointer'
-    }
-
-  }
-
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
   constructor(props) {
     super(props)
 
-    // Default state
     this.state = {
       openAvatarMenu: false,
       showTitle: true,
@@ -65,7 +67,6 @@ export class HomeHeaderComponent extends Component {
     })
   }
 
-  // On click toggle sidebar
   onToggleSidebar = () => {
    const {onToggleDrawer} = this.props
    onToggleDrawer()
@@ -73,7 +74,6 @@ export class HomeHeaderComponent extends Component {
 
 
   handleNotifyTouchTap = (event) => {
-    // This prevents ghost click.
     event.preventDefault()
 
     this.setState({
@@ -82,22 +82,11 @@ export class HomeHeaderComponent extends Component {
     })
   }
 
-  /**
-   * Handle touch on user avatar for popover
-   *
-   *
-   * @memberof HomeHeader
-   */
   handleAvatarTouchTap = (event) => {
     this.setState({
       openAvatarMenu: true,
       anchorEl: event.currentTarget
     })
-  }
-
-
-  handleLogout = () => {
-    this.props.logout()
   }
 
   handleRequestClose = () => {
@@ -108,19 +97,14 @@ export class HomeHeaderComponent extends Component {
   }
 
   handleResize = (event) => {
-    const {drawerStatus} = this.props
-    // Set initial state
-    let width = window.innerWidth
+    // const {drawerStatus} = this.props
+    // let width = window.innerWidth
 
-    if (width >= 600 && !drawerStatus) {
-      this.onToggleSidebar()
-    } else if (width < 600) {
+    // if (width >= 600 && !drawerStatus) {
+    //   this.onToggleSidebar()
+    // } else if (width < 600) {
 
-    }
-  }
-
-  componentDidMount () {
-    this.handleResize(null)
+    // }
   }
 
   render () {
@@ -128,86 +112,52 @@ export class HomeHeaderComponent extends Component {
     const anchor = theme.direction === 'rtl' ? 'right' : 'left'
     return (
 
-      <AppBar position='fixed' color='secondary'>
+      <AppBar position='fixed' color='secondary' style={{ background: '#fff' }}>
         <Toolbar>
           {/* Left side */}
 
           <IconButton onClick={this.onToggleSidebar} >
-            <SvgDehaze color='primary' style={{ cursor: 'pointer' }} />
+            <SvgDehaze color='primary' style={{ cursor: 'pointer', color: 'rgb(86, 105, 174)' }} />
           </IconButton>
           {/* Header title */}
-          <Typography variant='title' color='primary' style={{ marginLeft: '15px' }} >
-            {config.settings.appName}
-          </Typography>
-          <div className='homeHeader__title-root'>
-          <Hidden smDown>
-           <div className={classNames({'homeHeader__title-left': anchor === 'left', 'homeHeader__title-right': anchor === 'right' })}>{this.props.title}</div> 
-           </Hidden>
+          <img src={logo} height="32px"/>
+          <div style={{margin:'auto',  color: 'rgb(86, 105, 174)'}} className='homeHeader__title-root'>
+           <div style={{'font-weight': '800'}} className={classNames({'homeHeader__title-left': anchor === 'left', 'homeHeader__title-right': anchor === 'right' })}>{this.props.title}</div> 
           </div>
 
           {/* Notification */}
-          <div className='homeHeader__right'>
+          <div style={{'width':'180px'}} className='homeHeader__right'>
             <Manager>
               <Target>
                 {this.props.notifyCount > 0 ? (
                   <Tooltip title={'Notifications'}>
                     <IconButton onClick={this.handleNotifyTouchTap}>
-                      <div className='homeHeader__notify'>
+                      <NotificationsIcon style={{position:'relative', color: '#555' }} />
+                      <div className='homeHeader__notify' style={styles.notificationCount}>
                         <div className='title'>{this.props.notifyCount}</div>
                       </div>
                     </IconButton>
                   </Tooltip>)
                   : (<Tooltip title={'Notifications'}>
                     <IconButton onClick={this.handleNotifyTouchTap}>
-                      <NotificationsIcon style={{ color: 'rgba(255, 255, 255, 0.87)' }} />
+                      <NotificationsIcon style={{ color: '#555' }} />
                     </IconButton>
                   </Tooltip>)}
               </Target>
               {<Notify open={this.state.openNotifyMenu} anchorEl={this.state.anchorEl} onRequestClose={this.handleCloseNotify} />}
             </Manager>
-
-{/*            <UserAvatarComponent
-              onClick={this.handleAvatarTouchTap}
-              fullName={this.props.fullName}
-              fileName={this.props.avatar}
-              size={32}
-              style={this.styles.avatarStyle}
-            />*/}
-
-            <Menu
-              open={this.state.openAvatarMenu}
-              anchorEl={this.state.anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-              onClose={this.handleRequestClose}>
-              <MenuItem style={{ backgroundColor: 'white', color: blue[500], fontSize: '14px' }} > {'My Account'} </MenuItem>
-              <MenuItem style={{ fontSize: '14px' }} onClick={this.handleLogout.bind(this)} > {'Log Out'} </MenuItem>
-
-            </Menu>
           </div>
-
         </Toolbar>
       </AppBar >
     )
   }
 }
 
-// - Map dispatch to props
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    logout: () => dispatch(authorizeActions.dbLogout())
-  }
+  return {}
 }
 
-// - Map state to props
 const mapStateToProps = (state, ownProps) => {
-
   let notifyCount = state.notify.get('userNotifies')
     ? Object
       .keys(state.notify.get('userNotifies'))
@@ -221,5 +171,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-// - Connect component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles, { withTheme: true })(HomeHeaderComponent))

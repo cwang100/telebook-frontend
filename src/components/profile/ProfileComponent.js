@@ -5,6 +5,15 @@ import StreamComponent from '../stream'
 
 import * as postActions from '../../actions/postActions'
 import * as userActions from '../../actions/userActions'
+import { withStyles } from 'material-ui/styles'
+
+const styles = (theme) => ({
+  profileTitle: {
+    margin:5,
+    color: '#9c9c9c'
+  }
+})
+
 
 export class ProfileComponent extends Component {
 
@@ -31,7 +40,10 @@ export class ProfileComponent extends Component {
 
       },
       content: {
-
+        'max-width': '540px',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
+        'margin-top': '20px'
       },
       showcover: {
         height: '450px'
@@ -42,6 +54,7 @@ export class ProfileComponent extends Component {
     }
     const {loadPosts, hasMorePosts, name} = this.props
     const St = StreamComponent
+    const {classes} = this.props
     return (
       <div style={styles.profile}>
         <div style={styles.header}>
@@ -50,9 +63,7 @@ export class ProfileComponent extends Component {
         {this.props.posts && Object.keys(this.props.posts).length !== 0
         ? (
         <div style={styles.content}>
-          <div className='profile__title'>
-            {'Posts from ' + name}
-          </div>
+
           <St
             posts={this.props.posts}
             loadStream={loadPosts}
@@ -94,4 +105,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ProfileComponent))

@@ -12,11 +12,11 @@ import NotifyItem from '../notifyItem'
 
 const styles = (theme) => ({
   root: {
-    width: 360,
     maxWidth: 360,
-    backgroundColor: '#efefef',
-    minHeight: 376,
+    backgroundColor: '#e9f1ff',
+    minHeight: 80,
     display: 'flex',
+    padding: 10
   },
   noNotify: {
     color: '#888888',

@@ -6,11 +6,11 @@ export let userReducer = (state = Map(), action) => {
   switch (action.type) {
     case UserActionType.USER_INFO:
       return state
-        .setIn(['info', payload.uid], payload.info)
+        .setIn(['info', payload.uid], fromJS(payload.info))
 
     case UserActionType.ADD_USER_INFO:
       return state
-        .setIn(['info', payload.uid], payload.info)
+        .setIn(['info', payload.uid], fromJS(payload.info))
         .set('loaded', true)
 
     case UserActionType.ADD_PEOPLE_INFO:

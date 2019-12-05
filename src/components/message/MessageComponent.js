@@ -63,6 +63,14 @@ const styles = (theme) => ({
     borderWidth: 1,
     boxShadow: "inset 1px 2px 4px rgba(148, 148, 148, 0.32)"
   },
+  textBox: { 
+    fontWeight: 400, 
+    fontSize: '14px', 
+    margin: '0 16px', 
+    flexShrink: 0, 
+    width: 'initial', 
+    flexGrow: 1 
+  }
 })
 
 export class MessageComponent extends Component{
@@ -116,13 +124,21 @@ export class MessageComponent extends Component{
   fromMessage = (message) => {
     const { classes } = this.props
     const newMessage = this.decode(message)
-    return <div className={classes.messageBox}><div className={classes.fromMessage}>{newMessage}</div></div>
+    return (<div className={classes.messageBox}>
+      <div className={classes.fromMessage}>
+        {newMessage}
+      </div>
+    </div>)
   }
 
   toMessage = (message) => {
     const { classes } = this.props
       const newMessage = this.decode(message)
-      return <div className={classes.messageBox + " " + classes.messageBoxRight}><div className={classes.toMessage}>{newMessage}</div></div>
+      return (<div className={classes.messageBox + " " + classes.messageBoxRight}>
+        <div className={classes.toMessage}>
+          {newMessage}
+        </div>
+      </div>)
   }
 
   processMessages = (messages) => {
@@ -141,8 +157,6 @@ export class MessageComponent extends Component{
 
   render() {
     const { classes, messages } = this.props
-
-
     return (
       <div style={this.props.style}>
         <Dialog
@@ -171,14 +185,14 @@ export class MessageComponent extends Component{
                 <div style={{ display: 'flex', flexDirection: 'column', flexGrow: 1, overflow: 'hidden' }}>
                   <div className={classes.messageInput} style={{ position: 'relative', flexDirection: 'column', display: 'flex', flexGrow: 1, overflow: 'hidden', overflowY: 'auto', maxHeight: '300px' }}>
                     <TextField
-                      autoFocus
-                      underlineStyle={{display: 'none'}}
                       value={this.state.text}
                       onChange={this.handleOnChange}
                       placeholder={'message'}
+                      margin="normal"
                       multiline
                       rows={5}
-                      style={{ fontWeight: 400, fontSize: '14px', margin: '0 16px', flexShrink: 0, width: 'initial', flexGrow: 1 }}
+                      className={classes.textBox}
+                      variant="outlined"
                     />
                   </div>
                 </div>
@@ -230,7 +244,6 @@ const mapStateToProps = (state, ownProps) => {
     ownPublic: ownPublic,
     ownUid: ownUid,
     messages: messages? messages.toJS() : {},
-
   }
 }
 

@@ -14,6 +14,26 @@ import DefaultAvator from '../../assets/avator.png'
 // - Import actions
 import * as globalActions from '../../actions/globalActions'
 import * as userActions from '../../actions/userActions'
+import { withStyles } from 'material-ui/styles'
+
+const styles = (theme) => ({
+  actionBar: { 
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: 10
+  },
+  actionButton: {
+    borderRadius: 2,
+    margin: '0 10px'
+  },
+  actionButtonEdit: {
+    color: '#00b1b3',
+    background: 'white',
+    borderWidth: 1,
+    borderColor: '#00b1b3',
+    borderStyle: 'solid'
+  }
+})
 
 export class ProfileHeaderComponent extends Component {
   constructor (props) {
@@ -98,16 +118,16 @@ export class ProfileHeaderComponent extends Component {
                 <MenuItem style={{ fontSize: '14px' }}>Delete</MenuItem>
       </div>
         )
-
+    const { classes } = this.props
     return (
-
+      
             <div>
                 <div className={this.state.isSmall ? 'profile__head-info-s' : 'profile__head-info'}>
                     <EventListener
                         target='window'
                         onResize={this.handleResize}
                     />
-                    <div className='left'>
+                    <div className={classes.actionButton}>
                       <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <img src={DefaultAvator} width='150' height='150'/>
                       </div>
@@ -117,13 +137,13 @@ export class ProfileHeaderComponent extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className='right'>
+                    <div className={classes.actionBar}>
                         {isAuthedUser ? (<div style={this.state.isSmall ? styles.editButtonSmall : styles.editButton}>
-                        <Button variant='raised' onClick={this.props.openEditor}>
+                        <Button   className={classes.actionButton + " " + classes.actionButtonEdit}  onClick={this.props.openEditor}>
                         {'Edit Profile'}
                         </Button>
                         </div>) : ''}
-                        {isAuthedUser? <Button variant='raised' onClick={this.removePirvateKey}>Remove Local Key</Button>:''}
+                        {isAuthedUser? <Button className={classes.actionButton} variant='raised' onClick={this.removePirvateKey}>Remove Local Key</Button>:''}
                     </div>
                 </div>
                 {isAuthedUser && editProfileOpen ? (<EditProfile
@@ -149,4 +169,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileHeaderComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ProfileHeaderComponent))
