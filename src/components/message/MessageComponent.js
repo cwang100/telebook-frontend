@@ -91,6 +91,7 @@ export class MessageComponent extends Component{
     const {addMessage, publicKey, ownPublic} = this.props
 
     addMessage(text, publicKey, ownPublic)   
+    this.setState({text: ""})
   }
 
 
