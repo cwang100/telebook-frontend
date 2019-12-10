@@ -58,7 +58,6 @@ export const dbLogout = () => {
 
     }, (error) => dispatch(globalActions.showMessage(error.code)))
   }
-
 }
 
 export const dbSendEmailVerfication = () => {

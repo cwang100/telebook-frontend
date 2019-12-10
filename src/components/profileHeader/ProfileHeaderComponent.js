@@ -14,6 +14,7 @@ import DefaultAvator from '../../assets/avator.png'
 // - Import actions
 import * as globalActions from '../../actions/globalActions'
 import * as userActions from '../../actions/userActions'
+import * as authorizeActions from '../../actions/authorizeActions'
 import { withStyles } from 'material-ui/styles'
 
 const styles = (theme) => ({
@@ -139,6 +140,7 @@ export class ProfileHeaderComponent extends Component {
                         </Button>
                         </div>) : ''}
                         {isAuthedUser? <Button className={classes.actionButton} variant='raised' onClick={this.removePirvateKey}>Remove Local Key</Button>:''}
+                        {isAuthedUser? <Button className={classes.actionButton} variant='raised' onClick={this.props.logout}>Logout</Button>:''}
                     </div>
                 </div>
                 {isAuthedUser && editProfileOpen ? (<EditProfile
@@ -153,7 +155,8 @@ export class ProfileHeaderComponent extends Component {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    openEditor: () => dispatch(userActions.openEditProfile())
+    openEditor: () => dispatch(userActions.openEditProfile()),
+    logout: () => {dispatch(authorizeActions.dbLogout())}
   }
 }
 
