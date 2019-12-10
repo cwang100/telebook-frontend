@@ -78,9 +78,6 @@ const styles = (theme) => ({
   }
 })
 
-/**
- * Create component class
- */
 export class EditProfileComponent extends Component {
   styles = {
     avatar: {
@@ -122,51 +119,15 @@ export class EditProfileComponent extends Component {
 
   }
 
-  /**
-   * Component constructor
-   * @param  {object} props is an object properties of component
-   */
   constructor(props) {
     super(props)
-    // Defaul state
     this.state = {
-      /**
-       * If it's true the winow is in small size
-       */
       isSmall: false,
-      /**
-       * User tag line input value
-       */
-      tagLineInput: props.info.tagLine || '',
-      /**
-       * User full name input value
-       */
+      avatarInput: props.info.avatar || '',
       fullNameInput: props.info.fullName || '',
-      /**
-       * Error message of full name input
-       */
       fullNameInputError: '',
-      /**
-       * Default birth day
-       */
       defaultBirthday: (props.info && props.info.birthday) ? moment.unix(props.info.birthday).toDate() : '',
-      /**
-       * Seleted birth day
-       */
-      selectedBirthday: 0,
-      /**
-       * Web URL
-       */
-      webUrl: (props.info && props.info.webUrl) ? props.info.webUrl : '',
-      /**
-       * User company name
-       */
-      companyName: (props.info && props.info.companyName) ? props.info.companyName : '',
-      /**
-       * User twitter id
-       */
-      twitterId: (props.info && props.info.twitterId) ? props.info.twitterId : ''
-
+      selectedBirthday: 0
     }
 
     // Binding functions to `this`
@@ -208,10 +169,6 @@ export class EditProfileComponent extends Component {
     }
   }
 
-  /**
-   * Handle data on input change
-   * @param  {event} evt is an event of inputs of element on change
-   */
   handleInputChange = (event) => {
     const target = event.target
     const value = target.type === 'checkbox' ? target.checked : target.value
@@ -247,7 +204,7 @@ export class EditProfileComponent extends Component {
   render() {
 
     const { classes, currentLanguage } = this.props
-    const { defaultBirthday, webUrl, twitterId, companyName } = this.state
+    const { defaultBirthday, avatar } = this.state
     const iconButtonElement = (
       <IconButton style={this.state.isSmall ? this.styles.iconButtonSmall : this.styles.iconButton}>
         <MoreVertIcon style={{ ...(this.state.isSmall ? this.styles.iconButtonSmall : this.styles.iconButton), color: grey[400] }} viewBox='10 0 24 24' />
@@ -292,10 +249,10 @@ export class EditProfileComponent extends Component {
 
             {/* Edit user information box*/}
             <Paper style={this.styles.paper} elevation={1}>
-              <div style={this.styles.title}>{('profile.personalInformationLabel')}</div>
+              <div style={this.styles.title}>{('Personal Information')}</div>
               <div className={classes.box}>
                 <FormControl fullWidth aria-describedby='fullNameInputError'>
-                  <InputLabel htmlFor='fullNameInput'>{('profile.fullName')}</InputLabel>
+                  <InputLabel htmlFor='fullNameInput'>{('Full Name')}</InputLabel>
                   <Input id='fullNameInput'
                     onChange={this.handleInputChange}
                     name='fullNameInput'
@@ -306,44 +263,14 @@ export class EditProfileComponent extends Component {
               </div>
               <div className={classes.box}>
                 <FormControl fullWidth aria-describedby='tagLineInputError'>
-                  <InputLabel htmlFor='tagLineInput'>{('profile.tagline')}</InputLabel>
-                  <Input id='tagLineInput'
+                  <InputLabel htmlFor='avatarInput'>{('Image URL')}</InputLabel>
+                  <Input id='avatarInput'
                     onChange={this.handleInputChange}
-                    name='tagLineInput'
-                    value={this.state.tagLineInput}
+                    name='avatarInput'
+                    value={this.state.avatarInput}
                   />
                   <FormHelperText id='tagLineInputError'>{this.state.fullNameInputError}</FormHelperText>
                 </FormControl>
-              </div>
-              <div className={classes.box}>
-                <TextField
-                  className={classes.bottomTextSpace}
-                  onChange={this.handleInputChange}
-                  name='companyName'
-                  value={companyName}
-                  label={('profile.companyName')}
-                  fullWidth
-                />
-              </div>
-              <div className={classes.box}>
-                <TextField
-                  className={classes.bottomTextSpace}
-                  onChange={this.handleInputChange}
-                  name='twitterId'
-                  value={twitterId}
-                  label={('profile.twitterId')}
-                  fullWidth
-                />
-              </div>
-              <div className={classes.box}>
-                <TextField
-                  className={classes.bottomTextSpace}
-                  onChange={this.handleInputChange}
-                  name='webUrl'
-                  value={webUrl}
-                  label={('profile.webUrl')}
-                  fullWidth
-                />
               </div>
               <div className={classes.box}>
               <DayPickerInput
@@ -367,8 +294,8 @@ export class EditProfileComponent extends Component {
             <div className={classes.bottomPaperSpace}></div>
           </DialogContent>
           <DialogActions className={classes.fixedDownStickyXS}>
-            <Button onClick={this.props.onRequestClose} > {('profile.cancelButton')} </Button>
-            <Button variant='raised' color='primary' onClick={this.handleUpdate} style={this.styles.updateButton}> {('profile.updateButton')} </Button>
+            <Button onClick={this.props.onRequestClose} > {('Cancel')} </Button>
+            <Button variant='raised' color='primary' onClick={this.handleUpdate} style={this.styles.updateButton}> {('Update')} </Button>
           </DialogActions>
         </Dialog>
       </div>
@@ -386,7 +313,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     open: state.user.get('openEditProfile'),
-    info: state.user.get('info').get(state.authorize.get('uid'))
+    info: state.user.get('info').get(state.authorize.get('uid')).toJS()
   }
 }
 

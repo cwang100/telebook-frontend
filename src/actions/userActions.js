@@ -60,11 +60,7 @@ export const dbUpdateUserInfo = (newProfile) => {
       banner: newProfile.banner || profile.banner || 'https://firebasestorage.googleapis.com/v0/b/open-social-33d92.appspot.com/o/images%2F751145a1-9488-46fd-a97e-04018665a6d3.JPG?alt=media&token=1a1d5e21-5101-450e-9054-ea4a20e06c57',
       email: newProfile.email || profile.email || '',
       fullName: newProfile.fullName || profile.fullName || '',
-      tagLine: newProfile.tagLine || profile.tagLine || '',
       birthday: newProfile.birthday,
-      companyName: newProfile.companyName || '',
-      webUrl: newProfile.webUrl || '',
-      twitterId: newProfile.twitterId || '',
       creationDate: newProfile.creationDate
     }
     return userService.updateUserProfile(uid,updatedProfile).then(() => {

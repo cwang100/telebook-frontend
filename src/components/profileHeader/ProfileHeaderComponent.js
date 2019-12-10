@@ -129,13 +129,8 @@ export class ProfileHeaderComponent extends Component {
                     />
                     <div className={classes.actionButton}>
                       <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <img src={DefaultAvator} width='150' height='150'/>
+                        <img style={{'borderRadius': '50%'}} src={this.props.avatar} width='150' height='150'/>
                       </div>
-                        <div className='info'>
-                            <div className='fullName'>
-                                {this.props.fullName}
-                            </div>
-                        </div>
                     </div>
                     <div className={classes.actionBar}>
                         {isAuthedUser ? (<div style={this.state.isSmall ? styles.editButtonSmall : styles.editButton}>

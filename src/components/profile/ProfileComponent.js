@@ -40,10 +40,10 @@ export class ProfileComponent extends Component {
 
       },
       content: {
-        'max-width': '540px',
-        'margin-left': 'auto',
-        'margin-right': 'auto',
-        'margin-top': '20px'
+        'maxWidth': '540px',
+        'marginLeft': 'auto',
+        'marginRight': 'auto',
+        'marginTop': '20px'
       },
       showcover: {
         height: '450px'
@@ -96,8 +96,8 @@ const mapStateToProps = (state, ownProps) => {
   const hasMorePosts = profile.hasMoreData
   const posts = state.post.getIn(['userPosts',userId]) ? state.post.getIn(['userPosts',userId]).toJS() : {}
   return {
-    avatar: state.user.get('info') && state.user.get('info')[userId] ? state.user.get('info')[userId].avatar || '' : '',
-    name: state.user.get('info') && state.user.get('info').get(userId) ? state.user.get('info').get(userId).fullName || '' : '',
+    avatar: state.user.getIn(['info', userId, 'avatar']),
+    name: state.user.getIn(['info', userId, 'fullName']),
     isAuthedUser: userId === uid,
     userId,
     posts,

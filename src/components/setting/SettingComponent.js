@@ -21,7 +21,8 @@ const styles = (theme) => ({
 
   },
   contain: {
-    margin: '0 auto'
+    margin: '12px',
+    padding: '0px !important'
   },
   paper: {
     minHeight: 370,

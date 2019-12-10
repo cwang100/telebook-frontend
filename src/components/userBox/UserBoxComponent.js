@@ -118,7 +118,7 @@ export class UserBoxComponent extends Component {
   }
 
   render () {
-    const { isFollowed, followRequest, userId, classes } = this.props
+    const { isFollowed, followRequest, userId, classes, avatar } = this.props
 
     return (
       <Paper key={userId} elevation={1} className={classNames('grid-cell', classes.paper)}>
@@ -136,7 +136,16 @@ export class UserBoxComponent extends Component {
             <div>
               {this.props.user.fullName}
             </div>
-            <img src={DefaultAvator} width='150' height='150'/>
+            <div style={{
+              width: 150,
+              height: 150,
+              background: `url(${avatar})`,
+              backgroundPosition: 'center center',
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              borderRadius: '50%',
+              }}></div>
+            
           </div>
           <div style={this.styles.followButton}>
             <Button
@@ -188,8 +197,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     isFollowed,
     followRequest,
-    avatar: state.user.get('info') && state.user.get('info')[ownProps.userId] ? state.user.get('info')[ownProps.userId].avatar || '' : '',
-    fullName: state.user.get('info') && state.user.get('info').get(ownProps.userId) ? state.user.get('info').get(ownProps.userId).fullName || '' : ''
+    avatar: state.user.getIn(['info', userId, 'avatar']),
+    fullName: state.user.getIn(['info', userId, 'fullName'])
   }
 }
 

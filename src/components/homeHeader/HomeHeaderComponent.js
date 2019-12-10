@@ -35,12 +35,12 @@ const styles = {
       cursor: 'pointer'
     },
     notificationCount: {
-      'font-size': '10px',
-      'border-radius': '50%',
+      'fontSize': '10px',
+      'borderRadius': '50%',
       background: 'red',
       width: '14px',
       height: '14px',
-      'line-height': '14px',
+      'lineHeight': '14px',
       color: 'white'
     }
 }
@@ -122,7 +122,7 @@ export class HomeHeaderComponent extends Component {
           {/* Header title */}
           <img src={logo} height="32px"/>
           <div style={{margin:'auto',  color: 'rgb(86, 105, 174)'}} className='homeHeader__title-root'>
-           <div style={{'font-weight': '800'}} className={classNames({'homeHeader__title-left': anchor === 'left', 'homeHeader__title-right': anchor === 'right' })}>{this.props.title}</div> 
+           <div style={{'fontWeight': '800'}} className={classNames({'homeHeader__title-left': anchor === 'left', 'homeHeader__title-right': anchor === 'right' })}>{this.props.title}</div> 
           </div>
 
           {/* Notification */}
